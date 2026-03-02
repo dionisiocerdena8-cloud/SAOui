@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs:*)",
+      "Bash(node -e:*)",
+      "Bash(python3:*)",
+      "Bash(ls:*)",
+      "Bash(npm uninstall:*)"
+    ]
+  }
+}

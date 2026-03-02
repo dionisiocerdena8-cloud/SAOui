@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NC-STARS | Student Affairs System</title>
+    
+    <!-- Google Fonts: Playfair Display for Luxury/Academic, Inter for clean text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for professional Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        // Color and Design Configuration consistent with Green theme (No Yellow)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        velvet: '#0a0a0a',     
+                        smoke: '#4b5563',      
+                        rose: '#ef4444',       
+                        blossom: '#fcd6d6',    
+                        silk: '#e8dacc',       
+                        chiffon: '#f4f1eb',    
+                        luxuryGreen: '#0d5c2e', 
+                        luxuryGreenLight: '#16a34a', 
+                        badgeGreen: '#10b981'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'luxury': '0 15px 35px -5px rgba(13, 92, 46, 0.15), 0 5px 15px -5px rgba(0, 0, 0, 0.05)',
+                        'luxury-hover': '0 25px 50px -10px rgba(13, 92, 46, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.1)',
+                        'modal': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f4f1eb;
+            color: #0a0a0a;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 3D Static Background Container (Building Image) */
+        .bg-3d-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: #f4f1eb;
+        }
+
+        .hero-image-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.35; 
+            filter: contrast(110%);
+            z-index: -1;
+            background-image: url('57d5c746-f22b-4db8-86f9-bed1dddcb7d8.png'); 
+        }
+
+        /* Static Floating Orbs for 3D Depth */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .orb-1 { width: 500px; height: 500px; background: #0d5c2e; top: -150px; left: -150px; }
+        .orb-2 { width: 400px; height: 400px; background: #16a34a; bottom: -50px; right: -100px; opacity: 0.15; }
+
+        /* Elegant Glassmorphism Panels */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        /* View Transitions */
+        .view-section {
+            display: none;
+            opacity: 0;
+            animation: fadeInView 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .view-section.active {
+            display: flex; 
+            flex-direction: column;
+        }
+
+        @keyframes fadeInView {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal Pop Animations */
+        .modal-enter {
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Button Hover Effect */
+        .btn-luxury {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-luxury::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+
+        .btn-luxury:hover::before { left: 100%; }
+        .btn-luxury:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -5px rgba(13, 92, 46, 0.4); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #0d5c2e; border-radius: 10px; }
+
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .toast {
+            background: #0a0a0a; color: #f4f1eb; padding: 12px 16px;
+            border-left: 4px solid #16a34a; border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; gap: 12px; font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+        }
+        @media (min-width: 768px) {
+            .toast { padding: 16px 24px; font-size: 0.875rem; }
+        }
+        .toast.show { transform: translateX(0); }
+        
+        /* Input Focus */
+        input:focus, select:focus, textarea:focus {
+            box-shadow: 0 0 0 1.5px rgba(13, 92, 46, 0.3);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- Background Images -->
+    <div class="bg-3d-container">
+        <div class="hero-image-bg"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- Navigation Bar (Restored to Original Glassy Green) -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-luxuryGreen/10 backdrop-blur-md border-b border-luxuryGreen/20 h-20 md:h-24 flex items-center pt-2" id="navbar">
+        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center w-full">
+                
+                <!-- Dual Header Logos -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer group" onclick="navigateTo('home')">
+                    <!-- Norzagaray College Logo -->
+                    <img src="nc logo.png" onerror="this.src='https://ui-avatars.com/api/?name=NC&background=0d5c2e&color=fff'" alt="Norzagaray College Logo" class="w-14 h-14 md:w-[70px] md:h-[70px] rounded-full object-cover border-[2px] border-luxuryGreen mr-1 md:mr-2 shadow-md bg-white transition-all duration-300">
+                    <!-- Student Affairs Logo -->
+                    <img src="logo.png" onerror="this.src='https://ui-avatars.com/api/?name=OSA&background=16a34a&color=fff'" alt="Student Affairs Logo" class="w-14 h-14 md:w-[70px] md:h-[70px] rounded-full object-cover border-[2px] border-luxuryGreen mr-3 md:mr-4 shadow-md bg-white transition-all duration-300">
+                    
+                    <div class="flex flex-col justify-center">
+                        <span class="font-serif text-lg md:text-xl lg:text-2xl font-bold text-luxuryGreen tracking-[0.15em] uppercase hidden sm:block leading-none">NC-STARS</span>
+                        <span class="text-[9px] font-bold text-smoke uppercase tracking-widest hidden sm:block mt-1">Student Affairs System</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div id="navLinks" class="hidden md:flex space-x-6 lg:space-x-10 items-center">
+                    <button onclick="navigateTo('home')" class="bg-luxuryGreen text-white px-5 py-2.5 lg:px-7 lg:py-3 rounded-full font-semibold btn-luxury text-[10px] lg:text-xs uppercase tracking-widest shadow-md flex items-center justify-center">
+                        <i class="fa-solid fa-home mr-2"></i> Home
+                    </button>
+                </div>
+
+                <!-- User Profile / Logout in Header -->
+                <div id="userProfileNav" class="hidden items-center gap-4">
+                    <div class="text-right hidden sm:block">
+                        <p id="navUserName" class="text-xs font-bold text-velvet tracking-widest uppercase">Name</p>
+                        <p id="navUserRole" class="text-[10px] text-smoke font-medium">Role</p>
+                    </div>
+                    <button onclick="handleLogout()" class="text-smoke hover:text-rose transition-colors text-xl" title="Logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main App Area -->
+    <main class="flex-grow pt-24 flex flex-col relative z-0">
+
+        <!-- ================= HOME / ROLE SELECTION VIEW ================= -->
+        <section id="view-home" class="view-section active flex-grow justify-start pt-6 md:pt-10 pb-12 md:pb-20">
+            <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center">
+                
+                <span class="text-luxuryGreen font-bold tracking-[0.15em] md:tracking-[0.2em] uppercase text-[9px] md:text-xs mb-3 block border border-luxuryGreen px-3 md:px-4 py-1.5 rounded-full bg-white/50 shadow-sm mt-4">Official Staff Portal</span>
+                
+                <!-- Updated Title -->
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-velvet mb-3 md:mb-5 leading-[1.15] md:leading-[1.1]">
+                    Norzagaray College
+                    <span class="text-luxuryGreen text-base sm:text-xl md:text-2xl lg:text-3xl block mt-2 font-sans tracking-wide">Student Tracking, AI Resolution and Sanction System</span>
+                </h1>
+                
+                <p class="text-xs sm:text-sm md:text-base text-smoke mb-6 md:mb-10 font-medium max-w-2xl leading-relaxed px-2">
+                    Access the centralized management platform for Administration, Guidance Counseling, and the Office of Student Affairs.
+                </p>
+                
+                <!-- Role Selection Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-8 w-full max-w-4xl relative z-10">
+                    
+                    <!-- Admin Card -->
+                    <button onclick="openLogin('Admin')" class="glass-panel p-8 rounded-[1.5rem] shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 hover:border-luxuryGreen/40 transition-all duration-300 flex flex-col items-center text-center group border border-white cursor-pointer">
+                        <div class="w-16 h-16 rounded-full bg-chiffon text-luxuryGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-luxuryGreen group-hover:text-white transition-colors duration-300 border border-silk shadow-sm">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-velvet mb-2">Administrator</h3>
+                        <p class="text-xs text-smoke font-medium px-2">System access, approve accounts, and database control.</p>
+                        <div class="mt-6 text-[10px] font-bold text-luxuryGreen uppercase tracking-widest group-hover:tracking-[0.25em] transition-all">Proceed <i class="fa-solid fa-arrow-right ml-1"></i></div>
+                    </button>
+
+                    <!-- Guidance Card -->
+                    <button onclick="openLogin('Guidance')" class="glass-panel p-8 rounded-[1.5rem] shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 hover:border-luxuryGreen/40 transition-all duration-300 flex flex-col items-center text-center group border border-white cursor-pointer">
+                        <div class="w-16 h-16 rounded-full bg-chiffon text-luxuryGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-luxuryGreen group-hover:text-white transition-colors duration-300 border border-silk shadow-sm">
+                            <i class="fa-solid fa-user-nurse"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-velvet mb-2">Guidance Office</h3>
+                        <p class="text-xs text-smoke font-medium px-2">Manage referrals, case histories, and counseling records.</p>
+                        <div class="mt-6 text-[10px] font-bold text-luxuryGreen uppercase tracking-widest group-hover:tracking-[0.25em] transition-all">Proceed <i class="fa-solid fa-arrow-right ml-1"></i></div>
+                    </button>
+
+                    <!-- OSA Card -->
+                    <button onclick="openLogin('OSA')" class="glass-panel p-8 rounded-[1.5rem] shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 hover:border-luxuryGreen/40 transition-all duration-300 flex flex-col items-center text-center group border border-white sm:col-span-2 md:col-span-1 cursor-pointer">
+                        <div class="w-16 h-16 rounded-full bg-chiffon text-luxuryGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-luxuryGreen group-hover:text-white transition-colors duration-300 border border-silk shadow-sm">
+                            <i class="fa-solid fa-users-rectangle"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-velvet mb-2">Student Affairs</h3>
+                        <p class="text-xs text-smoke font-medium px-2">Process pending cases, search records, and interventions.</p>
+                        <div class="mt-6 text-[10px] font-bold text-luxuryGreen uppercase tracking-widest group-hover:tracking-[0.25em] transition-all">Proceed <i class="fa-solid fa-arrow-right ml-1"></i></div>
+                    </button>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ABOUT SYSTEM VIEW ================= -->
+        <section id="view-about" class="view-section flex-grow justify-start pt-6 md:pt-10 pb-12 px-4">
+            <div class="w-full max-w-4xl mx-auto">
+                <div class="glass-panel p-8 md:p-12 rounded-[2rem] shadow-luxury border border-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-luxuryGreen/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                    
+                    <div class="flex items-center gap-4 mb-8 border-b border-silk pb-6 relative z-10">
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-serif font-bold text-velvet">NC-STARS</h2>
+                            <p class="text-[10px] md:text-xs font-bold text-luxuryGreen uppercase tracking-[0.15em] mt-1">System Overview</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6 text-sm md:text-base text-smoke font-medium leading-relaxed relative z-10">
+                        <p>
+                            The <strong>Norzagaray College Student Tracking, AI Resolution and Sanction System (NC-STARS)</strong> is an exclusive, institutional-grade platform designed specifically for the Administration, Guidance Office, and the Office of Student Affairs.
+                        </p>
+                        
+                        <p>
+                            Recognizing the critical need for a streamlined approach to student discipline and record management, NC-STARS replaces fragmented paperwork with a highly secure, centralized digital vault. It provides real-time tracking of student infractions, seamless endorsement protocols between departments, and an immutable history of all disciplinary actions.
+                        </p>
+
+                        <div class="bg-chiffon/50 border border-silk p-6 rounded-xl">
+                            <h4 class="font-bold text-velvet mb-3 flex items-center gap-2"><i class="fa-solid fa-brain text-luxuryGreen"></i> Contextual AI Integration</h4>
+                            <p class="text-sm">At the core of the platform is an automated AI Evaluation engine. Upon receiving a case endorsement, the system cross-references the student's behavior against the <strong>Norzagaray College Student Handbook (Section M.4)</strong> and scans their entire historical record. The AI then objectively recommends appropriate interventions—ranging from basic reprimands to escalated sanctions—ensuring absolute fairness, consistency, and compliance with institutional policies.</p>
+                        </div>
+
+                        <p>
+                            Built with enterprise-grade security protocols, including multi-factor authentication and strict role-based access control, NC-STARS guarantees that highly sensitive academic and behavioral data remains strictly confidential and accessible only to authorized college personnel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT US VIEW ================= -->
+        <section id="view-contact" class="view-section flex-grow justify-start pt-6 md:pt-10 pb-12 px-4">
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-velvet mb-3">Institutional Directory</h2>
+                    <p class="text-smoke text-sm">Official contact channels for the Student Affairs and Guidance Office.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    
+                    <!-- OSA Contact -->
+                    <div class="glass-panel p-8 rounded-2xl shadow-sm border border-white">
+                        <div class="w-12 h-12 bg-luxuryGreen/10 text-luxuryGreen rounded-xl flex items-center justify-center text-xl mb-5 border border-luxuryGreen/20">
+                            <i class="fa-solid fa-users-rectangle"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-velvet mb-1">Office of Student Affairs</h3>
+                        <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-4 border-b border-silk pb-4">Norzagaray College</p>
+                        
+                        <ul class="space-y-4 text-sm text-smoke font-medium">
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-location-dot mt-1 text-luxuryGreen w-4"></i>
+                                <span>Municipal Compound, Norzagaray,<br>Bulacan, Philippines</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-envelope text-luxuryGreen w-4"></i>
+                                <span>osa@norzagaraycollege.edu.ph</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-phone text-luxuryGreen w-4"></i>
+                                <span>(044) 123-4567 loc. 101</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Guidance Contact -->
+                    <div class="glass-panel p-8 rounded-2xl shadow-sm border border-white">
+                        <div class="w-12 h-12 bg-luxuryGreen/10 text-luxuryGreen rounded-xl flex items-center justify-center text-xl mb-5 border border-luxuryGreen/20">
+                            <i class="fa-solid fa-user-nurse"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-velvet mb-1">Guidance & Counseling</h3>
+                        <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-4 border-b border-silk pb-4">Norzagaray College</p>
+                        
+                        <ul class="space-y-4 text-sm text-smoke font-medium">
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-location-dot mt-1 text-luxuryGreen w-4"></i>
+                                <span>Main Building, 2nd Floor<br>Norzagaray College Campus</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-envelope text-luxuryGreen w-4"></i>
+                                <span>guidance@norzagaraycollege.edu.ph</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-phone text-luxuryGreen w-4"></i>
+                                <span>(044) 123-4567 loc. 102</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LOGIN VIEW ================= -->
+        <section id="view-login" class="view-section flex-grow justify-center items-center py-6 md:py-10 px-4">
+            <div class="glass-panel p-6 sm:p-8 md:p-12 rounded-[1.5rem] md:rounded-[2rem] shadow-luxury w-full max-w-[440px] relative overflow-hidden border border-white">
+                
+                <div class="text-center mb-8">
+                    <!-- Dynamic Role Title -->
+                    <h2 class="text-2xl md:text-3xl font-serif font-bold text-velvet mb-2" id="loginTitle">Portal</h2>
+                    <p class="text-smoke text-xs md:text-[13px] font-medium">Enter your official credentials to access the system.</p>
+                </div>
+
+                <form onsubmit="handleLogin(event)" class="space-y-4 md:space-y-5">
+                    <div>
+                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5 md:mb-2">Email Address</label>
+                        <input type="email" id="loginEmail" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Invalid email address" placeholder="Enter Email" class="w-full px-4 py-3 md:py-3.5 rounded-lg md:rounded-xl border border-silk bg-white focus:border-luxuryGreen transition-all text-xs md:text-sm font-semibold text-velvet shadow-sm">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5 md:mb-2">Password</label>
+                        <div class="relative">
+                            <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full px-4 md:px-5 py-3 md:py-3.5 rounded-lg md:rounded-xl border border-silk bg-white focus:border-luxuryGreen transition-all text-xs md:text-sm font-semibold text-velvet pr-10 shadow-sm">
+                            <button type="button" onclick="togglePassword('loginPassword', 'eyeIconLogin')" class="absolute right-3 md:right-4 top-1/2 transform -translate-y-1/2 text-smoke hover:text-luxuryGreen transition-colors focus:outline-none">
+                                <i class="fa-solid fa-eye text-base md:text-lg" id="eyeIconLogin"></i>
+                            </button>
+                        </div>
+                        <!-- Forgot Password for Admin -->
+                        <div id="forgotPassContainer" class="hidden text-right mt-2">
+                            <a href="#" onclick="openForgotPasswordModal()" class="text-[10px] text-luxuryGreen font-bold uppercase tracking-widest hover:text-velvet transition-colors">Forgot Password?</a>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-luxuryGreen hover:bg-velvet text-white py-3.5 md:py-4 rounded-lg md:rounded-xl font-bold uppercase tracking-[0.1em] md:tracking-[0.15em] text-[11px] md:text-xs btn-luxury mt-4 shadow-md transition-colors">
+                        LOGIN
+                    </button>
+                </form>
+                
+                <div id="signupPromptContainer" class="mt-6 md:mt-8 text-center text-[10px] md:text-[12px] text-smoke font-medium flex flex-col md:flex-row justify-center items-center gap-1">
+                    <span>Don't have an account?</span>
+                    <a href="#" onclick="openSignupModal()" class="text-luxuryGreen font-bold uppercase tracking-[0.1em] md:tracking-widest hover:text-velvet transition-colors inline-block">SIGN UP</a>
+                </div>
+
+                <!-- Button to go back home -->
+                <div class="mt-6 text-center">
+                    <button onclick="navigateTo('home')" class="text-[9px] text-smoke hover:text-luxuryGreen uppercase tracking-widest font-bold transition-colors"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MAIN DASHBOARD VIEW (Shared Layout) ================= -->
+        <section id="view-dashboard" class="view-section flex-grow">
+            <div class="flex flex-col md:flex-row h-full md:min-h-[calc(100vh-6rem)] max-w-7xl mx-auto w-full px-2 sm:px-4 pb-6 pt-2 gap-4 md:gap-6 items-start">
+                
+                <!-- Sidebar (Desktop only) -->
+                <div class="w-64 glass-panel rounded-2xl flex-col hidden md:flex overflow-hidden border border-white sticky top-28 h-[calc(100vh-8rem)]">
+                    <div class="p-8 bg-white border-b border-silk/60 text-center flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-chiffon text-luxuryGreen flex items-center justify-center text-xl mb-3 shadow-sm border border-silk">
+                            <i class="fa-solid fa-building-user" id="sidebarIcon"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-velvet leading-tight" id="sidebarDeptName">Department Name</h3>
+                        <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mt-1" id="sidebarRoleDesc">Access Level</p>
+                    </div>
+                    <nav class="space-y-2 flex-grow p-5 overflow-y-auto" id="sidebarNav">
+                        <!-- Dynamic Tabs Here -->
+                    </nav>
+                    <div class="p-5 border-t border-silk/60 bg-white">
+                        <button onclick="handleLogout()" class="w-full px-4 py-3 rounded-xl text-smoke hover:text-rose hover:bg-rose/10 font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Navigation Tabs -->
+                <div class="md:hidden w-full bg-white rounded-xl shadow-sm border border-silk flex overflow-x-auto no-scrollbar p-1.5 gap-1 mb-2" id="mobileNav">
+                    <!-- Dynamic Tabs Here -->
+                </div>
+
+                <!-- Dashboard Content Area -->
+                <div class="flex-grow w-full glass-panel rounded-xl md:rounded-2xl border border-white h-full md:min-h-[calc(100vh-8rem)] relative overflow-hidden">
+                    <div class="p-4 sm:p-6 md:p-10 h-full overflow-y-auto" id="dashboardContentArea">
+                        <!-- Dynamic Content Here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MAIN FOOTER (Glassmorphism Green with increased opacity) -->
+    <footer id="mainFooter" class="bg-luxuryGreen/40 backdrop-blur-xl border-t border-luxuryGreen/50 pt-10 pb-8 w-full relative z-10 transition-all duration-300 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8 border-b border-luxuryGreen/30 pb-8">
+                
+                <div class="flex items-center gap-4 text-center md:text-left cursor-default">
+                    <div>
+                        <h4 class="font-serif text-xl font-bold tracking-[0.2em] uppercase leading-tight text-luxuryGreen drop-shadow-sm">NC-STARS</h4>
+                        <p class="text-[10px] text-smoke font-medium tracking-widest mt-1">Student Tracking, AI Resolution and Sanction System</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <button onclick="navigateTo('about')" class="text-[11px] text-luxuryGreen hover:text-velvet uppercase tracking-widest font-bold transition-colors">About</button>
+                    <span class="text-luxuryGreen/50">•</span>
+                    <button onclick="navigateTo('contact')" class="text-[11px] text-luxuryGreen hover:text-velvet uppercase tracking-widest font-bold transition-colors">Contact Us</button>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-smoke font-medium">
+                <p>&copy; 2026 Norzagaray College. Official Management Platform of the Office of Student Affairs.</p>
+                <div class="flex gap-5">
+                    <a href="https://web.facebook.com/p/Norzagaray-College-Office-of-the-Student-Affairs-100063821722265/?_rdc=1&_rdr#" target="_blank" class="text-smoke hover:text-luxuryGreen transition-colors" title="Facebook"><i class="fa-brands fa-facebook text-xl"></i></a>
+                    <a href="mailto:ncstars2026@gmail.com" class="text-smoke hover:text-luxuryGreen transition-colors" title="Email"><i class="fa-solid fa-envelope text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- Admin Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="fixed inset-0 bg-velvet/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-300">
+        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-2xl shadow-modal w-full max-w-md relative border border-white mx-2 modal-enter">
+            <button onclick="closeForgotPasswordModal()" class="absolute top-4 right-4 md:top-5 md:right-5 w-7 h-7 md:w-8 md:h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 shadow-sm border border-silk">
+                <i class="fa-solid fa-times text-sm md:text-base"></i>
+            </button>
+
+            <!-- STEP 1: Request Code -->
+            <div id="fpStep1" class="block transition-all">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-luxuryGreen/10 rounded-full flex items-center justify-center mx-auto mb-3 text-luxuryGreen text-lg border border-luxuryGreen/20">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Admin Recovery</h3>
+                    <p class="text-smoke text-xs font-medium">Enter your registered master email to receive a code.</p>
+                </div>
+                <form onsubmit="handleFpStep1(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">Registered Email</label>
+                        <input type="email" id="fpAdminEmail" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Invalid email address" placeholder="admin@norzagaraycollege.edu.ph" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                    </div>
+                    <div id="fpLockoutMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-2.5 rounded text-center tracking-widest mt-2">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> Email not found in system.
+                    </div>
+                    <button type="submit" class="w-full bg-velvet text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md hover:bg-luxuryGreen transition-colors mt-2">Send OTP Code</button>
+                </form>
+            </div>
+
+            <!-- STEP 2: OTP Verification -->
+            <div id="fpStep2" class="hidden transition-all">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-luxuryGreen/10 rounded-full flex items-center justify-center mx-auto mb-3 text-luxuryGreen text-lg border border-luxuryGreen/20">
+                        <i class="fa-solid fa-shield-check"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Email Verification</h3>
+                    <p class="text-smoke text-[11px] font-medium">Enter the 6-digit code sent to your email.</p>
+                </div>
+                <form onsubmit="handleFpStep2(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 text-center">Verification Code</label>
+                        <input type="text" id="fpOTP" required placeholder="XXXXXX" maxlength="6" class="w-full px-4 py-4 rounded-lg border border-silk focus:border-luxuryGreen text-xl text-center font-mono font-bold text-velvet shadow-sm tracking-[0.5em]">
+                    </div>
+                    <button type="submit" class="w-full bg-luxuryGreen text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md hover:bg-velvet transition-colors mt-2">Verify Code</button>
+                </form>
+            </div>
+
+            <!-- STEP 3: Setup New Credentials -->
+            <div id="fpStep3" class="hidden transition-all">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-luxuryGreen/10 rounded-full flex items-center justify-center mx-auto mb-3 text-luxuryGreen text-lg border border-luxuryGreen/20">
+                        <i class="fa-solid fa-user-lock"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Reset Credentials</h3>
+                    <p class="text-smoke text-[11px] font-medium">Setup your new master username and password.</p>
+                </div>
+                <form onsubmit="handleFpStep3(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">New Username</label>
+                        <input type="text" id="fpNewUser" required placeholder="Enter new admin username" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">New Password</label>
+                            <div class="relative">
+                                <input type="password" id="fpNewPass" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet pr-10 shadow-sm">
+                                <button type="button" onclick="togglePassword('fpNewPass', 'eyeIconFp2')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-smoke hover:text-luxuryGreen focus:outline-none">
+                                    <i class="fa-solid fa-eye text-base" id="eyeIconFp2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">Confirm Password</label>
+                            <div class="relative">
+                                <input type="password" id="fpConfirmPass" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet pr-10 shadow-sm">
+                                <button type="button" onclick="togglePassword('fpConfirmPass', 'eyeIconFp3')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-smoke hover:text-luxuryGreen focus:outline-none">
+                                    <i class="fa-solid fa-eye text-base" id="eyeIconFp3"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-luxuryGreen text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md hover:bg-velvet transition-colors mt-2">Save & Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal (Multi-Step) -->
+    <div id="signupModal" class="fixed inset-0 bg-velvet/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-300">
+        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-2xl shadow-modal w-full max-w-lg relative border border-white mx-2 max-h-[90vh] overflow-y-auto modal-enter">
+            <button onclick="closeSignupModal()" class="absolute top-4 right-4 md:top-5 md:right-5 w-7 h-7 md:w-8 md:h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 shadow-sm border border-silk">
+                <i class="fa-solid fa-times text-sm md:text-base"></i>
+            </button>
+
+            <!-- STEP 1: Registration Name Details -->
+            <div id="signupStep1" class="block transition-all">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Staff Registration</h3>
+                    <p class="text-smoke text-xs md:text-sm">Step 1: Enter your full name details.</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Last Name</label>
+                        <input type="text" required id="signupLastName" placeholder="e.g. Dela Cruz" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">First Name</label>
+                        <input type="text" required id="signupFirstName" placeholder="e.g. Juan" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Middle Initial (Optional)</label>
+                        <input type="text" id="signupMI" placeholder="e.g. P." maxlength="3" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                    </div>
+                    
+                    <button type="button" onclick="nextSignupStep(1)" class="w-full bg-velvet text-white py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors mt-4 shadow-md hover:bg-luxuryGreen">Next Step <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Email Configuration -->
+            <div id="signupStep2" class="hidden transition-all">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Staff Registration</h3>
+                    <p class="text-smoke text-xs md:text-sm">Step 2: Enter your email address.</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Email</label>
+                        <input type="email" required id="signupEmail" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Invalid email address" placeholder="example@email.com" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-3 pt-2">
+                        <button type="button" onclick="prevSignupStep(2)" class="w-full md:w-1/3 bg-chiffon text-smoke hover:bg-silk py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors shadow-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+                        <button type="button" onclick="nextSignupStep(2)" class="w-full md:w-2/3 bg-velvet text-white py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors shadow-md hover:bg-luxuryGreen">Next Step <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: Password Configuration -->
+            <div id="signupStep3" class="hidden transition-all">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Staff Registration</h3>
+                    <p class="text-smoke text-xs md:text-sm">Step 3: Create your account credentials.</p>
+                </div>
+                <form onsubmit="handleSignupSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Password</label>
+                        <input type="password" required id="signupPassword" placeholder="••••••••" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Confirm Password</label>
+                        <input type="password" required id="signupConfirmPassword" placeholder="••••••••" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                    </div>
+
+                    <!-- Single Checkbox para Ipakita ang Passwords -->
+                    <div class="flex items-center gap-2 mt-1">
+                        <input type="checkbox" id="showSignupPasswords" onchange="toggleSignupPasswords(this)" class="w-4 h-4 text-luxuryGreen bg-white border-silk rounded cursor-pointer">
+                        <label for="showSignupPasswords" class="text-[10px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] cursor-pointer select-none">Show Passwords</label>
+                    </div>
+
+                    <div id="signupErrorMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-2.5 rounded text-center tracking-widest mt-2"></div>
+                    
+                    <div class="flex flex-col md:flex-row gap-3 pt-2">
+                        <button type="button" onclick="prevSignupStep(3)" class="w-full md:w-1/3 bg-chiffon text-smoke hover:bg-silk py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors shadow-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+                        <button type="submit" class="w-full md:w-2/3 bg-luxuryGreen hover:bg-velvet text-white py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors shadow-md btn-luxury">Submit Application</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- STEP 4: Email Verification para sa Sign Up -->
+            <div id="signupStep4" class="hidden transition-all">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-luxuryGreen/10 rounded-full flex items-center justify-center mx-auto mb-3 text-luxuryGreen text-lg border border-luxuryGreen/20">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Verify Your Email</h3>
+                    <p class="text-smoke text-[11px] font-medium">We sent a 6-digit code to your email address.</p>
+                </div>
+                <form onsubmit="verifySignupOTP(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 text-center">Verification Code</label>
+                        <input type="text" id="signupOTP" required placeholder="XXXXXX" maxlength="6" class="w-full px-4 py-4 rounded-lg border border-silk focus:border-luxuryGreen text-xl text-center font-mono font-bold text-velvet shadow-sm tracking-[0.5em]">
+                    </div>
+                    <div id="signupVerifyErrorMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-2.5 rounded text-center tracking-widest mt-2"></div>
+                    <button type="submit" class="w-full bg-luxuryGreen text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md hover:bg-velvet transition-colors mt-2">Verify & Request Access</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Evaluation Modal para sa OSA Split View -->
+    <div id="aiModal" class="fixed inset-0 bg-velvet/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-300">
+        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-2xl shadow-modal w-full max-w-4xl relative border border-white mx-2 max-h-[90vh] overflow-y-auto modal-enter">
+            <button onclick="closeAIModal()" class="absolute top-4 right-4 md:top-5 md:right-5 w-7 h-7 md:w-8 md:h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 shadow-sm border border-silk">
+                <i class="fa-solid fa-times text-sm md:text-base"></i>
+            </button>
+            <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-4" id="aiModalTitle">Case Evaluation Panel</h3>
+            <div id="aiModalContent" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Dito ilalagay ang Case Info Left Side / AI Right Side -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Handbook Modal (Para sa mga Rules at Regulations) -->
+    <div id="handbookModal" class="fixed inset-0 bg-velvet/60 backdrop-blur-sm hidden flex items-center justify-center z-[150] p-4 transition-opacity duration-300">
+        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-2xl shadow-modal w-full max-w-3xl relative border border-white mx-2 max-h-[90vh] flex flex-col modal-enter">
+            <button onclick="closeHandbookModal()" class="absolute top-4 right-4 md:top-5 md:right-5 w-7 h-7 md:w-8 md:h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 shadow-sm border border-silk">
+                <i class="fa-solid fa-times text-sm md:text-base"></i>
+            </button>
+            <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2"><i class="fa-solid fa-book-open text-luxuryGreen mr-2"></i>NC Student Handbook</h3>
+            <p class="text-smoke text-xs mb-4 pb-4 border-b border-silk">Section M.4: Classification of Violation/Offenses & Disciplinary Actions</p>
+            
+            <div class="overflow-y-auto pr-2 flex-grow">
+                <table class="w-full text-left border-collapse">
+                    <tr class="bg-chiffon text-[10px] font-bold text-smoke uppercase tracking-widest border-b border-silk">
+                        <th class="p-3 w-1/4">Disciplinary Action</th>
+                        <th class="p-3">Description</th>
+                    </tr>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
+                        <td class="p-3 text-xs font-bold text-velvet">Verbal Warning</td>
+                        <td class="p-3 text-xs text-smoke">The student is reprimanded for unacceptable behavior.</td>
+                    </tr>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
+                        <td class="p-3 text-xs font-bold text-velvet">Written Reprimand</td>
+                        <td class="p-3 text-xs text-smoke">Written statement of the student that a violation of specified policies or regulations has occurred.</td>
+                    </tr>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
+                        <td class="p-3 text-xs font-bold text-velvet">Community Service</td>
+                        <td class="p-3 text-xs text-smoke">Community service around the school for 15-20 hours but not excluding the student to attend classes.</td>
+                    </tr>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
+                        <td class="p-3 text-xs font-bold text-velvet">Suspension</td>
+                        <td class="p-3 text-xs text-smoke">Exclusion from classes and privileges. Not less than 5 school days but not more than 20% of the prescribed period.</td>
+                    </tr>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
+                        <td class="p-3 text-xs font-bold text-velvet">Dropping/Dismissal</td>
+                        <td class="p-3 text-xs text-smoke">Student may be dropped during the school year. Shall be issued transfer credentials immediately.</td>
+                    </tr>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
+                        <td class="p-3 text-xs font-bold text-velvet">Expulsion</td>
+                        <td class="p-3 text-xs text-smoke">Expelled from Norzagaray College.</td>
+                    </tr>
+                </table>
+                <div class="mt-4 p-3 bg-luxuryGreen/10 border border-luxuryGreen/20 rounded-lg flex items-start gap-3">
+                    <i class="fa-solid fa-circle-info text-luxuryGreen mt-0.5"></i>
+                    <div>
+                        <p class="text-[10px] font-bold text-luxuryGreen uppercase tracking-widest mb-1">Note on Application:</p>
+                        <p class="text-xs text-velvet">Disciplinary actions shall be imposed commensurate to the degree of gravity of the offense committed. Mitigating or aggravating circumstances shall be considered in determining the appropriate penalty.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Application Logic -->
+    <script>
+        // --- State Management ---
+        let selectedRole = '';
+        let currentUser = null;
+
+        // Mock Database of Active Staff
+        let pendingStaff = [
+            { id: 'REQ-001', name: 'Maria Clara', dept: 'Guidance', date: '2023-11-01' }
+        ];
+
+        // Central Student Database (Managed by Admin, Used for Auto-fill in Guidance)
+        let studentDatabase = [
+            { id: '2023-0010', lastName: 'Penduko', firstName: 'Pedro', course: 'BSIT 2A' },
+            { id: '2023-0045', lastName: 'Dela Cruz', firstName: 'Juan', course: 'BSBA 3B' },
+            { id: '2022-0105', lastName: 'Makiling', firstName: 'Maria', course: 'BSED 4A' },
+            { id: '2024-0001', lastName: 'Rivera', firstName: 'Leonor', course: 'BSC 1C' }
+        ];
+
+        // Cases Queue
+        let pendingCases = [
+            { caseId: '20240220-001', studentId: '2023-0010', name: 'Pedro Penduko', course: 'BSIT 2A', incidentTime: '10:30 AM', reason: 'Fighting', narrative: 'Involved in a physical altercation near the cafeteria.', evidence: 'referral_slip_001.png', hasHistory: true },
+            { caseId: '20240221-002', studentId: '2023-0045', name: 'Juan Dela Cruz', course: 'BSBA 3B', incidentTime: '01:15 PM', reason: 'Dress Code', narrative: 'Entering the campus without ID and proper uniform.', evidence: 'referral_slip_002.png', hasHistory: false }
+        ];
+
+        let caseHistory = [
+            { caseId: '20231105-012', studentId: '2023-0010', name: 'Pedro Penduko', course: 'BSIT 2A', offense: 'Minor', narrative: 'Dress code violation.', severity: 'Verbal Warning' },
+            { caseId: '20231210-044', studentId: '2022-0105', name: 'Maria Makiling', course: 'BSED 4A', offense: 'Cheating', narrative: 'Caught looking at notes during final exams.', severity: 'Suspension' }
+        ];
+
+        // --- Navigation Logic ---
+        function navigateTo(viewId) {
+            // Itatago ang lahat ng sections
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // I-aactivate ang napiling section
+            const target = document.getElementById(`view-${viewId}`);
+            if (target) {
+                target.style.animation = 'none';
+                target.offsetHeight; 
+                target.style.animation = null;
+                target.classList.add('active');
+            }
+            
+            // Ayusin ang navigation bar at visibility ng footer base sa view
+            if(viewId === 'home' || viewId === 'login' || viewId === 'about' || viewId === 'contact') {
+                document.getElementById('navLinks').classList.remove('hidden');
+                document.getElementById('navLinks').classList.add('md:flex');
+                document.getElementById('userProfileNav').classList.add('hidden');
+                document.getElementById('userProfileNav').classList.remove('flex');
+                document.getElementById('mainFooter').classList.remove('hidden');
+            } else {
+                document.getElementById('navLinks').classList.add('hidden');
+                document.getElementById('navLinks').classList.remove('md:flex');
+                document.getElementById('userProfileNav').classList.remove('hidden');
+                document.getElementById('userProfileNav').classList.add('flex');
+                document.getElementById('mainFooter').classList.add('hidden'); // Itago ang footer sa dashboard
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- Login Logic ---
+        function openLogin(role) {
+            selectedRole = role;
+            
+            let titleFormat = "Portal";
+            if(role === 'Admin') titleFormat = "Administrator Portal";
+            else if(role === 'Guidance') titleFormat = "Guidance Portal";
+            else if(role === 'OSA') titleFormat = "Student Affairs Portal";
+
+            document.getElementById('loginTitle').innerText = titleFormat;
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            
+            document.getElementById('forgotPassContainer').style.display = (role === 'Admin') ? 'block' : 'none';
+            document.getElementById('signupPromptContainer').style.display = (role === 'Admin') ? 'none' : 'flex';
+            
+            navigateTo('login');
+        }
+
+        function togglePassword(inputId, iconId) {
+            const passInput = document.getElementById(inputId);
+            const eyeIcon = document.getElementById(iconId);
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            
+            currentUser = { name: email.split('@')[0] || 'Authorized User', role: selectedRole };
+            
+            document.getElementById('navUserName').innerText = currentUser.name;
+            document.getElementById('navUserRole').innerText = `${currentUser.role} Account`;
+            
+            showToast(`Welcome back to ${currentUser.role} portal.`);
+            buildDashboard(currentUser.role);
+            navigateTo('dashboard');
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            showToast('Logged out successfully.');
+            navigateTo('home');
+        }
+
+        // --- Admin Forgot Password Logic ---
+        let recoveryEmail = "";
+
+        function openForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.remove('hidden');
+            document.getElementById('fpLockoutMsg').classList.add('hidden');
+            document.getElementById('fpStep1').classList.remove('hidden');
+            document.getElementById('fpStep2').classList.add('hidden');
+            document.getElementById('fpStep3').classList.add('hidden');
+            document.getElementById('fpAdminEmail').value = '';
+            document.getElementById('fpOTP').value = '';
+            recoveryEmail = "";
+            if (document.getElementById('fpNewUser')) document.getElementById('fpNewUser').value = '';
+            if (document.getElementById('fpNewPass')) document.getElementById('fpNewPass').value = '';
+            if (document.getElementById('fpConfirmPass')) document.getElementById('fpConfirmPass').value = '';
+        }
+
+        function closeForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.add('hidden');
+        }
+
+        async function handleFpStep1(e) {
+            e.preventDefault();
+            const email = document.getElementById('fpAdminEmail').value;
+            const msgBox = document.getElementById('fpLockoutMsg');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            if (!email.includes('@norzagaraycollege.edu.ph')) {
+                msgBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> System accepts official school emails only.';
+                msgBox.classList.remove('hidden');
+                return;
+            }
+
+            msgBox.classList.add('hidden');
+            submitBtn.innerText = "Sending Code...";
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, purpose: 'recovery' })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    recoveryEmail = email; 
+                    document.getElementById('fpStep1').classList.add('hidden');
+                    document.getElementById('fpStep2').classList.remove('hidden');
+                    showToast("Verification code sent to your email.");
+                } else {
+                    msgBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${data.message}`;
+                    msgBox.classList.remove('hidden');
+                }
+            } catch (error) {
+                msgBox.innerHTML = '<i class="fa-solid fa-server mr-1"></i> Cannot connect to the server. Is app.py running?';
+                msgBox.classList.remove('hidden');
+            } finally {
+                submitBtn.innerText = "Send OTP Code";
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function handleFpStep2(e) {
+            e.preventDefault();
+            const otp = document.getElementById('fpOTP').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            submitBtn.innerText = "Verifying...";
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: recoveryEmail, otp: otp })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast("Code verified successfully.");
+                    document.getElementById('fpStep2').classList.add('hidden');
+                    document.getElementById('fpStep3').classList.remove('hidden');
+                } else {
+                    showToast(data.message, "error");
+                }
+            } catch (error) {
+                showToast("Server connection error.", "error");
+            } finally {
+                submitBtn.innerText = "Verify Code";
+                submitBtn.disabled = false;
+            }
+        }
+
+        function handleFpStep3(e) {
+            e.preventDefault();
+            const newUser = document.getElementById('fpNewUser').value;
+            const newPass = document.getElementById('fpNewPass').value;
+            const confirmPass = document.getElementById('fpConfirmPass').value;
+            
+            if (newPass !== confirmPass) {
+                showToast("Passwords do not match.", "error");
+                return;
+            }
+
+            showToast("Credentials reset successfully.");
+            closeForgotPasswordModal();
+            
+            currentUser = { name: newUser, role: 'Admin' };
+            document.getElementById('navUserName').innerText = currentUser.name;
+            document.getElementById('navUserRole').innerText = `Admin Account`;
+            buildDashboard('Admin');
+            navigateTo('dashboard');
+        }
+
+        // --- Modyul ng Sign Up Form Logic ---
+        let pendingSignupData = null;
+
+        function openSignupModal() {
+            document.getElementById('signupModal').classList.remove('hidden');
+            // Magsisimula sa unang step
+            document.getElementById('signupStep1').classList.remove('hidden');
+            document.getElementById('signupStep2').classList.add('hidden');
+            document.getElementById('signupStep3').classList.add('hidden');
+            document.getElementById('signupStep4').classList.add('hidden');
+            
+            document.getElementById('signupErrorMsg').classList.add('hidden');
+            document.getElementById('signupVerifyErrorMsg').classList.add('hidden');
+            document.getElementById('signupOTP').value = '';
+            
+            // I-reset ang mga input field
+            if(document.getElementById('signupFirstName')) {
+                document.getElementById('signupFirstName').value = '';
+                document.getElementById('signupLastName').value = '';
+                document.getElementById('signupMI').value = '';
+                document.getElementById('signupEmail').value = '';
+                document.getElementById('signupPassword').value = '';
+                document.getElementById('signupConfirmPassword').value = '';
+                document.getElementById('showSignupPasswords').checked = false;
+                toggleSignupPasswords(document.getElementById('showSignupPasswords'));
+            }
+
+            pendingSignupData = null;
+        }
+
+        function closeSignupModal() {
+            document.getElementById('signupModal').classList.add('hidden');
+        }
+
+        // Mag-navigate patungo sa susunod na step ng sign up
+        function nextSignupStep(currentStep) {
+            if (currentStep === 1) {
+                const lname = document.getElementById('signupLastName').value.trim();
+                const fname = document.getElementById('signupFirstName').value.trim();
+                if (!lname || !fname) {
+                    showToast("Please fill in your Last Name and First Name.", "error");
+                    return;
+                }
+                document.getElementById('signupStep1').classList.add('hidden');
+                document.getElementById('signupStep2').classList.remove('hidden');
+            } else if (currentStep === 2) {
+                const email = document.getElementById('signupEmail').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showToast("Please enter a valid email address.", "error");
+                    return;
+                }
+                document.getElementById('signupStep2').classList.add('hidden');
+                document.getElementById('signupStep3').classList.remove('hidden');
+            }
+        }
+
+        // Mag-navigate pabalik sa naunang step ng sign up
+        function prevSignupStep(currentStep) {
+            if (currentStep === 2) {
+                document.getElementById('signupStep2').classList.add('hidden');
+                document.getElementById('signupStep1').classList.remove('hidden');
+            } else if (currentStep === 3) {
+                document.getElementById('signupStep3').classList.add('hidden');
+                document.getElementById('signupStep2').classList.remove('hidden');
+            }
+        }
+
+        // Ipakita o itago ang mga password sa iisang checkbox
+        function toggleSignupPasswords(checkbox) {
+            const pass1 = document.getElementById('signupPassword');
+            const pass2 = document.getElementById('signupConfirmPassword');
+            
+            if (checkbox.checked) {
+                pass1.type = 'text';
+                pass2.type = 'text';
+            } else {
+                pass1.type = 'password';
+                pass2.type = 'password';
+            }
+        }
+
+        async function handleSignupSubmit(e) {
+            e.preventDefault();
+            
+            const pass1 = document.getElementById('signupPassword').value;
+            const pass2 = document.getElementById('signupConfirmPassword').value;
+            const errorMsg = document.getElementById('signupErrorMsg');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            if(pass1 !== pass2) {
+                errorMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Passwords do not match.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            errorMsg.classList.add('hidden');
+            submitBtn.innerText = "Sending Verification Code...";
+            submitBtn.disabled = true;
+
+            const email = document.getElementById('signupEmail').value;
+            const firstName = document.getElementById('signupFirstName').value.trim();
+            const lastName = document.getElementById('signupLastName').value.trim();
+            const mi = document.getElementById('signupMI').value.trim();
+            
+            // Format name cleanly depending on whether Middle Initial is provided
+            const fullName = `${firstName} ${mi ? mi + ' ' : ''}${lastName}`.trim();
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, purpose: 'registration' })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    pendingSignupData = {
+                        name: fullName,
+                        email: email,
+                        dept: selectedRole || 'Pending'
+                    };
+
+                    document.getElementById('signupStep3').classList.add('hidden');
+                    // Tumuloy sa OTP Verification (Step 4)
+                    document.getElementById('signupStep4').classList.remove('hidden');
+                    showToast("Verification code sent to your email.");
+                } else {
+                    errorMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${data.message}`;
+                    errorMsg.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorMsg.innerHTML = '<i class="fa-solid fa-server mr-1"></i> Cannot connect to the server. Is app.py running?';
+                errorMsg.classList.remove('hidden');
+            } finally {
+                submitBtn.innerText = "Submit Application";
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function verifySignupOTP(e) {
+            e.preventDefault();
+            const otp = document.getElementById('signupOTP').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const verifyErrorMsg = document.getElementById('signupVerifyErrorMsg');
+            
+            verifyErrorMsg.classList.add('hidden');
+            submitBtn.innerText = "Verifying...";
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: pendingSignupData.email, otp: otp })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    pendingStaff.push({
+                        id: `REQ-00${pendingStaff.length + 3}`,
+                        name: pendingSignupData.name,
+                        dept: pendingSignupData.dept,
+                        date: new Date().toLocaleDateString()
+                    });
+
+                    showToast('Email Verified. Application sent to Administrator for approval.');
+                    closeSignupModal();
+                    
+                    document.getElementById('signupFirstName').value = '';
+                    document.getElementById('signupLastName').value = '';
+                    document.getElementById('signupMI').value = '';
+                    document.getElementById('signupEmail').value = '';
+                    document.getElementById('signupPassword').value = '';
+                    document.getElementById('signupConfirmPassword').value = '';
+                    document.getElementById('showSignupPasswords').checked = false;
+                    toggleSignupPasswords(document.getElementById('showSignupPasswords'));
+                } else {
+                    verifyErrorMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${data.message}`;
+                    verifyErrorMsg.classList.remove('hidden');
+                }
+            } catch (error) {
+                verifyErrorMsg.innerHTML = '<i class="fa-solid fa-server mr-1"></i> Server connection error.';
+                verifyErrorMsg.classList.remove('hidden');
+            } finally {
+                submitBtn.innerText = "Verify & Request Access";
+                submitBtn.disabled = false;
+            }
+        }
+
+        // --- Dashboard Builders ---
+        function buildDashboard(role) {
+            document.getElementById('sidebarDeptName').innerText = role === 'Admin' ? 'System Admin' : (role === 'Guidance' ? 'Guidance Office' : 'Student Affairs');
+            document.getElementById('sidebarRoleDesc').innerText = role === 'Admin' ? 'Master Control' : 'Workspace Interface';
+
+            const sidebarIcon = document.getElementById('sidebarIcon');
+            if(role === 'Admin') sidebarIcon.className = 'fa-solid fa-shield-halved';
+            else if(role === 'Guidance') sidebarIcon.className = 'fa-solid fa-user-nurse';
+            else sidebarIcon.className = 'fa-solid fa-users-rectangle';
+
+            const sidebarNav = document.getElementById('sidebarNav');
+            const mobileNav = document.getElementById('mobileNav');
+            
+            let tabs = [];
+            
+            if(role === 'Admin') {
+                tabs = [
+                    { id: 'approvals', icon: 'fa-user-check', label: 'Account Approval Panel' },
+                    { id: 'students', icon: 'fa-address-book', label: 'Student Records' }
+                ];
+            } else if (role === 'Guidance') {
+                tabs = [
+                    { id: 'new-case', icon: 'fa-file-circle-plus', label: 'New Case Entry' },
+                    { id: 'case-history', icon: 'fa-folder-open', label: 'Case History' }
+                ];
+            } else if (role === 'OSA') {
+                tabs = [
+                    { id: 'process-case', icon: 'fa-clipboard-list', label: 'Process Pending Case' },
+                    { id: 'search-records', icon: 'fa-magnifying-glass', label: 'Search Records' }
+                ];
+            }
+
+            sidebarNav.innerHTML = tabs.map((t, index) => `
+                <button onclick="switchDashboardTab('${t.id}')" id="sideTab-${t.id}" class="w-full text-left px-5 py-3.5 rounded-xl ${index === 0 ? 'bg-velvet text-white shadow-md' : 'text-smoke hover:bg-silk/40 hover:text-velvet'} font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center gap-3">
+                    <i class="fa-solid ${t.icon} w-5 text-center ${index === 0 ? 'text-luxuryGreenLight' : ''}" id="sideIcon-${t.id}"></i> ${t.label}
+                </button>
+            `).join('');
+
+            mobileNav.innerHTML = tabs.map((t, index) => `
+                <button onclick="switchDashboardTab('${t.id}')" id="mobTab-${t.id}" class="whitespace-nowrap flex-1 py-2.5 px-3 rounded-lg ${index === 0 ? 'bg-velvet text-white shadow-sm' : 'text-smoke hover:bg-silk/40'} font-bold text-[9px] uppercase tracking-[0.1em] transition-all flex justify-center items-center gap-1.5">
+                    <i class="fa-solid ${t.icon}"></i> ${t.label}
+                </button>
+            `).join('');
+
+            const contentArea = document.getElementById('dashboardContentArea');
+            contentArea.innerHTML = tabs.map(t => `<div id="content-${t.id}" class="hidden w-full h-full"></div>`).join('');
+
+            if(role === 'Admin') {
+                renderAdminApprovals();
+                renderAdminStudents();
+            }
+            if(role === 'Guidance') {
+                renderGuidanceNewCase();
+                renderGuidanceCaseHistory();
+            }
+            if(role === 'OSA') {
+                renderOSAProcessCase();
+                renderOSASearchRecords(); // Instantly display records
+            }
+
+            if(tabs.length > 0) switchDashboardTab(tabs[0].id);
+        }
+
+        function switchDashboardTab(tabId) {
+            const allContents = document.querySelectorAll('[id^="content-"]');
+            const allSideTabs = document.querySelectorAll('[id^="sideTab-"]');
+            const allMobTabs = document.querySelectorAll('[id^="mobTab-"]');
+            const allIcons = document.querySelectorAll('[id^="sideIcon-"]');
+
+            allContents.forEach(c => c.classList.add('hidden'));
+            allSideTabs.forEach(t => t.className = "w-full text-left px-5 py-3.5 rounded-xl text-smoke hover:bg-silk/40 hover:text-velvet font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center gap-3");
+            allMobTabs.forEach(t => t.className = "whitespace-nowrap flex-1 py-2.5 px-3 rounded-lg text-smoke font-bold text-[9px] uppercase tracking-[0.1em] transition-all flex justify-center items-center gap-1.5 hover:bg-silk/40");
+            allIcons.forEach(i => i.classList.remove('text-luxuryGreenLight'));
+
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            const sideTab = document.getElementById(`sideTab-${tabId}`);
+            if(sideTab) sideTab.className = "w-full text-left px-5 py-3.5 rounded-xl bg-velvet text-white font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center gap-3 shadow-md";
+            const mobTab = document.getElementById(`mobTab-${tabId}`);
+            if(mobTab) mobTab.className = "whitespace-nowrap flex-1 py-2.5 px-3 rounded-lg bg-velvet text-white font-bold text-[9px] uppercase tracking-[0.1em] transition-all flex justify-center items-center gap-1.5 shadow-sm";
+            const icon = document.getElementById(`sideIcon-${tabId}`);
+            if(icon) icon.classList.add('text-luxuryGreenLight');
+        }
+
+        // ================= SPECIFIC DASHBOARD RENDERS =================
+
+        // ADMIN: Account Approvals Panel
+        function renderAdminApprovals() {
+            const container = document.getElementById('content-approvals');
+            if(!container) return;
+
+            let html = `
+                <div class="mb-6 border-b border-silk pb-4">
+                    <h2 class="text-2xl font-serif font-bold text-velvet">Account Approval Panel</h2>
+                    <p class="text-smoke text-sm mt-1">Review approved or pending master records.</p>
+                </div>
+            `;
+
+            if(pendingStaff.length === 0) {
+                html += `<div class="p-8 text-center text-smoke font-bold uppercase tracking-widest text-xs border border-silk border-dashed rounded-xl bg-chiffon/50">No pending records.</div>`;
+            } else {
+                html += pendingStaff.map((staff, idx) => `
+                    <div class="bg-white p-5 rounded-xl border border-silk flex flex-col md:flex-row justify-between items-center mb-4 shadow-sm">
+                        <div class="flex items-center gap-4 mb-4 md:mb-0">
+                            <div class="w-12 h-12 rounded-full bg-chiffon flex items-center justify-center text-luxuryGreen text-lg"><i class="fa-solid fa-user-lock"></i></div>
+                            <div>
+                                <h4 class="font-bold text-velvet text-sm">${staff.name}</h4>
+                                <p class="text-[10px] text-smoke font-bold uppercase tracking-widest mt-1">Dept: ${staff.dept}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="approveStaff(${idx})" class="bg-luxuryGreen text-white px-5 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-velvet transition-colors">Approve</button>
+                            <button onclick="rejectStaff(${idx})" class="bg-white text-rose border border-rose/30 px-5 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-rose hover:text-white transition-colors">Reject</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            container.innerHTML = html;
+        }
+
+        function approveStaff(idx) {
+            pendingStaff.splice(idx, 1);
+            showToast('Account Approved! Updated Master Record.');
+            renderAdminApprovals();
+        }
+        function rejectStaff(idx) {
+            pendingStaff.splice(idx, 1);
+            showToast('Account Rejected.', 'error');
+            renderAdminApprovals();
+        }
+
+        // ADMIN: Student Records DB
+        function renderAdminStudents() {
+            const container = document.getElementById('content-students');
+            if(!container) return;
+
+            let html = `
+                <div class="mb-6 border-b border-silk pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-serif font-bold text-velvet">Student Records</h2>
+                        <p class="text-smoke text-sm mt-1">Manage official student masterlist for system auto-fill integration.</p>
+                    </div>
+                    <div class="bg-chiffon/50 p-3 rounded-xl border border-silk flex items-center gap-3">
+                        <div class="text-right">
+                            <p class="text-[10px] font-bold text-smoke uppercase tracking-widest">Bulk Upload</p>
+                        </div>
+                        <input type="file" id="csvFileInput" accept=".csv, .txt" class="hidden" onchange="handleBulkUpload(event)">
+                        <button onclick="document.getElementById('csvFileInput').click()" class="bg-velvet text-white px-4 py-2 rounded-lg font-bold uppercase tracking-widest text-[9px] hover:bg-luxuryGreen transition-colors flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-file-import"></i> Upload File
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-silk mb-6 shadow-sm">
+                    <h3 class="text-sm font-bold text-velvet mb-4 uppercase tracking-widest border-b border-silk/50 pb-2"><i class="fa-solid fa-user-plus text-luxuryGreen mr-2"></i>Add Single Record</h3>
+                    <form onsubmit="handleAddStudent(event)" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                        <div>
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Student ID</label>
+                            <input type="text" id="newStdId" required pattern="\\d{4}-\\d{4}" title="Format: YYYY-NNNN (e.g., 2024-0438)" placeholder="e.g. 2024-0438" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Last Name</label>
+                            <input type="text" id="newStdLastName" required placeholder="e.g. Dela Cruz" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">First Name</label>
+                            <input type="text" id="newStdFirstName" required placeholder="e.g. Juan" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                        </div>
+                        <div class="md:col-span-4">
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Course & Section</label>
+                            <input type="text" id="newStdCourse" required placeholder="e.g. BSIT 1A" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                        </div>
+                        <div class="md:col-span-1 mt-2">
+                            <button type="submit" class="bg-luxuryGreen text-white px-6 py-2.5 rounded-lg font-bold uppercase tracking-widest text-[10px] hover:bg-velvet transition-colors shadow-sm w-full h-[42px]">Save</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-xl border border-silk overflow-hidden shadow-sm">
+                    <table class="w-full text-left">
+                        <tr class="bg-chiffon text-[10px] font-bold text-smoke uppercase tracking-widest border-b border-silk">
+                            <th class="p-4">Student ID</th>
+                            <th class="p-4">Last Name</th>
+                            <th class="p-4">First Name</th>
+                            <th class="p-4">Course/Year/Sec</th>
+                            <th class="p-4 text-center">Action</th>
+                        </tr>
+                        ${studentDatabase.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-xs text-smoke font-bold uppercase tracking-widest">No records available.</td></tr>` : studentDatabase.map((s, idx) => `
+                            <tr class="border-b border-silk/50 hover:bg-chiffon/30">
+                                <td class="p-4 font-mono text-xs font-bold text-luxuryGreen">${s.id}</td>
+                                <td class="p-4 font-bold text-sm text-velvet">${s.lastName}</td>
+                                <td class="p-4 font-bold text-sm text-velvet">${s.firstName}</td>
+                                <td class="p-4 text-xs font-medium text-velvet">${s.course}</td>
+                                <td class="p-4 text-center">
+                                    <button onclick="deleteStudent(${idx})" class="text-rose hover:bg-rose/10 p-2 rounded-lg transition-colors" title="Remove Record">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        function handleAddStudent(e) {
+            e.preventDefault();
+            const id = document.getElementById('newStdId').value.trim();
+            const lastName = document.getElementById('newStdLastName').value.trim();
+            const firstName = document.getElementById('newStdFirstName').value.trim();
+            const course = document.getElementById('newStdCourse').value.trim();
+
+            const idRegex = /^\d{4}-\d{4}$/;
+            if (!idRegex.test(id)) {
+                showToast('Invalid ID Format. Must be YYYY-NNNN (e.g. 2024-0438)', 'error');
+                return;
+            }
+
+            if(studentDatabase.find(s => s.id === id)) {
+                showToast('Student ID already exists in the database!', 'error');
+                return;
+            }
+
+            studentDatabase.push({id, lastName, firstName, course});
+            // Auto sort array by Last Name
+            studentDatabase.sort((a, b) => a.lastName.localeCompare(b.lastName));
+            
+            showToast('Student record added successfully.');
+            renderAdminStudents();
+        }
+
+        function deleteStudent(idx) {
+            studentDatabase.splice(idx, 1);
+            showToast('Student record removed.');
+            renderAdminStudents();
+        }
+
+        // Robust CSV Bulk Upload Logic
+        function handleBulkUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                parseCSVAndMap(text);
+                // Reset input so the same file can be uploaded again if needed
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // Custom parser to handle fields that contain commas inside quotes (e.g. "Dela Cruz, Juan")
+        function parseCSVRow(text) {
+            let result = [];
+            let cur = '';
+            let inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (inQuotes) {
+                    if (char === '"') {
+                        if (i + 1 < text.length && text[i+1] === '"') {
+                            cur += '"'; i++; // escaped quote
+                        } else {
+                            inQuotes = false;
+                        }
+                    } else {
+                        cur += char;
+                    }
+                } else {
+                    if (char === '"') {
+                        inQuotes = true;
+                    } else if (char === ',') {
+                        result.push(cur.trim());
+                        cur = '';
+                    } else {
+                        cur += char;
+                    }
+                }
+            }
+            result.push(cur.trim());
+            return result;
+        }
+
+        function parseCSVAndMap(text) {
+            // Handle both Windows (\r\n) and Unix (\n) line endings
+            const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+            if (lines.length < 2) {
+                showToast('The file is empty or contains no student data.', 'error');
+                return;
+            }
+
+            // Extract and clean headers
+            const headers = parseCSVRow(lines[0]).map(h => h.toLowerCase());
+            
+            // Smart auto-mapping: Find indexes of the required columns regardless of their order
+            const idIndex = headers.findIndex(h => h.includes('id') || h.includes('number') || h.includes('no'));
+            const lastNameIndex = headers.findIndex(h => h.includes('last') || h.includes('surname'));
+            const firstNameIndex = headers.findIndex(h => h.includes('first') || h.includes('given'));
+            const courseIndex = headers.findIndex(h => h.includes('course') || h.includes('program') || h.includes('section') || h.includes('year'));
+
+            // Stop if critical columns are not found
+            if (idIndex === -1 || lastNameIndex === -1 || firstNameIndex === -1 || courseIndex === -1) {
+                showToast('Format error. Please ensure your file headers include: ID, Last Name, First Name, and Course.', 'error');
+                return;
+            }
+
+            let addedCount = 0;
+            let duplicateCount = 0;
+            let invalidFormatCount = 0;
+
+            const idRegex = /^\d{4}-\d{4}$/;
+
+            // Iterate through rows starting from index 1 (skipping header)
+            for (let i = 1; i < lines.length; i++) {
+                const columns = parseCSVRow(lines[i]);
+                
+                // Ensure row has enough columns based on our found indices
+                if (columns.length > Math.max(idIndex, lastNameIndex, firstNameIndex, courseIndex)) {
+                    const id = columns[idIndex];
+                    const lastName = columns[lastNameIndex];
+                    const firstName = columns[firstNameIndex];
+                    const course = columns[courseIndex];
+
+                    if (id && lastName && firstName && course) {
+                        if (!idRegex.test(id)) {
+                            invalidFormatCount++;
+                        } else if (!studentDatabase.find(s => s.id === id)) {
+                            studentDatabase.push({ id, lastName, firstName, course });
+                            addedCount++;
+                        } else {
+                            duplicateCount++;
+                        }
+                    }
+                }
+            }
+
+            // Always organize/sort alphabetically by Last Name after inserting
+            studentDatabase.sort((a, b) => a.lastName.localeCompare(b.lastName));
+
+            let summaryMessage = `Added ${addedCount} new records.`;
+            if (duplicateCount > 0) summaryMessage += ` (${duplicateCount} duplicates skipped).`;
+            if (invalidFormatCount > 0) summaryMessage += ` (${invalidFormatCount} invalid IDs skipped).`;
+
+            if (addedCount > 0) {
+                showToast(summaryMessage);
+            } else {
+                showToast(summaryMessage, 'error');
+            }
+            
+            renderAdminStudents();
+        }
+
+        // GUIDANCE: New Case Entry (Multi-step)
+        function renderGuidanceNewCase() {
+            const container = document.getElementById('content-new-case');
+            if(!container) return;
+
+            const dateStr = new Date().toISOString().slice(0,10).replace(/-/g, "");
+            const caseId = `${dateStr}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+
+            container.innerHTML = `
+                <div class="mb-6 border-b border-silk pb-4">
+                    <h2 class="text-2xl font-serif font-bold text-velvet">New Case Entry</h2>
+                    <p class="text-smoke text-sm mt-1">Create and endorse referral to Student Affairs.</p>
+                </div>
+                
+                <form id="newCaseForm" onsubmit="handleNewCaseSubmit(event)" class="bg-white p-6 rounded-xl border border-silk relative min-h-[400px]">
+                    <div class="bg-chiffon/50 p-3 rounded-lg border border-silk flex items-center justify-between mb-5">
+                        <span class="text-[10px] font-bold text-smoke uppercase tracking-widest">Smart Case ID:</span>
+                        <span class="font-bold text-luxuryGreen text-sm font-mono">${caseId}</span>
+                        <input type="hidden" id="caseId" value="${caseId}">
+                    </div>
+
+                    <!-- STEP 1 -->
+                    <div id="gcStep1" class="space-y-5 transition-all">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Student ID</label>
+                                <input type="text" id="ncStudentID" oninput="autoFillStudent()" required pattern="\\d{4}-\\d{4}" title="Format: YYYY-NNNN (e.g., 2024-0438)" placeholder="e.g. 2024-0438" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Student Name</label>
+                                <input type="text" id="ncStudentName" required class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Course/Yr. & Sec.</label>
+                                <input type="text" id="ncCourse" required placeholder="e.g. BSIT 1A" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Incident Time</label>
+                                <input type="time" id="ncTime" required class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                            </div>
+                        </div>
+                        
+                        <div class="pt-4 border-t border-silk flex justify-end">
+                            <button type="button" onclick="nextStepGuidance()" class="bg-velvet text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-sm hover:bg-luxuryGreen transition-colors">
+                                Next Step <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2 -->
+                    <div id="gcStep2" class="space-y-5 hidden transition-all">
+                        <div>
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Select Referral Reasons (Checklist)</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 bg-chiffon/30 p-4 rounded-lg border border-silk">
+                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Dress Code" class="ncReason accent-luxuryGreen"> Dress Code</label>
+                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Fighting" class="ncReason accent-luxuryGreen"> Fighting</label>
+                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Cheating" class="ncReason accent-luxuryGreen"> Cheating</label>
+                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Disrespect" class="ncReason accent-luxuryGreen"> Disrespect</label>
+                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Vandalism" class="ncReason accent-luxuryGreen"> Vandalism</label>
+                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Other" class="ncReason accent-luxuryGreen" onchange="toggleOtherReason(this)"> Other</label>
+                                
+                                <div id="otherReasonContainer" class="col-span-2 md:col-span-3 hidden mt-2">
+                                    <input type="text" id="ncOtherReasonInput" placeholder="Please specify the reason..." class="w-full px-3 py-2 rounded border border-silk focus:border-luxuryGreen text-xs text-velvet">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Type Narrative Report (Basis of Endorsement)</label>
+                            <textarea id="ncNarrative" rows="3" required class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet resize-none"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Upload Evidence (Physical Referral Slip Image) <span class="text-luxuryGreen normal-case tracking-normal">- (Optional)</span></label>
+                            <input type="file" id="ncEvidence" accept="image/*" class="w-full px-4 py-2.5 rounded-lg border border-silk text-sm text-smoke file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-chiffon file:text-luxuryGreen hover:file:bg-silk/50 transition-all cursor-pointer">
+                        </div>
+
+                        <div class="pt-4 border-t border-silk flex justify-between items-center">
+                            <button type="button" onclick="prevStepGuidance()" class="text-smoke font-bold uppercase tracking-widest text-[10px] hover:text-velvet transition-colors">
+                                <i class="fa-solid fa-arrow-left mr-2"></i> Back
+                            </button>
+                            <button type="submit" class="bg-luxuryGreen text-white px-6 py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md">
+                                Generate Official Endorsement Preview & Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            `;
+        }
+
+        function autoFillStudent() {
+            const idInput = document.getElementById('ncStudentID').value;
+            const student = studentDatabase.find(s => s.id === idInput);
+            if(student) {
+                // Combines First Name and Last Name automatically
+                document.getElementById('ncStudentName').value = `${student.firstName} ${student.lastName}`;
+                document.getElementById('ncCourse').value = student.course;
+                showToast('Student record found. Auto-filled details.');
+            }
+        }
+
+        function toggleOtherReason(checkbox) {
+            const container = document.getElementById('otherReasonContainer');
+            if(checkbox.checked) {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+                document.getElementById('ncOtherReasonInput').value = '';
+            }
+        }
+
+        function nextStepGuidance() {
+            const idInput = document.getElementById('ncStudentID').value;
+            const idRegex = /^\d{4}-\d{4}$/;
+            
+            if (!idRegex.test(idInput)) {
+                showToast("Invalid Student ID format. Must be YYYY-NNNN.", "error");
+                return;
+            }
+
+            if(document.getElementById('ncStudentID').value && document.getElementById('ncStudentName').value) {
+                document.getElementById('gcStep1').classList.add('hidden');
+                document.getElementById('gcStep2').classList.remove('hidden');
+            } else {
+                showToast("Please complete the required student information first.", "error");
+            }
+        }
+
+        function prevStepGuidance() {
+            document.getElementById('gcStep2').classList.add('hidden');
+            document.getElementById('gcStep1').classList.remove('hidden');
+        }
+
+        function handleNewCaseSubmit(e) {
+            e.preventDefault();
+            const caseId = document.getElementById('caseId').value;
+            let reasonsArray = Array.from(document.querySelectorAll('.ncReason:checked')).map(cb => cb.value);
+            
+            if(reasonsArray.includes('Other')) {
+                const otherSpec = document.getElementById('ncOtherReasonInput').value;
+                if(otherSpec) {
+                    reasonsArray = reasonsArray.filter(r => r !== 'Other');
+                    reasonsArray.push(`Other: ${otherSpec}`);
+                }
+            }
+            
+            const reasons = reasonsArray.join(', ');
+            
+            pendingCases.push({
+                caseId: caseId,
+                studentId: document.getElementById('ncStudentID').value,
+                name: document.getElementById('ncStudentName').value,
+                course: document.getElementById('ncCourse').value,
+                incidentTime: document.getElementById('ncTime').value,
+                reason: reasons || 'None specified',
+                narrative: document.getElementById('ncNarrative').value,
+                evidence: 'uploaded_slip.png',
+                hasHistory: false
+            });
+
+            showToast('Automated Referral Status: Tracking. Saved to Pending-Resolution Queue.');
+            renderGuidanceNewCase(); // reset form and regenerate ID
+        }
+
+        // GUIDANCE: Case History
+        function renderGuidanceCaseHistory(filteredCases = caseHistory) {
+            const container = document.getElementById('content-case-history');
+            if(!container) return;
+
+            if(!document.getElementById('ghListContainer')) {
+                container.innerHTML = `
+                    <div class="mb-6 border-b border-silk pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                        <div>
+                            <h2 class="text-2xl font-serif font-bold text-velvet">Case History (Evidence Retrieval)</h2>
+                            <p class="text-smoke text-sm mt-1">Review previously endorsed and resolved cases.</p>
+                        </div>
+                        <div class="relative w-full md:w-64">
+                            <input type="text" id="guidanceHistorySearch" placeholder="Search records..." onkeyup="filterGuidanceHistory()" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-smoke"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl border border-silk overflow-hidden shadow-sm" id="ghListContainer">
+                        <!-- Table goes here -->
+                    </div>
+                `;
+            }
+
+            let html = `
+                <table class="w-full text-left">
+                    <tr class="bg-chiffon text-[10px] font-bold text-smoke uppercase tracking-widest border-b border-silk">
+                        <th class="p-4">Case ID</th>
+                        <th class="p-4">Student Info</th>
+                        <th class="p-4">Offense</th>
+                        <th class="p-4">Final Sanction</th>
+                    </tr>
+            `;
+            if(filteredCases.length === 0) {
+                html += `<tr><td colspan="4" class="p-6 text-center text-xs text-smoke font-bold uppercase tracking-widest">No historical records found.</td></tr>`;
+            } else {
+                html += filteredCases.map(c => `
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
+                        <td class="p-4 font-mono text-xs font-bold text-luxuryGreen">${c.caseId}</td>
+                        <td class="p-4"><p class="font-bold text-sm text-velvet">${c.name}</p><p class="text-[10px] text-smoke">${c.course} | ID: ${c.studentId}</p></td>
+                        <td class="p-4 text-xs font-medium text-velvet">${c.offense}</td>
+                        <td class="p-4"><span class="bg-velvet text-white px-2.5 py-1 rounded text-[9px] font-bold uppercase tracking-widest shadow-sm">${c.severity}</span></td>
+                    </tr>
+                `).join('');
+            }
+            html += `</table>`;
+            document.getElementById('ghListContainer').innerHTML = html;
+        }
+
+        function filterGuidanceHistory() {
+            const query = document.getElementById('guidanceHistorySearch').value.toLowerCase();
+            const filtered = caseHistory.filter(c => 
+                c.name.toLowerCase().includes(query) || 
+                c.studentId.toLowerCase().includes(query) || 
+                c.caseId.toLowerCase().includes(query)
+            );
+            renderGuidanceCaseHistory(filtered);
+        }
+
+        // OSA: Process Pending Case
+        function renderOSAProcessCase(filteredCases = pendingCases) {
+            const container = document.getElementById('content-process-case');
+            if(!container) return;
+
+            if(!document.getElementById('osaPendingListContainer')) {
+                container.innerHTML = `
+                    <div class="mb-6 border-b border-silk pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                        <div>
+                            <h2 class="text-2xl font-serif font-bold text-velvet">Process Pending Case</h2>
+                            <p class="text-smoke text-sm mt-1">Pending Resolution Queue from Guidance.</p>
+                        </div>
+                        <div class="relative w-full md:w-64">
+                            <input type="text" id="osaPendingSearch" placeholder="Search pending cases..." onkeyup="filterOSAPending()" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-smoke"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-4" id="osaPendingListContainer">
+                        <!-- List goes here -->
+                    </div>
+                `;
+            }
+
+            const listContainer = document.getElementById('osaPendingListContainer');
+            let html = '';
+
+            if(filteredCases.length === 0) {
+                html = `<div class="p-8 text-center text-smoke font-bold uppercase tracking-widest text-xs border border-silk border-dashed rounded-xl bg-chiffon/50">Queue is empty.</div>`;
+            } else {
+                html = filteredCases.map((c, idx) => `
+                    <div class="bg-white p-5 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center hover:border-luxuryGreen/40 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-[10px] font-mono bg-chiffon px-2 py-0.5 rounded text-smoke font-bold">${c.caseId}</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-rose"><i class="fa-solid fa-circle-exclamation text-[8px] mr-1"></i> Pending Action</span>
+                            </div>
+                            <h4 class="font-bold text-velvet text-lg mt-2">${c.name} <span class="text-xs text-smoke font-normal ml-2">${c.course}</span></h4>
+                            <p class="text-xs text-smoke mt-1"><b>Reason:</b> ${c.reason}</p>
+                        </div>
+                        <button onclick="evaluateCase(${pendingCases.indexOf(c)})" class="mt-4 md:mt-0 bg-velvet text-white px-5 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen transition-colors flex items-center gap-2">
+                            <i class="fa-solid fa-microchip"></i> Select Case
+                        </button>
+                    </div>
+                `).join('');
+            }
+            listContainer.innerHTML = html;
+        }
+
+        function filterOSAPending() {
+            const query = document.getElementById('osaPendingSearch').value.toLowerCase();
+            const filtered = pendingCases.filter(c => 
+                c.name.toLowerCase().includes(query) || 
+                c.studentId.toLowerCase().includes(query) ||
+                c.caseId.toLowerCase().includes(query)
+            );
+            renderOSAProcessCase(filtered);
+        }
+
+        // Split Layout for AI Evaluation in OSA
+        function evaluateCase(idx) {
+            const c = pendingCases[idx];
+            const modal = document.getElementById('aiModal');
+            const content = document.getElementById('aiModalContent');
+            
+            content.innerHTML = `
+                <div class="border-r border-silk pr-0 md:pr-6 mb-6 md:mb-0">
+                    <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-4 border-b border-silk pb-2">Case Information</h4>
+                    <p class="font-mono text-[10px] bg-chiffon px-2 py-1 rounded inline-block text-velvet mb-3">${c.caseId}</p>
+                    <h5 class="text-xl font-bold text-velvet mb-1">${c.name}</h5>
+                    <p class="text-xs font-bold text-smoke mb-4">ID: ${c.studentId} • ${c.course}</p>
+                    
+                    <div class="space-y-3 mt-4">
+                        <div>
+                            <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Referral Reason</p>
+                            <p class="text-sm font-semibold text-rose">${c.reason}</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Incident Time</p>
+                            <p class="text-xs text-velvet">${c.incidentTime}</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Narrative Report</p>
+                            <div class="bg-chiffon/30 p-3 rounded border border-silk text-xs italic text-velvet">${c.narrative}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="aiEvaluationSide" class="flex flex-col items-center justify-center p-6 space-y-4 min-h-[300px] bg-[#f9f9f9] rounded-xl border border-silk transition-all duration-300">
+                    <i class="fa-solid fa-database text-4xl text-luxuryGreenLight animate-pulse"></i>
+                    <p class="text-sm text-smoke font-bold uppercase tracking-widest animate-pulse text-center">AI Scanning Guidance History...</p>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+
+            setTimeout(() => {
+                const aiSide = document.getElementById('aiEvaluationSide');
+                aiSide.className = "flex flex-col p-4 bg-white rounded-xl transition-all duration-300"; 
+                
+                // Intervention options from the handbook
+                const interventionSelect = `
+                    <div class="mt-4 pt-3 border-t border-silk/50">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">Select Final Intervention / Sanction</label>
+                        <select id="selectedIntervention" class="w-full px-3 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-xs text-velvet font-medium bg-[#f9f9f9] shadow-sm">
+                            <option value="Verbal Warning" ${!c.hasHistory ? 'selected' : ''}>Verbal Warning</option>
+                            <option value="Written Reprimand">Written Reprimand</option>
+                            <option value="Community Service">Community Service</option>
+                            <option value="Suspension" ${c.hasHistory ? 'selected' : ''}>Suspension</option>
+                            <option value="Dropping/Dismissal">Dropping/Dismissal</option>
+                            <option value="Expulsion">Expulsion</option>
+                        </select>
+                    </div>
+                `;
+
+                if(c.hasHistory) {
+                    aiSide.innerHTML = `
+                        <div class="flex justify-between items-center mb-4 border-b border-silk pb-2">
+                            <h4 class="text-xs font-bold text-smoke uppercase tracking-widest"><i class="fa-solid fa-brain text-luxuryGreen mr-1"></i> AI Analysis Result</h4>
+                            <button onclick="openHandbookModal()" class="text-[9px] bg-chiffon hover:bg-silk text-luxuryGreen px-2.5 py-1.5 rounded-md font-bold uppercase tracking-widest transition-colors flex items-center shadow-sm" title="View Handbook Rules"><i class="fa-solid fa-book-open mr-1.5"></i> Rules</button>
+                        </div>
+                        
+                        <div class="bg-chiffon/50 p-4 rounded-xl border border-silk mb-4 flex-grow flex flex-col">
+                            <h4 class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-2"><i class="fa-solid fa-check-circle text-luxuryGreen mr-1"></i> Match Found in Records</h4>
+                            
+                            <p class="text-[9px] text-smoke font-bold uppercase mt-3 mb-2 border-b border-silk pb-1">Contextual Scan on Narrative...</p>
+                            <div class="bg-rose/10 text-rose p-3 rounded-lg border border-rose/30">
+                                <p class="font-bold text-sm uppercase tracking-widest"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Escalated Intervention</p>
+                                <p class="text-xs mt-1 text-velvet font-medium leading-relaxed">Repeat behavior detected. Requires escalated disciplinary action based on <b>NC Student Handbook Section M.4</b>.</p>
+                            </div>
+                            
+                            <div class="mt-auto">
+                                ${interventionSelect}
+                            </div>
+                        </div>
+                        <button onclick="resolveCase(${idx})" class="w-full bg-luxuryGreen hover:bg-velvet transition-colors text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] mt-auto shadow-md">Apply Sanction & Resolve</button>
+                    `;
+                } else {
+                    aiSide.innerHTML = `
+                        <div class="flex justify-between items-center mb-4 border-b border-silk pb-2">
+                            <h4 class="text-xs font-bold text-smoke uppercase tracking-widest"><i class="fa-solid fa-brain text-luxuryGreen mr-1"></i> AI Analysis Result</h4>
+                            <button onclick="openHandbookModal()" class="text-[9px] bg-chiffon hover:bg-silk text-luxuryGreen px-2.5 py-1.5 rounded-md font-bold uppercase tracking-widest transition-colors flex items-center shadow-sm" title="View Handbook Rules"><i class="fa-solid fa-book-open mr-1.5"></i> Rules</button>
+                        </div>
+                        
+                        <div class="bg-chiffon/50 p-4 rounded-xl border border-silk mb-4 flex-grow flex flex-col">
+                            <h4 class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-2"><i class="fa-solid fa-xmark-circle text-smoke mr-1"></i> No Prior History</h4>
+                            
+                            <p class="text-[9px] text-smoke font-bold uppercase mt-3 mb-2 border-b border-silk pb-1">AI Contextual Scan on Narrative...</p>
+                            <div class="bg-badgeGreen/10 text-luxuryGreen p-3 rounded-lg border border-luxuryGreen/30">
+                                <p class="font-bold text-sm uppercase tracking-widest"><i class="fa-solid fa-shield text-luxuryGreen mr-1"></i> Basic Intervention</p>
+                                <p class="text-xs mt-1 text-velvet font-medium leading-relaxed">First-time minor offense. Verbal warning and standard guidance debriefing recommended based on <b>NC Student Handbook Section M.4</b>.</p>
+                            </div>
+                            
+                            <div class="mt-auto">
+                                ${interventionSelect}
+                            </div>
+                        </div>
+                        <button onclick="resolveCase(${idx})" class="w-full bg-luxuryGreen hover:bg-velvet transition-colors text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] mt-auto shadow-md">Apply Sanction & Resolve</button>
+                    `;
+                }
+            }, 1800);
+        }
+
+        // Open handbook modal
+        function openHandbookModal() {
+            document.getElementById('handbookModal').classList.remove('hidden');
+        }
+
+        // Close handbook modal
+        function closeHandbookModal() {
+            document.getElementById('handbookModal').classList.add('hidden');
+        }
+
+        function resolveCase(idx) {
+            // Get the selected intervention from dropdown
+            const interventionSelect = document.getElementById('selectedIntervention');
+            const selectedSanction = interventionSelect ? interventionSelect.value : (pendingCases[idx].hasHistory ? 'Suspension' : 'Verbal Warning');
+
+            const resolvedCase = pendingCases.splice(idx, 1)[0];
+            caseHistory.push({
+                caseId: resolvedCase.caseId,
+                studentId: resolvedCase.studentId,
+                name: resolvedCase.name,
+                course: resolvedCase.course,
+                offense: resolvedCase.reason,
+                narrative: resolvedCase.narrative,
+                severity: selectedSanction 
+            });
+            closeAIModal();
+            showToast(`Case resolved. Sanction Applied: ${selectedSanction}`);
+            
+            renderOSAProcessCase();
+            if(document.getElementById('content-case-history')) {
+                renderGuidanceCaseHistory();
+            }
+            if(document.getElementById('content-search-records')) {
+                renderOSASearchRecords(); // Update search list if it is open
+            }
+        }
+
+        function closeAIModal() {
+            document.getElementById('aiModal').classList.add('hidden');
+        }
+
+        // OSA: Search Records
+        function renderOSASearchRecords(records = caseHistory) {
+            const container = document.getElementById('content-search-records');
+            if(!container) return;
+
+            // Only create new structure if none exists to maintain focus on search bar
+            if(!document.getElementById('osaSearchListContainer')) {
+                container.innerHTML = `
+                    <div class="mb-6 border-b border-silk pb-4">
+                        <h2 class="text-2xl font-serif font-bold text-velvet">Student Records Database</h2>
+                        <p class="text-smoke text-sm mt-1">Search and review resolved cases.</p>
+                    </div>
+                    
+                    <div class="flex gap-2 mb-6">
+                        <input type="text" id="masterSearchQuery" onkeyup="filterOSASearch()" placeholder="Search using Name, ID or Case ID..." class="w-full px-4 py-3 rounded-xl border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                        <button onclick="filterOSASearch()" class="bg-velvet text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-luxuryGreen transition-colors flex items-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass"></i> Search
+                        </button>
+                    </div>
+
+                    <div id="osaSearchListContainer" class="space-y-4">
+                        <!-- List of cases will appear here -->
+                    </div>
+                    <div id="searchResults" class="hidden flex-col gap-4">
+                        <!-- Specific case details will appear here -->
+                    </div>
+                `;
+            }
+
+            const listContainer = document.getElementById('osaSearchListContainer');
+            let html = '';
+
+            if (records.length === 0) {
+                html = `<div class="p-8 text-center text-smoke font-bold uppercase tracking-widest text-xs border border-silk border-dashed rounded-xl bg-chiffon/50">No records found.</div>`;
+            } else {
+                html = records.map(c => `
+                    <div class="bg-white p-5 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center hover:border-luxuryGreen/40 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-[10px] font-mono bg-chiffon px-2 py-0.5 rounded text-smoke font-bold">${c.caseId}</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-luxuryGreen"><i class="fa-solid fa-folder-closed text-[8px] mr-1"></i> Resolved</span>
+                            </div>
+                            <h4 class="font-bold text-velvet text-lg mt-2">${c.name} <span class="text-xs text-smoke font-normal ml-2">(${c.course} | ID: ${c.studentId})</span></h4>
+                            <p class="text-xs text-smoke mt-1"><b>Offense:</b> ${c.offense} <span class="mx-2 text-silk">|</span> <b>Sanction:</b> <span class="bg-velvet text-white px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest shadow-sm ml-1">${c.severity}</span></p>
+                        </div>
+                        <button onclick="viewFullCaseFile('${c.caseId}')" class="mt-4 md:mt-0 bg-white border border-luxuryGreen text-luxuryGreen px-5 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen hover:text-white transition-colors flex items-center gap-2">
+                            <i class="fa-solid fa-file-lines"></i> Open File
+                        </button>
+                    </div>
+                `).join('');
+            }
+            listContainer.innerHTML = html;
+        }
+
+        // Real-time search in OSA Search Records
+        function filterOSASearch() {
+            const query = document.getElementById('masterSearchQuery').value.toLowerCase();
+            const filtered = caseHistory.filter(c => 
+                c.name.toLowerCase().includes(query) || 
+                c.studentId.toLowerCase().includes(query) ||
+                c.caseId.toLowerCase().includes(query)
+            );
+            
+            // Return to List view if currently in Detailed view and a new search is made
+            document.getElementById('searchResults').classList.add('hidden');
+            document.getElementById('osaSearchListContainer').classList.remove('hidden');
+            
+            renderOSASearchRecords(filtered);
+        }
+
+        // Display full case details and evidence
+        function viewFullCaseFile(caseId) {
+            const c = caseHistory.find(record => record.caseId === caseId);
+            if(!c) return;
+
+            const listContainer = document.getElementById('osaSearchListContainer');
+            const resContainer = document.getElementById('searchResults');
+            
+            listContainer.classList.add('hidden');
+            resContainer.classList.remove('hidden');
+
+            resContainer.innerHTML = `
+                <div class="bg-white border border-silk rounded-xl overflow-hidden shadow-sm">
+                    <div class="bg-chiffon p-4 border-b border-silk flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-velvet text-sm">${c.name} <span class="font-medium text-xs text-smoke ml-1">(${c.course} | ID: ${c.studentId})</span></h3>
+                            <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mt-0.5">Specific Case File: ${c.caseId}</p>
+                        </div>
+                        <span class="bg-luxuryGreen text-white px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest">Record Found</span>
+                    </div>
+                    <div class="p-5">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Display Narrative</label>
+                        <p class="text-sm text-velvet bg-chiffon/30 p-3 rounded border border-silk mb-4 italic">"${c.narrative}"</p>
+                        
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Display Physical Evidence Image</label>
+                        <div class="w-full h-32 bg-silk/30 rounded border border-silk border-dashed flex items-center justify-center text-smoke text-xs font-bold uppercase tracking-widest">
+                            <i class="fa-solid fa-image text-xl mr-2"></i> Preview Image
+                        </div>
+                    </div>
+                    <div class="p-4 bg-[#f9f9f9] border-t border-silk flex justify-end">
+                        <button onclick="closeCaseView()" class="text-smoke hover:text-rose font-bold text-[10px] uppercase tracking-widest transition-colors"><i class="fa-solid fa-arrow-left mr-1"></i> Close and Return</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Close case details and return to list
+        function closeCaseView() {
+            document.getElementById('searchResults').classList.add('hidden');
+            document.getElementById('osaSearchListContainer').classList.remove('hidden');
+        }
+
+        // --- UI Utilities ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let iconClass = 'fa-circle-check text-luxuryGreenLight';
+            let borderClass = 'border-l-4 border-luxuryGreenLight';
+            
+            if(type === 'error') {
+                iconClass = 'fa-circle-xmark text-rose';
+                borderClass = 'border-l-4 border-rose';
+            }
+
+            toast.className = `bg-[#0a0a0a] text-[#f4f1eb] py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-lg flex items-center gap-3 transform translate-x-[120%] transition-transform duration-400 font-sans text-xs md:text-sm ${borderClass}`;
+            toast.innerHTML = `<i class="fa-solid ${iconClass}"></i> <span class="font-bold tracking-wide">${message}</span>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.style.transform = 'translateX(0)', 10);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(120%)';
+                setTimeout(() => toast.remove(), 450); 
+            }, 3000);
+        }
+
+        // Scroll Blur Effect on Navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                // Remove glass-panel (white background) and use deeper green blur
+                nav.classList.add('bg-luxuryGreen/20', 'backdrop-blur-xl', 'shadow-md');
+                nav.classList.remove('bg-luxuryGreen/10', 'backdrop-blur-md', 'glass-panel');
+            } else {
+                // Revert to original transparent green
+                nav.classList.remove('bg-luxuryGreen/20', 'backdrop-blur-xl', 'shadow-md', 'glass-panel');
+                nav.classList.add('bg-luxuryGreen/10', 'backdrop-blur-md');
+            }
+        });
+
+    </script>
+</body>
+</html>
