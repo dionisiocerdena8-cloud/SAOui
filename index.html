@@ -5,41 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NC-STARS | Student Affairs System</title>
     
-    <!-- Google Fonts: Playfair Display for Luxury/Academic, Inter for clean text -->
+    <!-- Premium Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome for professional Icons -->
+    <!-- FontAwesome para sa mga Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script>
-        // Color and Design Configuration consistent with Green theme (No Yellow)
+        // Modernized Color Configuration
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        velvet: '#0a0a0a',     
-                        smoke: '#4b5563',      
-                        rose: '#ef4444',       
-                        blossom: '#fcd6d6',    
-                        silk: '#e8dacc',       
-                        chiffon: '#f4f1eb',    
-                        luxuryGreen: '#0d5c2e', 
-                        luxuryGreenLight: '#16a34a', 
-                        badgeGreen: '#10b981'
+                        velvet: '#0f2918',        
+                        smoke: '#4b5563',        
+                        rose: '#d93846',         
+                        silk: '#b8d0c3',         
+                        chiffon: '#e1ede5',       
+                        panel: '#ecf4ef',         
+                        luxuryGreen: '#1b4d2c',   
+                        luxuryGreenLight: '#2a7543', 
                     },
                     fontFamily: {
-                        serif: ['"Playfair Display"', 'serif'],
+                        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
                         sans: ['"Inter"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
                     },
                     boxShadow: {
-                        'luxury': '0 15px 35px -5px rgba(13, 92, 46, 0.15), 0 5px 15px -5px rgba(0, 0, 0, 0.05)',
-                        'luxury-hover': '0 25px 50px -10px rgba(13, 92, 46, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.1)',
-                        'modal': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                        'luxury': '0 20px 40px -10px rgba(18, 63, 34, 0.15)',
+                        'luxury-hover': '0 30px 60px -15px rgba(18, 63, 34, 0.25)',
+                        'modal': '0 25px 50px -12px rgba(18, 63, 34, 0.3)',
+                        'nav': '0 10px 30px -10px rgba(18, 63, 34, 0.1)',
                     }
                 }
             }
@@ -48,16 +49,23 @@
 
     <style>
         body {
-            background-color: #f4f1eb;
-            color: #0a0a0a;
+            color: #0f2918;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            background-color: #d1dfd6; 
+            font-family: 'Inter', sans-serif;
         }
 
-        /* 3D Static Background Container (Building Image) */
-        .bg-3d-container {
+        /* Heading Font Enforcement */
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.02em; 
+        }
+
+        /* Background wrapper */
+        .bg-3d-environment {
             position: fixed;
             top: 0;
             left: 0;
@@ -65,399 +73,517 @@
             height: 100vh;
             z-index: -2;
             overflow: hidden;
-            background: #f4f1eb;
+            background-color: #d1dfd6;
+            pointer-events: none; 
         }
 
-        .hero-image-bg {
+        /* Building background */
+        .building-bg {
             position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0.35; 
-            filter: contrast(110%);
-            z-index: -1;
-            background-image: url('57d5c746-f22b-4db8-86f9-bed1dddcb7d8.png'); 
+            inset: -2%; 
+            background-image: url('57d5c746-f22b-4db8-86f9-bed1dddcb7d8.png');
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat;
+            opacity: 0.85; 
+            mix-blend-mode: normal; 
+            filter: blur(0px) contrast(105%) brightness(1.05); 
+            transform: scale(1);
+            transition: filter 0.8s ease-in-out, transform 0.8s ease-in-out;
         }
 
-        /* Static Floating Orbs for 3D Depth */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            z-index: -1;
+        .building-bg.is-blurred {
+            filter: blur(12px) contrast(105%) brightness(0.9);
+            transform: scale(1.05); 
         }
 
-        .orb-1 { width: 500px; height: 500px; background: #0d5c2e; top: -150px; left: -150px; }
-        .orb-2 { width: 400px; height: 400px; background: #16a34a; bottom: -50px; right: -100px; opacity: 0.15; }
+        /* =========================================================
+           PREMIUM ANIMATIONS
+           ========================================================= */
 
-        /* Elegant Glassmorphism Panels */
+        .mask-wrap {
+            display: inline-flex;
+            overflow: hidden;
+            vertical-align: bottom;
+            padding-bottom: 0.25em; 
+        }
+        
+        .mask-up {
+            display: inline-block;
+            transform: translateY(120%);
+            opacity: 0;
+            animation: maskSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes maskSlideUp {
+            0% { transform: translateY(120%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo-nc-anim {
+            animation: slideFromCenterLeftLogo 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        
+        .logo-osa-anim {
+            animation: slideFromCenterRightLogo 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideFromCenterLeftLogo {
+            0% { transform: translateX(100px) scale(0.8); opacity: 0; filter: blur(10px); }
+            100% { transform: translateX(0) scale(1); opacity: 0.95; filter: blur(0); }
+        }
+
+        @keyframes slideFromCenterRightLogo {
+            0% { transform: translateX(-100px) scale(0.8); opacity: 0; filter: blur(10px); }
+            100% { transform: translateX(0) scale(1); opacity: 0.95; filter: blur(0); }
+        }
+
+        .card-anim-left { animation: slideCardLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .card-anim-center { animation: slideCardCenter 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .card-anim-right { animation: slideCardRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+
+        @keyframes slideCardLeft {
+            0% { transform: translate(50%, 40px) scale(0.9); opacity: 0; }
+            100% { transform: translate(0, 0) scale(1); opacity: 1; }
+        }
+        @keyframes slideCardCenter {
+            0% { transform: translateY(60px) scale(0.9); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes slideCardRight {
+            0% { transform: translate(-50%, 40px) scale(0.9); opacity: 0; }
+            100% { transform: translate(0, 0) scale(1); opacity: 1; }
+        }
+
+        .fade-in-delayed { opacity: 0; animation: simpleFade 1s ease forwards; }
+        @keyframes simpleFade { to { opacity: 1; } }
+
+        /* =========================================================
+           FLOATING LOGO ANIMATION CLASSES
+           ========================================================= */
+        .floating-logo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 40; /* Binabaan natin para dumaan sa ilalim ng header (nav is z-50) */
+            pointer-events: none;
+            opacity: 0; 
+        }
+
+        /* =========================================================
+           UI COMPONENTS
+           ========================================================= */
+
+        .view-section { display: none; }
+        .view-section.active { display: flex; flex-direction: column; }
+
+        .modal-enter { animation: modalPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); filter: blur(4px); }
+            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+
         .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(236, 244, 239, 0.95);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: var(--tw-shadow-luxury);
         }
 
-        /* View Transitions */
-        .view-section {
-            display: none;
-            opacity: 0;
-            animation: fadeInView 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        #navbar { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .nav-scrolled {
+            background: rgba(236, 244, 239, 0.95) !important; 
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            box-shadow: var(--tw-shadow-nav);
+            border-bottom: 1px solid rgba(32, 89, 52, 0.15) !important;
         }
 
-        .view-section.active {
-            display: flex; 
-            flex-direction: column;
+        .brand-text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -1px -1px 2px rgba(255,255,255,0.4);
         }
 
-        @keyframes fadeInView {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Modal Pop Animations */
-        .modal-enter {
-            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        /* Button Hover Effect */
-        .btn-luxury {
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .btn-luxury::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s ease;
-            z-index: -1;
-        }
-
-        .btn-luxury:hover::before { left: 100%; }
-        .btn-luxury:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -5px rgba(13, 92, 46, 0.4); }
-
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #0d5c2e; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #1b4d2c; border-radius: 10px; }
 
-        /* Toast Notifications */
-        #toast-container {
-            position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-            display: flex; flex-direction: column; gap: 12px;
-        }
-        .toast {
-            background: #0a0a0a; color: #f4f1eb; padding: 12px 16px;
-            border-left: 4px solid #16a34a; border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; align-items: center; gap: 12px; font-family: 'Inter', sans-serif;
-            font-size: 0.75rem;
-        }
-        @media (min-width: 768px) {
-            .toast { padding: 16px 24px; font-size: 0.875rem; }
-        }
-        .toast.show { transform: translateX(0); }
+        #toast-container { position: fixed; bottom: 32px; right: 32px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
         
-        /* Input Focus */
         input:focus, select:focus, textarea:focus {
-            box-shadow: 0 0 0 1.5px rgba(13, 92, 46, 0.3);
+            box-shadow: 0 0 0 3px rgba(42, 117, 67, 0.2);
             outline: none;
+            border-color: #2a7543;
+            background: #ffffff;
         }
     </style>
 </head>
-<body class="antialiased flex flex-col min-h-screen">
+<body class="antialiased flex flex-col min-h-screen relative">
 
-    <!-- Background Images -->
-    <div class="bg-3d-container">
-        <div class="hero-image-bg"></div>
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Background Setup -->
+    <div class="bg-3d-environment">
+        <div class="building-bg" id="mainBuildingBg"></div>
     </div>
 
-    <!-- Navigation Bar (Restored to Original Glassy Green) -->
-    <nav class="fixed w-full z-50 transition-all duration-300 bg-luxuryGreen/10 backdrop-blur-md border-b border-luxuryGreen/20 h-20 md:h-24 flex items-center pt-2" id="navbar">
-        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center w-full">
-                
-                <!-- Dual Header Logos -->
-                <div class="flex-shrink-0 flex items-center cursor-pointer group" onclick="navigateTo('home')">
-                    <!-- Norzagaray College Logo -->
-                    <img src="nc logo.png" onerror="this.src='https://ui-avatars.com/api/?name=NC&background=0d5c2e&color=fff'" alt="Norzagaray College Logo" class="w-14 h-14 md:w-[70px] md:h-[70px] rounded-full object-cover border-[2px] border-luxuryGreen mr-1 md:mr-2 shadow-md bg-white transition-all duration-300">
-                    <!-- Student Affairs Logo -->
-                    <img src="logo.png" onerror="this.src='https://ui-avatars.com/api/?name=OSA&background=16a34a&color=fff'" alt="Student Affairs Logo" class="w-14 h-14 md:w-[70px] md:h-[70px] rounded-full object-cover border-[2px] border-luxuryGreen mr-3 md:mr-4 shadow-md bg-white transition-all duration-300">
-                    
-                    <div class="flex flex-col justify-center">
-                        <span class="font-serif text-lg md:text-xl lg:text-2xl font-bold text-luxuryGreen tracking-[0.15em] uppercase hidden sm:block leading-none">NC-STARS</span>
-                        <span class="text-[9px] font-bold text-smoke uppercase tracking-widest hidden sm:block mt-1">Student Affairs System</span>
-                    </div>
-                </div>
-                
-                <!-- Desktop Menu -->
-                <div id="navLinks" class="hidden md:flex space-x-6 lg:space-x-10 items-center">
-                    <button onclick="navigateTo('home')" class="bg-luxuryGreen text-white px-5 py-2.5 lg:px-7 lg:py-3 rounded-full font-semibold btn-luxury text-[10px] lg:text-xs uppercase tracking-widest shadow-md flex items-center justify-center">
-                        <i class="fa-solid fa-home mr-2"></i> Home
-                    </button>
-                </div>
+    <!-- ================= FLOATING ANIMATED LOGOS ================= -->
+    <div id="floating-nc" class="floating-logo hidden sm:block">
+        <div class="w-full h-full logo-nc-anim">
+            <img src="nc logo.png" onerror="this.src='https://ui-avatars.com/api/?name=NC&background=123f22&color=fff'" alt="NC Logo" class="w-full h-full rounded-full border-[6px] border-white/50 shadow-2xl object-cover bg-white opacity-95">
+        </div>
+    </div>
 
-                <!-- User Profile / Logout in Header -->
-                <div id="userProfileNav" class="hidden items-center gap-4">
-                    <div class="text-right hidden sm:block">
-                        <p id="navUserName" class="text-xs font-bold text-velvet tracking-widest uppercase">Name</p>
-                        <p id="navUserRole" class="text-[10px] text-smoke font-medium">Role</p>
-                    </div>
-                    <button onclick="handleLogout()" class="text-smoke hover:text-rose transition-colors text-xl" title="Logout">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </button>
-                </div>
+    <div id="floating-osa" class="floating-logo hidden sm:block">
+        <div class="w-full h-full logo-osa-anim" style="animation-delay: 0.15s;">
+            <img src="logo.png" onerror="this.src='https://ui-avatars.com/api/?name=OSA&background=205934&color=fff'" alt="OSA Logo" class="w-full h-full rounded-full border-[6px] border-white/50 shadow-2xl object-cover bg-panel opacity-95">
+        </div>
+    </div>
 
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50 h-20 md:h-24 flex items-center px-4 sm:px-8 lg:px-12 transition-all" id="navbar">
+        <div class="flex justify-between items-center w-full max-w-[1800px] mx-auto">
+            
+            <!-- Left Side: Target Div para sa NC Logo -->
+            <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="navigateTo('home')">
+                <div id="nav-nc-target" class="w-10 h-10 md:w-12 md:h-12 mr-3 opacity-0 hidden sm:block"></div>
+                <span class="font-serif text-3xl md:text-4xl lg:text-[2.5rem] font-extrabold text-velvet tracking-widest leading-none brand-text-shadow drop-shadow-sm mask-up" style="animation-delay: 0.2s;">NC-STARS</span>
             </div>
+            
+            <!-- Right Side: Target Div para sa OSA Logo + Navs -->
+            <div class="flex items-center gap-4 md:gap-6">
+                <!-- Clean Nav Links -->
+                <div id="navLinks" class="hidden md:flex space-x-8 items-center mt-1 fade-in-delayed" style="animation-delay: 0.5s;">
+                    <button onclick="navigateTo('home')" class="text-velvet hover:text-luxuryGreenLight font-bold text-xs md:text-sm uppercase tracking-widest transition-colors duration-300">
+                        Home
+                    </button>
+                    <button onclick="navigateTo('about')" class="text-velvet hover:text-luxuryGreenLight font-bold text-xs md:text-sm uppercase tracking-widest transition-colors duration-300">
+                        About
+                    </button>
+                    <button onclick="navigateTo('contact')" class="text-velvet hover:text-luxuryGreenLight font-bold text-xs md:text-sm uppercase tracking-widest transition-colors duration-300">
+                        Contact Us
+                    </button>
+                </div>
+
+                <!-- User Profile for Logged In state -->
+                <div id="userProfileNav" class="hidden items-center gap-4 bg-white/60 backdrop-blur rounded-full px-6 py-2 border border-silk shadow-sm mt-1">
+                    <div class="text-right hidden sm:block">
+                        <p id="navUserName" class="text-sm font-bold text-velvet tracking-widest uppercase">Name</p>
+                        <p id="navUserRole" class="text-xs text-luxuryGreenLight font-bold">Role</p>
+                    </div>
+                    <button onclick="handleLogout()" class="w-9 h-9 rounded-full bg-panel text-velvet hover:bg-rose hover:text-white transition-colors flex items-center justify-center shadow-sm" title="Log Out">
+                        <i class="fa-solid fa-right-from-bracket text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Target Div para sa OSA Logo -->
+                <div id="nav-osa-target" class="w-10 h-10 md:w-12 md:h-12 opacity-0 hidden sm:block"></div>
+            </div>
+
         </div>
     </nav>
 
     <!-- Main App Area -->
-    <main class="flex-grow pt-24 flex flex-col relative z-0">
+    <main class="flex-grow flex flex-col relative z-0 pt-24 md:pt-28">
 
         <!-- ================= HOME / ROLE SELECTION VIEW ================= -->
-        <section id="view-home" class="view-section active flex-grow justify-start pt-6 md:pt-10 pb-12 md:pb-20">
-            <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center">
+        <section id="view-home" class="view-section active flex-grow justify-center items-center w-full pb-[15vh] relative z-10 min-h-[90vh]">
+            
+            <div class="max-w-[1400px] mx-auto flex flex-col items-center w-full px-4">
                 
-                <span class="text-luxuryGreen font-bold tracking-[0.15em] md:tracking-[0.2em] uppercase text-[9px] md:text-xs mb-3 block border border-luxuryGreen px-3 md:px-4 py-1.5 rounded-full bg-white/50 shadow-sm mt-4">Official Staff Portal</span>
-                
-                <!-- Updated Title -->
-                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-velvet mb-3 md:mb-5 leading-[1.15] md:leading-[1.1]">
-                    Norzagaray College
-                    <span class="text-luxuryGreen text-base sm:text-xl md:text-2xl lg:text-3xl block mt-2 font-sans tracking-wide">Student Tracking, AI Resolution and Sanction System</span>
-                </h1>
-                
-                <p class="text-xs sm:text-sm md:text-base text-smoke mb-6 md:mb-10 font-medium max-w-2xl leading-relaxed px-2">
-                    Access the centralized management platform for Administration, Guidance Counseling, and the Office of Student Affairs.
-                </p>
-                
-                <!-- Role Selection Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-8 w-full max-w-4xl relative z-10">
+                <!-- HERO SECTION -->
+                <div class="w-full flex justify-between items-center py-6 md:py-8 mt-4 mb-10 max-w-[1200px] mx-auto">
                     
-                    <!-- Admin Card -->
-                    <button onclick="openLogin('Admin')" class="glass-panel p-8 rounded-[1.5rem] shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 hover:border-luxuryGreen/40 transition-all duration-300 flex flex-col items-center text-center group border border-white cursor-pointer">
-                        <div class="w-16 h-16 rounded-full bg-chiffon text-luxuryGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-luxuryGreen group-hover:text-white transition-colors duration-300 border border-silk shadow-sm">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <h3 class="font-serif font-bold text-xl text-velvet mb-2">Administrator</h3>
-                        <p class="text-xs text-smoke font-medium px-2">System access, approve accounts, and database control.</p>
-                        <div class="mt-6 text-[10px] font-bold text-luxuryGreen uppercase tracking-widest group-hover:tracking-[0.25em] transition-all">Proceed <i class="fa-solid fa-arrow-right ml-1"></i></div>
-                    </button>
+                    <!-- Left Logo Placeholder (NC) -->
+                    <div id="hero-nc-target" class="w-24 h-24 md:w-36 md:h-36 lg:w-48 lg:h-48 flex-shrink-0 hidden sm:block opacity-0"></div>
 
-                    <!-- Guidance Card -->
-                    <button onclick="openLogin('Guidance')" class="glass-panel p-8 rounded-[1.5rem] shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 hover:border-luxuryGreen/40 transition-all duration-300 flex flex-col items-center text-center group border border-white cursor-pointer">
-                        <div class="w-16 h-16 rounded-full bg-chiffon text-luxuryGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-luxuryGreen group-hover:text-white transition-colors duration-300 border border-silk shadow-sm">
-                            <i class="fa-solid fa-user-nurse"></i>
+                    <!-- Center Text Content -->
+                    <div class="flex flex-col items-center text-center flex-grow px-2 sm:px-6">
+                        <!-- Tagline Badge -->
+                        <div class="mask-wrap mb-4">
+                            <div class="mask-up inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-silk shadow-sm" style="animation-delay: 0.1s;">
+                                <i class="fa-solid fa-users-gear text-luxuryGreenLight text-[10px]"></i>
+                                <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-velvet">Official Staff Portal</span>
+                            </div>
                         </div>
-                        <h3 class="font-serif font-bold text-xl text-velvet mb-2">Guidance Office</h3>
-                        <p class="text-xs text-smoke font-medium px-2">Manage referrals, case histories, and counseling records.</p>
-                        <div class="mt-6 text-[10px] font-bold text-luxuryGreen uppercase tracking-widest group-hover:tracking-[0.25em] transition-all">Proceed <i class="fa-solid fa-arrow-right ml-1"></i></div>
-                    </button>
-
-                    <!-- OSA Card -->
-                    <button onclick="openLogin('OSA')" class="glass-panel p-8 rounded-[1.5rem] shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 hover:border-luxuryGreen/40 transition-all duration-300 flex flex-col items-center text-center group border border-white sm:col-span-2 md:col-span-1 cursor-pointer">
-                        <div class="w-16 h-16 rounded-full bg-chiffon text-luxuryGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-luxuryGreen group-hover:text-white transition-colors duration-300 border border-silk shadow-sm">
-                            <i class="fa-solid fa-users-rectangle"></i>
+                        
+                        <!-- Main Header -->
+                        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-heading font-extrabold text-velvet mb-2 tracking-tight leading-[1.1] drop-shadow-md">
+                            <span class="mask-wrap"><span class="mask-up" style="animation-delay: 0.2s;">Norzagaray</span></span>
+                            <span class="mask-wrap"><span class="mask-up" style="animation-delay: 0.3s;">College</span></span>
+                        </h1>
+                        
+                        <!-- Subtitle -->
+                        <div class="mask-wrap mt-3">
+                            <div class="mask-up bg-white/80 px-6 py-2.5 rounded-full backdrop-blur-md border border-white/60 shadow-sm" style="animation-delay: 0.4s;">
+                                <h2 class="text-xs sm:text-sm md:text-base text-velvet font-bold tracking-wide">
+                                    Student Tracking, AI Resolution and Sanction System
+                                </h2>
+                            </div>
                         </div>
-                        <h3 class="font-serif font-bold text-xl text-velvet mb-2">Student Affairs</h3>
-                        <p class="text-xs text-smoke font-medium px-2">Process pending cases, search records, and interventions.</p>
-                        <div class="mt-6 text-[10px] font-bold text-luxuryGreen uppercase tracking-widest group-hover:tracking-[0.25em] transition-all">Proceed <i class="fa-solid fa-arrow-right ml-1"></i></div>
-                    </button>
+                    </div>
 
+                    <!-- Right Logo Placeholder (OSA) -->
+                    <div id="hero-osa-target" class="w-24 h-24 md:w-36 md:h-36 lg:w-48 lg:h-48 flex-shrink-0 hidden sm:block opacity-0"></div>
+                </div>
+                
+                <!-- Role Selection Cards Container -->
+                <div id="roleCardsSection" class="w-full max-w-[1050px] relative z-10 mt-2">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 overflow-hidden p-4">
+                        
+                        <!-- Card 1: Administrator (White) -->
+                        <div onclick="openLogin('Admin')" class="card-anim-left bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 h-[280px] sm:h-[300px] flex flex-col justify-between border border-white shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 transition-all duration-500 cursor-pointer group relative overflow-hidden" style="animation-delay: 0.5s;">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-chiffon rounded-bl-[100%] z-0 transition-transform duration-500 group-hover:scale-110 opacity-40"></div>
+                            
+                            <div class="relative z-10 flex flex-col h-full">
+                                <div class="w-12 h-12 rounded-[14px] bg-velvet text-white flex items-center justify-center text-lg mb-5 shadow-md transition-transform duration-300 group-hover:scale-105">
+                                    <i class="fa-solid fa-shield"></i>
+                                </div>
+                                
+                                <h3 class="font-heading font-extrabold text-xl md:text-[22px] text-velvet mb-2 tracking-tight">Administrator</h3>
+                                <p class="text-[11px] md:text-xs text-smoke font-medium leading-relaxed pr-2">System oversight, account approvals, and core database control.</p>
+                                
+                                <div class="mt-auto w-full flex items-center justify-between border-t border-silk/60 pt-4">
+                                    <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.15em] group-hover:text-velvet transition-colors">Log In</span>
+                                    <div class="text-luxuryGreen transform group-hover:translate-x-1.5 transition-transform duration-300">
+                                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Guidance Office (White) -->
+                        <div onclick="openLogin('Guidance')" class="card-anim-center bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 h-[280px] sm:h-[300px] flex flex-col justify-between border border-white shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 transition-all duration-500 cursor-pointer group relative overflow-hidden" style="animation-delay: 0.6s;">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-chiffon rounded-bl-[100%] z-0 transition-transform duration-500 group-hover:scale-110 opacity-40"></div>
+                            
+                            <div class="relative z-10 flex flex-col h-full">
+                                <div class="w-12 h-12 rounded-[14px] bg-chiffon text-velvet flex items-center justify-center text-lg mb-5 shadow-sm border border-silk transition-transform duration-300 group-hover:scale-105 group-hover:bg-luxuryGreenLight group-hover:text-white">
+                                    <i class="fa-solid fa-user-nurse"></i>
+                                </div>
+                                
+                                <h3 class="font-heading font-extrabold text-xl md:text-[22px] text-velvet mb-2 tracking-tight">Guidance Office</h3>
+                                <p class="text-[11px] md:text-xs text-smoke font-medium leading-relaxed pr-2">Manage behavioral referrals, counseling records, and history.</p>
+                                
+                                <div class="mt-auto w-full flex items-center justify-between border-t border-silk/60 pt-4">
+                                    <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.15em] group-hover:text-velvet transition-colors">Log In</span>
+                                    <div class="text-luxuryGreen transform group-hover:translate-x-1.5 transition-transform duration-300">
+                                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Student Affairs (White) -->
+                        <div onclick="openLogin('OSA')" class="card-anim-right bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 h-[280px] sm:h-[300px] flex flex-col justify-between border border-white shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 transition-all duration-500 cursor-pointer group relative overflow-hidden" style="animation-delay: 0.7s;">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-chiffon rounded-bl-[100%] z-0 transition-transform duration-500 group-hover:scale-110 opacity-40"></div>
+                            
+                            <div class="relative z-10 flex flex-col h-full">
+                                <div class="w-12 h-12 rounded-[14px] bg-chiffon text-velvet flex items-center justify-center text-lg mb-5 shadow-sm border border-silk transition-transform duration-300 group-hover:scale-105 group-hover:bg-luxuryGreenLight group-hover:text-white">
+                                    <i class="fa-solid fa-users-rectangle"></i>
+                                </div>
+                                
+                                <h3 class="font-heading font-extrabold text-xl md:text-[22px] text-velvet mb-2 tracking-tight">Student Affairs</h3>
+                                <p class="text-[11px] md:text-xs text-smoke font-medium leading-relaxed pr-2">Process endorsements, execute interventions, and close cases.</p>
+                                
+                                <div class="mt-auto w-full flex items-center justify-between border-t border-silk/60 pt-4">
+                                    <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.15em] group-hover:text-velvet transition-colors">Log In</span>
+                                    <div class="text-luxuryGreen transform group-hover:translate-x-1.5 transition-transform duration-300">
+                                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- ================= ABOUT SYSTEM VIEW ================= -->
-        <section id="view-about" class="view-section flex-grow justify-start pt-6 md:pt-10 pb-12 px-4">
-            <div class="w-full max-w-4xl mx-auto">
-                <div class="glass-panel p-8 md:p-12 rounded-[2rem] shadow-luxury border border-white relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-luxuryGreen/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
-                    
-                    <div class="flex items-center gap-4 mb-8 border-b border-silk pb-6 relative z-10">
-                        <div>
-                            <h2 class="text-2xl md:text-3xl font-serif font-bold text-velvet">NC-STARS</h2>
-                            <p class="text-[10px] md:text-xs font-bold text-luxuryGreen uppercase tracking-[0.15em] mt-1">System Overview</p>
-                        </div>
+        <section id="view-about" class="view-section flex-grow justify-center px-4 max-w-[1200px] mx-auto w-full mt-10 mb-16">
+            <div class="glass-panel rounded-[2rem] p-10 md:p-14 relative overflow-hidden flex flex-col md:flex-row gap-12 items-center">
+                
+                <div class="w-full md:w-1/2 relative z-10">
+                    <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/80 border border-silk shadow-sm mb-6">
+                        <i class="fa-solid fa-circle-info text-luxuryGreenLight text-sm"></i>
+                        <span class="text-[10px] font-bold text-velvet uppercase tracking-[0.2em]">System Overview</span>
                     </div>
                     
-                    <div class="space-y-6 text-sm md:text-base text-smoke font-medium leading-relaxed relative z-10">
-                        <p>
-                            The <strong>Norzagaray College Student Tracking, AI Resolution and Sanction System (NC-STARS)</strong> is an exclusive, institutional-grade platform designed specifically for the Administration, Guidance Office, and the Office of Student Affairs.
-                        </p>
-                        
-                        <p>
-                            Recognizing the critical need for a streamlined approach to student discipline and record management, NC-STARS replaces fragmented paperwork with a highly secure, centralized digital vault. It provides real-time tracking of student infractions, seamless endorsement protocols between departments, and an immutable history of all disciplinary actions.
-                        </p>
-
-                        <div class="bg-chiffon/50 border border-silk p-6 rounded-xl">
-                            <h4 class="font-bold text-velvet mb-3 flex items-center gap-2"><i class="fa-solid fa-brain text-luxuryGreen"></i> Contextual AI Integration</h4>
-                            <p class="text-sm">At the core of the platform is an automated AI Evaluation engine. Upon receiving a case endorsement, the system cross-references the student's behavior against the <strong>Norzagaray College Student Handbook (Section M.4)</strong> and scans their entire historical record. The AI then objectively recommends appropriate interventions—ranging from basic reprimands to escalated sanctions—ensuring absolute fairness, consistency, and compliance with institutional policies.</p>
-                        </div>
-
-                        <p>
-                            Built with enterprise-grade security protocols, including multi-factor authentication and strict role-based access control, NC-STARS guarantees that highly sensitive academic and behavioral data remains strictly confidential and accessible only to authorized college personnel.
-                        </p>
-                    </div>
+                    <h2 class="text-3xl md:text-4xl font-heading font-extrabold text-velvet mb-6 leading-tight tracking-tight">
+                        Norzagaray College <br>
+                        <span class="text-lg md:text-xl text-luxuryGreenLight font-sans tracking-wide font-semibold block mt-3">Student Tracking, AI Resolution and Sanction System</span>
+                    </h2>
+                    
+                    <p class="text-sm md:text-base text-smoke font-medium leading-relaxed mb-8">
+                        NC-STARS is the exclusive, institutional-grade platform designed for Norzagaray College. It transforms fragmented paperwork into a highly secure, centralized digital vault for student discipline management.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-luxuryGreenLight shrink-0 mt-0.5 shadow-sm border border-silk"><i class="fa-solid fa-check text-xs"></i></div>
+                            <span class="text-sm font-semibold text-velvet mt-1">Real-time tracking of student infractions</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-luxuryGreenLight shrink-0 mt-0.5 shadow-sm border border-silk"><i class="fa-solid fa-check text-xs"></i></div>
+                            <span class="text-sm font-semibold text-velvet mt-1">AI-assisted sanction recommendations</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-luxuryGreenLight shrink-0 mt-0.5 shadow-sm border border-silk"><i class="fa-solid fa-check text-xs"></i></div>
+                            <span class="text-sm font-semibold text-velvet mt-1">Immutable history of disciplinary actions</span>
+                        </li>
+                    </ul>
                 </div>
+
+                <div class="w-full md:w-1/2 h-full min-h-[400px] rounded-[2rem] bg-velvet p-12 relative overflow-hidden flex flex-col justify-center text-white shadow-2xl border border-velvet/50">
+                    <div class="absolute top-0 right-0 w-80 h-80 bg-luxuryGreenLight blur-[100px] rounded-full opacity-60 transform translate-x-1/4 -translate-y-1/4"></div>
+                    <i class="fa-solid fa-microchip text-6xl text-white mb-8 relative z-10 drop-shadow-md"></i>
+                    <h3 class="text-2xl font-heading font-extrabold mb-4 relative z-10 tracking-tight">Contextual AI Engine</h3>
+                    <p class="text-sm text-white/80 leading-relaxed relative z-10">
+                        The system automatically analyzes the student's history and cross-references it against the <strong>NC Student Handbook (Section M.4)</strong> to provide an objective and fair disciplinary recommendation.
+                    </p>
+                </div>
+
             </div>
         </section>
 
         <!-- ================= CONTACT US VIEW ================= -->
-        <section id="view-contact" class="view-section flex-grow justify-start pt-6 md:pt-10 pb-12 px-4">
-            <div class="w-full max-w-3xl mx-auto">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-velvet mb-3">Institutional Directory</h2>
-                    <p class="text-smoke text-sm">Official contact channels for the Student Affairs and Guidance Office.</p>
+        <section id="view-contact" class="view-section flex-grow justify-center px-4 max-w-[1000px] mx-auto w-full mt-10 mb-16">
+            <div class="text-center mb-12">
+                <span class="text-[10px] font-bold text-velvet uppercase tracking-[0.2em] bg-white/80 backdrop-blur px-6 py-2.5 rounded-full border border-silk shadow-sm">Get in Touch</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-extrabold text-velvet mt-6 mb-4 drop-shadow-sm tracking-tight">Institutional Directory</h2>
+                <p class="text-smoke text-sm">Official contact channels for the Student Affairs and Guidance Office.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- OSA Contact -->
+                <div class="glass-panel p-10 rounded-[2rem] hover:shadow-luxury hover:-translate-y-2 transition-all duration-300">
+                    <div class="w-16 h-16 bg-velvet text-white rounded-[1.2rem] flex items-center justify-center text-2xl mb-6 shadow-md">
+                        <i class="fa-solid fa-users-rectangle"></i>
+                    </div>
+                    <h3 class="font-heading font-extrabold text-2xl text-velvet mb-2">Office of Student Affairs</h3>
+                    <p class="text-xs font-bold text-luxuryGreenLight uppercase tracking-widest mb-8 border-b border-silk pb-6">Norzagaray College</p>
+                    
+                    <ul class="space-y-6 text-sm font-medium text-smoke">
+                        <li class="flex items-start gap-4">
+                            <i class="fa-solid fa-location-dot mt-1 text-luxuryGreenLight text-lg"></i>
+                            <span>Municipal Compound, Norzagaray,<br>Bulacan</span>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <i class="fa-solid fa-envelope text-luxuryGreenLight text-lg"></i>
+                            <a href="mailto:osadjcb@gmail.com" class="hover:text-velvet transition-colors">osadjcb@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <i class="fa-solid fa-phone text-luxuryGreenLight text-lg"></i>
+                            <span>(044) 123-4567 loc. 101</span>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <!-- Guidance Contact -->
+                <div class="glass-panel p-10 rounded-[2rem] hover:shadow-luxury hover:-translate-y-2 transition-all duration-300">
+                    <div class="w-16 h-16 bg-chiffon text-velvet border border-silk rounded-[1.2rem] flex items-center justify-center text-2xl mb-6 shadow-sm">
+                        <i class="fa-solid fa-user-nurse"></i>
+                    </div>
+                    <h3 class="font-heading font-extrabold text-2xl text-velvet mb-2">Guidance Office</h3>
+                    <p class="text-xs font-bold text-luxuryGreenLight uppercase tracking-widest mb-8 border-b border-silk pb-6">Norzagaray College</p>
                     
-                    <!-- OSA Contact -->
-                    <div class="glass-panel p-8 rounded-2xl shadow-sm border border-white">
-                        <div class="w-12 h-12 bg-luxuryGreen/10 text-luxuryGreen rounded-xl flex items-center justify-center text-xl mb-5 border border-luxuryGreen/20">
-                            <i class="fa-solid fa-users-rectangle"></i>
-                        </div>
-                        <h3 class="font-bold text-lg text-velvet mb-1">Office of Student Affairs</h3>
-                        <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-4 border-b border-silk pb-4">Norzagaray College</p>
-                        
-                        <ul class="space-y-4 text-sm text-smoke font-medium">
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-location-dot mt-1 text-luxuryGreen w-4"></i>
-                                <span>Municipal Compound, Norzagaray,<br>Bulacan, Philippines</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="fa-solid fa-envelope text-luxuryGreen w-4"></i>
-                                <span>osa@norzagaraycollege.edu.ph</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="fa-solid fa-phone text-luxuryGreen w-4"></i>
-                                <span>(044) 123-4567 loc. 101</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Guidance Contact -->
-                    <div class="glass-panel p-8 rounded-2xl shadow-sm border border-white">
-                        <div class="w-12 h-12 bg-luxuryGreen/10 text-luxuryGreen rounded-xl flex items-center justify-center text-xl mb-5 border border-luxuryGreen/20">
-                            <i class="fa-solid fa-user-nurse"></i>
-                        </div>
-                        <h3 class="font-bold text-lg text-velvet mb-1">Guidance & Counseling</h3>
-                        <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-4 border-b border-silk pb-4">Norzagaray College</p>
-                        
-                        <ul class="space-y-4 text-sm text-smoke font-medium">
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-location-dot mt-1 text-luxuryGreen w-4"></i>
-                                <span>Main Building, 2nd Floor<br>Norzagaray College Campus</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="fa-solid fa-envelope text-luxuryGreen w-4"></i>
-                                <span>guidance@norzagaraycollege.edu.ph</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="fa-solid fa-phone text-luxuryGreen w-4"></i>
-                                <span>(044) 123-4567 loc. 102</span>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="space-y-6 text-sm font-medium text-smoke">
+                        <li class="flex items-start gap-4">
+                            <i class="fa-solid fa-location-dot mt-1 text-luxuryGreenLight text-lg"></i>
+                            <span>Municipal Compound, Norzagaray,<br>Bulacan</span>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <i class="fa-solid fa-envelope text-luxuryGreenLight text-lg"></i>
+                            <a href="mailto:guidanceroom102mb@gmail.com" class="hover:text-velvet transition-colors break-all">guidanceroom102mb@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <i class="fa-solid fa-phone text-luxuryGreenLight text-lg"></i>
+                            <span>(044) 123-4567 loc. 102</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </section>
 
         <!-- ================= LOGIN VIEW ================= -->
-        <section id="view-login" class="view-section flex-grow justify-center items-center py-6 md:py-10 px-4">
-            <div class="glass-panel p-6 sm:p-8 md:p-12 rounded-[1.5rem] md:rounded-[2rem] shadow-luxury w-full max-w-[440px] relative overflow-hidden border border-white">
-                
+        <section id="view-login" class="view-section flex-grow justify-center items-center px-4 mt-16 mb-16">
+            <div class="glass-panel p-8 md:p-14 rounded-[2rem] w-full max-w-[500px] relative">
                 <div class="text-center mb-8">
-                    <!-- Dynamic Role Title -->
-                    <h2 class="text-2xl md:text-3xl font-serif font-bold text-velvet mb-2" id="loginTitle">Portal</h2>
-                    <p class="text-smoke text-xs md:text-[13px] font-medium">Enter your official credentials to access the system.</p>
+                    <div class="w-16 h-16 bg-chiffon rounded-[1rem] flex items-center justify-center mx-auto mb-6 border border-silk shadow-sm text-velvet text-2xl">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h2 class="text-3xl font-heading font-extrabold text-velvet mb-2 tracking-tight" id="loginTitle">Portal</h2>
+                    <p class="text-smoke text-sm font-medium">Enter your official credentials.</p>
                 </div>
 
-                <form onsubmit="handleLogin(event)" class="space-y-4 md:space-y-5">
+                <form onsubmit="handleLogin(event)" class="space-y-6">
                     <div>
-                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5 md:mb-2">Email Address</label>
-                        <input type="email" id="loginEmail" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Invalid email address" placeholder="Enter Email" class="w-full px-4 py-3 md:py-3.5 rounded-lg md:rounded-xl border border-silk bg-white focus:border-luxuryGreen transition-all text-xs md:text-sm font-semibold text-velvet shadow-sm">
+                        <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2 ml-1">Email Address</label>
+                        <input type="email" id="loginEmail" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Invalid email address" placeholder="example@gmail.com" class="w-full px-5 py-4 rounded-xl border border-silk bg-white focus:bg-white focus:border-luxuryGreenLight transition-all text-base font-semibold text-velvet shadow-sm">
                     </div>
                     
                     <div>
-                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5 md:mb-2">Password</label>
+                        <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2 ml-1">Password</label>
                         <div class="relative">
-                            <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full px-4 md:px-5 py-3 md:py-3.5 rounded-lg md:rounded-xl border border-silk bg-white focus:border-luxuryGreen transition-all text-xs md:text-sm font-semibold text-velvet pr-10 shadow-sm">
-                            <button type="button" onclick="togglePassword('loginPassword', 'eyeIconLogin')" class="absolute right-3 md:right-4 top-1/2 transform -translate-y-1/2 text-smoke hover:text-luxuryGreen transition-colors focus:outline-none">
-                                <i class="fa-solid fa-eye text-base md:text-lg" id="eyeIconLogin"></i>
+                            <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full px-5 py-4 rounded-xl border border-silk bg-white focus:bg-white focus:border-luxuryGreenLight transition-all text-base font-semibold text-velvet pr-12 shadow-sm">
+                            <button type="button" onclick="togglePassword('loginPassword', 'eyeIconLogin')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-smoke hover:text-luxuryGreenLight transition-colors focus:outline-none">
+                                <i class="fa-solid fa-eye text-lg" id="eyeIconLogin"></i>
                             </button>
                         </div>
-                        <!-- Forgot Password for Admin -->
-                        <div id="forgotPassContainer" class="hidden text-right mt-2">
-                            <a href="#" onclick="openForgotPasswordModal()" class="text-[10px] text-luxuryGreen font-bold uppercase tracking-widest hover:text-velvet transition-colors">Forgot Password?</a>
+                        
+                        <div id="forgotPassContainer" class="hidden text-right mt-3">
+                            <button type="button" onclick="openForgotPasswordModal()" class="text-[10px] text-smoke font-bold uppercase tracking-widest hover:text-velvet transition-colors bg-transparent border-none p-0 cursor-pointer">Forgot Password?</button>
                         </div>
                     </div>
                     
-                    <button type="submit" class="w-full bg-luxuryGreen hover:bg-velvet text-white py-3.5 md:py-4 rounded-lg md:rounded-xl font-bold uppercase tracking-[0.1em] md:tracking-[0.15em] text-[11px] md:text-xs btn-luxury mt-4 shadow-md transition-colors">
-                        LOGIN
+                    <button type="submit" class="w-full bg-velvet hover:bg-luxuryGreen text-white py-4 rounded-xl font-bold uppercase tracking-[0.15em] text-sm shadow-md transition-colors mt-6">
+                        Log In
                     </button>
                 </form>
                 
-                <div id="signupPromptContainer" class="mt-6 md:mt-8 text-center text-[10px] md:text-[12px] text-smoke font-medium flex flex-col md:flex-row justify-center items-center gap-1">
+                <div id="signupPromptContainer" class="mt-8 pt-6 border-t border-silk text-center text-[11px] text-smoke font-medium flex flex-col items-center gap-2">
                     <span>Don't have an account?</span>
-                    <a href="#" onclick="openSignupModal()" class="text-luxuryGreen font-bold uppercase tracking-[0.1em] md:tracking-widest hover:text-velvet transition-colors inline-block">SIGN UP</a>
+                    <button type="button" onclick="openSignupModal()" class="text-velvet hover:text-luxuryGreenLight font-bold uppercase tracking-widest transition-colors bg-transparent border-none p-0 cursor-pointer mt-1">Request Access</button>
                 </div>
 
-                <!-- Button to go back home -->
-                <div class="mt-6 text-center">
-                    <button onclick="navigateTo('home')" class="text-[9px] text-smoke hover:text-luxuryGreen uppercase tracking-widest font-bold transition-colors"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+                <div class="mt-8 text-center absolute top-6 left-6">
+                    <button onclick="navigateTo('home')" class="w-10 h-10 rounded-full border border-silk bg-white flex items-center justify-center text-smoke hover:text-velvet hover:border-velvet transition-all shadow-sm" title="Go Back"><i class="fa-solid fa-arrow-left text-sm"></i></button>
                 </div>
             </div>
         </section>
 
-        <!-- ================= MAIN DASHBOARD VIEW (Shared Layout) ================= -->
+        <!-- ================= MAIN DASHBOARD VIEW ================= -->
         <section id="view-dashboard" class="view-section flex-grow">
-            <div class="flex flex-col md:flex-row h-full md:min-h-[calc(100vh-6rem)] max-w-7xl mx-auto w-full px-2 sm:px-4 pb-6 pt-2 gap-4 md:gap-6 items-start">
+            <div class="flex flex-col lg:flex-row h-full lg:min-h-[calc(100vh-8rem)] max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-8 gap-6 items-start mt-6">
                 
-                <!-- Sidebar (Desktop only) -->
-                <div class="w-64 glass-panel rounded-2xl flex-col hidden md:flex overflow-hidden border border-white sticky top-28 h-[calc(100vh-8rem)]">
-                    <div class="p-8 bg-white border-b border-silk/60 text-center flex flex-col items-center">
-                        <div class="w-14 h-14 rounded-full bg-chiffon text-luxuryGreen flex items-center justify-center text-xl mb-3 shadow-sm border border-silk">
+                <!-- Sidebar -->
+                <div class="w-72 glass-panel rounded-[2rem] flex-col hidden lg:flex overflow-hidden sticky top-36 h-[calc(100vh-12rem)] shrink-0 border border-white">
+                    <div class="p-8 bg-white/50 border-b border-silk text-center flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-2xl bg-velvet text-white flex items-center justify-center text-2xl mb-4 shadow-sm">
                             <i class="fa-solid fa-building-user" id="sidebarIcon"></i>
                         </div>
-                        <h3 class="font-serif font-bold text-lg text-velvet leading-tight" id="sidebarDeptName">Department Name</h3>
-                        <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mt-1" id="sidebarRoleDesc">Access Level</p>
+                        <h3 class="font-heading font-extrabold text-xl text-velvet leading-tight tracking-tight" id="sidebarDeptName">Department</h3>
+                        <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mt-2" id="sidebarRoleDesc" style="display: none;"></p>
                     </div>
-                    <nav class="space-y-2 flex-grow p-5 overflow-y-auto" id="sidebarNav">
-                        <!-- Dynamic Tabs Here -->
+                    <nav class="space-y-2 flex-grow p-6 overflow-y-auto no-scrollbar" id="sidebarNav">
+                        <!-- Dynamic Tabs -->
                     </nav>
-                    <div class="p-5 border-t border-silk/60 bg-white">
-                        <button onclick="handleLogout()" class="w-full px-4 py-3 rounded-xl text-smoke hover:text-rose hover:bg-rose/10 font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                    <div class="p-6 border-t border-silk bg-white/50">
+                        <button onclick="handleLogout()" class="w-full px-4 py-3.5 rounded-xl text-smoke hover:text-rose hover:bg-rose/10 font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
                         </button>
                     </div>
                 </div>
 
-                <!-- Mobile Navigation Tabs -->
-                <div class="md:hidden w-full bg-white rounded-xl shadow-sm border border-silk flex overflow-x-auto no-scrollbar p-1.5 gap-1 mb-2" id="mobileNav">
-                    <!-- Dynamic Tabs Here -->
+                <!-- Mobile Nav -->
+                <div class="lg:hidden w-full glass-panel rounded-2xl flex overflow-x-auto no-scrollbar p-2 gap-2 mb-4 border border-white" id="mobileNav">
                 </div>
 
-                <!-- Dashboard Content Area -->
-                <div class="flex-grow w-full glass-panel rounded-xl md:rounded-2xl border border-white h-full md:min-h-[calc(100vh-8rem)] relative overflow-hidden">
-                    <div class="p-4 sm:p-6 md:p-10 h-full overflow-y-auto" id="dashboardContentArea">
-                        <!-- Dynamic Content Here -->
+                <!-- Content Area -->
+                <div class="flex-grow w-full glass-panel rounded-[2rem] h-full lg:min-h-[calc(100vh-12rem)] relative overflow-hidden border border-white">
+                    <div class="p-6 sm:p-8 md:p-12 h-full overflow-y-auto no-scrollbar" id="dashboardContentArea">
                     </div>
                 </div>
             </div>
@@ -465,30 +591,28 @@
 
     </main>
 
-    <!-- MAIN FOOTER (Glassmorphism Green with increased opacity) -->
-    <footer id="mainFooter" class="bg-luxuryGreen/40 backdrop-blur-xl border-t border-luxuryGreen/50 pt-10 pb-8 w-full relative z-10 transition-all duration-300 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8 border-b border-luxuryGreen/30 pb-8">
+    <!-- MAIN FOOTER -->
+    <footer id="mainFooter" class="bg-velvet pt-16 pb-8 w-full relative z-10 text-white mt-auto overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10 border-b border-white/10 pb-10">
                 
-                <div class="flex items-center gap-4 text-center md:text-left cursor-default">
+                <div class="flex items-center text-center md:text-left cursor-default">
                     <div>
-                        <h4 class="font-serif text-xl font-bold tracking-[0.2em] uppercase leading-tight text-luxuryGreen drop-shadow-sm">NC-STARS</h4>
-                        <p class="text-[10px] text-smoke font-medium tracking-widest mt-1">Student Tracking, AI Resolution and Sanction System</p>
+                        <h4 class="font-heading text-2xl font-black tracking-tight text-white">NC-STARS</h4>
+                        <p class="text-[10px] text-white/50 font-medium tracking-widest mt-1 uppercase">Student Affairs System</p>
                     </div>
                 </div>
-
-                <div class="flex items-center gap-6">
-                    <button onclick="navigateTo('about')" class="text-[11px] text-luxuryGreen hover:text-velvet uppercase tracking-widest font-bold transition-colors">About</button>
-                    <span class="text-luxuryGreen/50">•</span>
-                    <button onclick="navigateTo('contact')" class="text-[11px] text-luxuryGreen hover:text-velvet uppercase tracking-widest font-bold transition-colors">Contact Us</button>
-                </div>
+                
             </div>
             
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-smoke font-medium">
-                <p>&copy; 2026 Norzagaray College. Official Management Platform of the Office of Student Affairs.</p>
-                <div class="flex gap-5">
-                    <a href="https://web.facebook.com/p/Norzagaray-College-Office-of-the-Student-Affairs-100063821722265/?_rdc=1&_rdr#" target="_blank" class="text-smoke hover:text-luxuryGreen transition-colors" title="Facebook"><i class="fa-brands fa-facebook text-xl"></i></a>
-                    <a href="mailto:ncstars2026@gmail.com" class="text-smoke hover:text-luxuryGreen transition-colors" title="Email"><i class="fa-solid fa-envelope text-xl"></i></a>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-medium tracking-widest text-white/40 uppercase">
+                <div class="text-center md:text-left">
+                    <p>&copy; 2026 Norzagaray College. All rights reserved.</p>
+                </div>
+                
+                <div class="flex gap-6">
+                    <a href="https://web.facebook.com/p/Norzagaray-College-Office-of-the-Student-Affairs-100063821722265" target="_blank" class="hover:text-white transition-colors text-lg" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="mailto:ncstars2026@gmail.com" class="hover:text-white transition-colors text-lg" title="Email"><i class="fa-solid fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -497,266 +621,277 @@
     <!-- ================= MODALS ================= -->
 
     <!-- Admin Forgot Password Modal -->
-    <div id="forgotPasswordModal" class="fixed inset-0 bg-velvet/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-300">
-        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-2xl shadow-modal w-full max-w-md relative border border-white mx-2 modal-enter">
-            <button onclick="closeForgotPasswordModal()" class="absolute top-4 right-4 md:top-5 md:right-5 w-7 h-7 md:w-8 md:h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 shadow-sm border border-silk">
-                <i class="fa-solid fa-times text-sm md:text-base"></i>
+    <div id="forgotPasswordModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-500">
+        <div class="bg-white p-8 md:p-12 rounded-[2rem] w-full max-w-lg relative mx-2 modal-enter shadow-2xl border border-silk">
+            <button onclick="closeForgotPasswordModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 border border-silk">
+                <i class="fa-solid fa-times text-sm"></i>
             </button>
 
             <!-- STEP 1: Request Code -->
             <div id="fpStep1" class="block transition-all">
-                <div class="text-center mb-6">
-                    <div class="w-12 h-12 bg-luxuryGreen/10 rounded-full flex items-center justify-center mx-auto mb-3 text-luxuryGreen text-lg border border-luxuryGreen/20">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-chiffon rounded-2xl flex items-center justify-center mx-auto mb-4 text-velvet text-2xl border border-silk">
                         <i class="fa-solid fa-envelope"></i>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Admin Recovery</h3>
-                    <p class="text-smoke text-xs font-medium">Enter your registered master email to receive a code.</p>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet mb-2">Admin Recovery</h3>
+                    <p class="text-smoke text-xs font-medium">Enter your master email to receive a code.</p>
                 </div>
-                <form onsubmit="handleFpStep1(event)" class="space-y-4">
+                <form onsubmit="handleFpStep1(event)" class="space-y-5">
                     <div>
-                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">Registered Email</label>
-                        <input type="email" id="fpAdminEmail" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Invalid email address" placeholder="admin@norzagaraycollege.edu.ph" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Registered Email</label>
+                        <input type="email" id="fpAdminEmail" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" placeholder="example@gmail.com" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
-                    <div id="fpLockoutMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-2.5 rounded text-center tracking-widest mt-2">
-                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> Email not found in system.
+                    <div id="fpLockoutMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-3 rounded-lg text-center tracking-widest">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> Please provide a valid email.
                     </div>
-                    <button type="submit" class="w-full bg-velvet text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md hover:bg-luxuryGreen transition-colors mt-2">Send OTP Code</button>
+                    <button type="submit" class="w-full bg-velvet text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreenLight transition-colors mt-2">Send Code</button>
                 </form>
             </div>
 
             <!-- STEP 2: OTP Verification -->
             <div id="fpStep2" class="hidden transition-all">
-                <div class="text-center mb-6">
-                    <div class="w-12 h-12 bg-luxuryGreen/10 rounded-full flex items-center justify-center mx-auto mb-3 text-luxuryGreen text-lg border border-luxuryGreen/20">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-chiffon rounded-2xl flex items-center justify-center mx-auto mb-4 text-velvet text-2xl border border-silk">
                         <i class="fa-solid fa-shield-check"></i>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Email Verification</h3>
-                    <p class="text-smoke text-[11px] font-medium">Enter the 6-digit code sent to your email.</p>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet mb-2">Email Verification</h3>
+                    <p class="text-smoke text-xs font-medium">Enter the 6-digit code sent to you.</p>
                 </div>
-                <form onsubmit="handleFpStep2(event)" class="space-y-4">
+                <form onsubmit="handleFpStep2(event)" class="space-y-5">
                     <div>
                         <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 text-center">Verification Code</label>
-                        <input type="text" id="fpOTP" required placeholder="XXXXXX" maxlength="6" class="w-full px-4 py-4 rounded-lg border border-silk focus:border-luxuryGreen text-xl text-center font-mono font-bold text-velvet shadow-sm tracking-[0.5em]">
+                        <input type="text" id="fpOTP" required placeholder="XXXXXX" maxlength="6" class="w-full px-5 py-4 rounded-xl border border-silk focus:border-luxuryGreenLight text-2xl text-center font-mono font-bold text-velvet shadow-sm tracking-[0.5em] transition-colors">
                     </div>
-                    <button type="submit" class="w-full bg-luxuryGreen text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md hover:bg-velvet transition-colors mt-2">Verify Code</button>
+                    <button type="submit" class="w-full bg-velvet text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreenLight transition-colors mt-2">Verify</button>
                 </form>
             </div>
 
             <!-- STEP 3: Setup New Credentials -->
             <div id="fpStep3" class="hidden transition-all">
-                <div class="text-center mb-6">
-                    <div class="w-12 h-12 bg-luxuryGreen/10 rounded-full flex items-center justify-center mx-auto mb-3 text-luxuryGreen text-lg border border-luxuryGreen/20">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-chiffon rounded-2xl flex items-center justify-center mx-auto mb-4 text-velvet text-2xl border border-silk">
                         <i class="fa-solid fa-user-lock"></i>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Reset Credentials</h3>
-                    <p class="text-smoke text-[11px] font-medium">Setup your new master username and password.</p>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet mb-2">Reset Credentials</h3>
+                    <p class="text-smoke text-xs font-medium">Create a new master username & password.</p>
                 </div>
                 <form onsubmit="handleFpStep3(event)" class="space-y-4">
                     <div>
-                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">New Username</label>
-                        <input type="text" id="fpNewUser" required placeholder="Enter new admin username" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">New Username</label>
+                        <input type="text" id="fpNewUser" required placeholder="Enter new admin username" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium">
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
-                            <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">New Password</label>
+                            <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">New Password</label>
                             <div class="relative">
-                                <input type="password" id="fpNewPass" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet pr-10 shadow-sm">
-                                <button type="button" onclick="togglePassword('fpNewPass', 'eyeIconFp2')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-smoke hover:text-luxuryGreen focus:outline-none">
-                                    <i class="fa-solid fa-eye text-base" id="eyeIconFp2"></i>
+                                <input type="password" id="fpNewPass" required placeholder="••••••••" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet pr-10 font-medium">
+                                <button type="button" onclick="togglePassword('fpNewPass', 'eyeIconFp2')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-smoke hover:text-velvet">
+                                    <i class="fa-solid fa-eye text-sm" id="eyeIconFp2"></i>
                                 </button>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">Confirm Password</label>
+                            <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Confirm</label>
                             <div class="relative">
-                                <input type="password" id="fpConfirmPass" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet pr-10 shadow-sm">
-                                <button type="button" onclick="togglePassword('fpConfirmPass', 'eyeIconFp3')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-smoke hover:text-luxuryGreen focus:outline-none">
-                                    <i class="fa-solid fa-eye text-base" id="eyeIconFp3"></i>
+                                <input type="password" id="fpConfirmPass" required placeholder="••••••••" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet pr-10 font-medium">
+                                <button type="button" onclick="togglePassword('fpConfirmPass', 'eyeIconFp3')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-smoke hover:text-velvet">
+                                    <i class="fa-solid fa-eye text-sm" id="eyeIconFp3"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="w-full bg-luxuryGreen text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md hover:bg-velvet transition-colors mt-2">Save & Login</button>
+                    <button type="submit" class="w-full bg-velvet text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreenLight transition-colors mt-6">Save & Login</button>
                 </form>
             </div>
         </div>
     </div>
 
     <!-- Sign Up Modal (Multi-Step) -->
-    <div id="signupModal" class="fixed inset-0 bg-velvet/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-300">
-        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-2xl shadow-modal w-full max-w-lg relative border border-white mx-2 max-h-[90vh] overflow-y-auto modal-enter">
-            <button onclick="closeSignupModal()" class="absolute top-4 right-4 md:top-5 md:right-5 w-7 h-7 md:w-8 md:h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 shadow-sm border border-silk">
-                <i class="fa-solid fa-times text-sm md:text-base"></i>
+    <div id="signupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-500">
+        <div class="bg-white p-8 md:p-14 rounded-[2rem] w-full max-w-xl relative mx-2 max-h-[90vh] overflow-y-auto modal-enter no-scrollbar shadow-2xl border border-silk">
+            <button onclick="closeSignupModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 border border-silk">
+                <i class="fa-solid fa-times text-sm"></i>
             </button>
 
-            <!-- STEP 1: Registration Name Details -->
+            <!-- STEP 1 -->
             <div id="signupStep1" class="block transition-all">
-                <div class="text-center mb-6">
-                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Staff Registration</h3>
-                    <p class="text-smoke text-xs md:text-sm">Step 1: Enter your full name details.</p>
+                <div class="text-center mb-8">
+                    <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.2em] bg-chiffon px-3 py-1 rounded-md border border-silk mb-3 inline-block">Step 1 of 3</span>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet mb-1">Staff Registration</h3>
+                    <p class="text-smoke text-xs font-medium">Provide your official name details.</p>
                 </div>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Last Name</label>
-                        <input type="text" required id="signupLastName" placeholder="e.g. Dela Cruz" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Last Name</label>
+                        <input type="text" required id="signupLastName" placeholder="e.g. Dela Cruz" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
                     <div>
-                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">First Name</label>
-                        <input type="text" required id="signupFirstName" placeholder="e.g. Juan" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">First Name</label>
+                        <input type="text" required id="signupFirstName" placeholder="e.g. Juan" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
                     <div>
-                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Middle Initial (Optional)</label>
-                        <input type="text" id="signupMI" placeholder="e.g. P." maxlength="3" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Middle Initial (Optional)</label>
+                        <input type="text" id="signupMI" placeholder="e.g. P." maxlength="3" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
                     
-                    <button type="button" onclick="nextSignupStep(1)" class="w-full bg-velvet text-white py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors mt-4 shadow-md hover:bg-luxuryGreen">Next Step <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                    <button type="button" onclick="nextSignupStep(1)" class="w-full bg-velvet text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreenLight transition-colors mt-6 flex justify-center items-center gap-2">Continue <i class="fa-solid fa-arrow-right"></i></button>
                 </div>
             </div>
 
-            <!-- STEP 2: Email Configuration -->
+            <!-- STEP 2 -->
             <div id="signupStep2" class="hidden transition-all">
-                <div class="text-center mb-6">
-                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Staff Registration</h3>
-                    <p class="text-smoke text-xs md:text-sm">Step 2: Enter your email address.</p>
+                <div class="text-center mb-8">
+                    <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.2em] bg-chiffon px-3 py-1 rounded-md border border-silk mb-3 inline-block">Step 2 of 3</span>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet mb-1">Staff Registration</h3>
+                    <p class="text-smoke text-xs font-medium">Enter your official department email.</p>
                 </div>
-                <div class="space-y-4">
+                <div class="space-y-6">
                     <div>
-                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Email</label>
-                        <input type="email" required id="signupEmail" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Invalid email address" placeholder="example@email.com" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Email Address</label>
+                        <input type="email" required id="signupEmail" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" placeholder="example@email.com" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
 
-                    <div class="flex flex-col md:flex-row gap-3 pt-2">
-                        <button type="button" onclick="prevSignupStep(2)" class="w-full md:w-1/3 bg-chiffon text-smoke hover:bg-silk py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors shadow-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-                        <button type="button" onclick="nextSignupStep(2)" class="w-full md:w-2/3 bg-velvet text-white py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors shadow-md hover:bg-luxuryGreen">Next Step <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                    <div class="flex gap-3 pt-2">
+                        <button type="button" onclick="prevSignupStep(2)" class="w-1/3 bg-white border border-silk text-smoke hover:text-velvet hover:bg-chiffon py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-colors"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button type="button" onclick="nextSignupStep(2)" class="w-2/3 bg-velvet text-white py-4 rounded-xl font-bold uppercase tracking-[0.15em] text-xs shadow-md hover:bg-luxuryGreenLight transition-colors flex justify-center items-center gap-2">Continue <i class="fa-solid fa-arrow-right"></i></button>
                     </div>
                 </div>
             </div>
 
-            <!-- STEP 3: Password Configuration -->
+            <!-- STEP 3 -->
             <div id="signupStep3" class="hidden transition-all">
-                <div class="text-center mb-6">
-                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Staff Registration</h3>
-                    <p class="text-smoke text-xs md:text-sm">Step 3: Create your account credentials.</p>
+                <div class="text-center mb-8">
+                    <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.2em] bg-chiffon px-3 py-1 rounded-md border border-silk mb-3 inline-block">Step 3 of 3</span>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet mb-1">Secure Account</h3>
+                    <p class="text-smoke text-xs font-medium">Create a strong password.</p>
                 </div>
-                <form onsubmit="handleSignupSubmit(event)" class="space-y-4">
+                <form onsubmit="handleSignupSubmit(event)" class="space-y-5">
                     <div>
-                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Password</label>
-                        <input type="password" required id="signupPassword" placeholder="••••••••" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Password</label>
+                        <input type="password" required id="signupPassword" placeholder="••••••••" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
 
                     <div>
-                        <label class="block text-[9px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] mb-1.5">Confirm Password</label>
-                        <input type="password" required id="signupConfirmPassword" placeholder="••••••••" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen transition-all text-sm font-semibold text-velvet bg-white shadow-sm">
+                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Confirm Password</label>
+                        <input type="password" required id="signupConfirmPassword" placeholder="••••••••" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
 
-                    <!-- Single Checkbox para Ipakita ang Passwords -->
-                    <div class="flex items-center gap-2 mt-1">
-                        <input type="checkbox" id="showSignupPasswords" onchange="toggleSignupPasswords(this)" class="w-4 h-4 text-luxuryGreen bg-white border-silk rounded cursor-pointer">
-                        <label for="showSignupPasswords" class="text-[10px] md:text-[11px] font-bold text-smoke uppercase tracking-[0.1em] cursor-pointer select-none">Show Passwords</label>
+                    <div class="flex items-center gap-2 mt-1 ml-1">
+                        <input type="checkbox" id="showSignupPasswords" onchange="toggleSignupPasswords(this)" class="w-4 h-4 text-luxuryGreenLight bg-white border-silk rounded cursor-pointer">
+                        <label for="showSignupPasswords" class="text-[10px] font-bold text-smoke uppercase tracking-widest cursor-pointer select-none">Show Passwords</label>
                     </div>
 
-                    <div id="signupErrorMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-2.5 rounded text-center tracking-widest mt-2"></div>
+                    <div id="signupErrorMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-3 rounded-lg text-center tracking-widest"></div>
                     
-                    <div class="flex flex-col md:flex-row gap-3 pt-2">
-                        <button type="button" onclick="prevSignupStep(3)" class="w-full md:w-1/3 bg-chiffon text-smoke hover:bg-silk py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors shadow-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-                        <button type="submit" class="w-full md:w-2/3 bg-luxuryGreen hover:bg-velvet text-white py-3.5 rounded-lg font-bold uppercase tracking-[0.1em] text-[10px] md:text-xs transition-colors shadow-md btn-luxury">Submit Application</button>
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" onclick="prevSignupStep(3)" class="w-1/4 bg-white border border-silk text-smoke hover:text-velvet hover:bg-chiffon py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
+                        <button type="submit" class="w-3/4 bg-velvet text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreenLight transition-colors">Complete Setup</button>
                     </div>
                 </form>
             </div>
 
-            <!-- STEP 4: Email Verification para sa Sign Up -->
+            <!-- STEP 4 -->
             <div id="signupStep4" class="hidden transition-all">
-                <div class="text-center mb-6">
-                    <div class="w-12 h-12 bg-luxuryGreen/10 rounded-full flex items-center justify-center mx-auto mb-3 text-luxuryGreen text-lg border border-luxuryGreen/20">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-chiffon rounded-2xl flex items-center justify-center mx-auto mb-4 text-velvet text-2xl border border-silk">
                         <i class="fa-solid fa-envelope-circle-check"></i>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2">Verify Your Email</h3>
-                    <p class="text-smoke text-[11px] font-medium">We sent a 6-digit code to your email address.</p>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet mb-1">Verify Email</h3>
+                    <p class="text-smoke text-xs font-medium">We sent a 6-digit code to your email.</p>
                 </div>
-                <form onsubmit="verifySignupOTP(event)" class="space-y-4">
+                <form onsubmit="verifySignupOTP(event)" class="space-y-5">
                     <div>
                         <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 text-center">Verification Code</label>
-                        <input type="text" id="signupOTP" required placeholder="XXXXXX" maxlength="6" class="w-full px-4 py-4 rounded-lg border border-silk focus:border-luxuryGreen text-xl text-center font-mono font-bold text-velvet shadow-sm tracking-[0.5em]">
+                        <input type="text" id="signupOTP" required placeholder="XXXXXX" maxlength="6" class="w-full px-5 py-4 rounded-xl border border-silk focus:border-luxuryGreenLight text-3xl text-center font-mono font-bold text-velvet shadow-sm tracking-[0.5em] transition-colors">
                     </div>
-                    <div id="signupVerifyErrorMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-2.5 rounded text-center tracking-widest mt-2"></div>
-                    <button type="submit" class="w-full bg-luxuryGreen text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md hover:bg-velvet transition-colors mt-2">Verify & Request Access</button>
+                    <div id="signupVerifyErrorMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-3 rounded-lg text-center tracking-widest"></div>
+                    <button type="submit" class="w-full bg-velvet text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreenLight transition-colors mt-4">Verify & Request Access</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- AI Evaluation Modal para sa OSA Split View -->
-    <div id="aiModal" class="fixed inset-0 bg-velvet/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-300">
-        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-2xl shadow-modal w-full max-w-4xl relative border border-white mx-2 max-h-[90vh] overflow-y-auto modal-enter">
-            <button onclick="closeAIModal()" class="absolute top-4 right-4 md:top-5 md:right-5 w-7 h-7 md:w-8 md:h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 shadow-sm border border-silk">
-                <i class="fa-solid fa-times text-sm md:text-base"></i>
+    <!-- AI Evaluation Modal -->
+    <div id="aiModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-500">
+        <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-6xl relative overflow-hidden flex flex-col md:flex-row max-h-[90vh] modal-enter border border-silk p-6">
+            <button onclick="closeAIModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-20 border border-silk">
+                <i class="fa-solid fa-times text-sm"></i>
             </button>
-            <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-4" id="aiModalTitle">Case Evaluation Panel</h3>
-            <div id="aiModalContent" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Dito ilalagay ang Case Info Left Side / AI Right Side -->
+            
+            <div id="aiModalContent" class="w-full flex flex-col md:flex-row h-full">
             </div>
         </div>
     </div>
 
-    <!-- Handbook Modal (Para sa mga Rules at Regulations) -->
-    <div id="handbookModal" class="fixed inset-0 bg-velvet/60 backdrop-blur-sm hidden flex items-center justify-center z-[150] p-4 transition-opacity duration-300">
-        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-2xl shadow-modal w-full max-w-3xl relative border border-white mx-2 max-h-[90vh] flex flex-col modal-enter">
-            <button onclick="closeHandbookModal()" class="absolute top-4 right-4 md:top-5 md:right-5 w-7 h-7 md:w-8 md:h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 shadow-sm border border-silk">
-                <i class="fa-solid fa-times text-sm md:text-base"></i>
+    <!-- Handbook Modal -->
+    <div id="handbookModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-[150] p-4 transition-opacity duration-500">
+        <div class="bg-white p-8 md:p-12 rounded-[2rem] w-full max-w-4xl relative mx-2 max-h-[90vh] flex flex-col modal-enter shadow-2xl border border-silk">
+            <button onclick="closeHandbookModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 border border-silk">
+                <i class="fa-solid fa-times text-sm"></i>
             </button>
-            <h3 class="text-xl md:text-2xl font-serif font-bold text-velvet mb-2"><i class="fa-solid fa-book-open text-luxuryGreen mr-2"></i>NC Student Handbook</h3>
-            <p class="text-smoke text-xs mb-4 pb-4 border-b border-silk">Section M.4: Classification of Violation/Offenses & Disciplinary Actions</p>
             
-            <div class="overflow-y-auto pr-2 flex-grow">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 bg-chiffon rounded-lg flex items-center justify-center text-velvet border border-silk">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <h3 class="text-2xl font-heading font-extrabold text-velvet">Student Handbook</h3>
+            </div>
+            <p class="text-smoke text-[10px] font-bold uppercase tracking-widest mb-6 pb-4 border-b border-silk">Section M.4: Classifications & Actions</p>
+            
+            <div class="overflow-y-auto pr-2 flex-grow no-scrollbar">
                 <table class="w-full text-left border-collapse">
-                    <tr class="bg-chiffon text-[10px] font-bold text-smoke uppercase tracking-widest border-b border-silk">
-                        <th class="p-3 w-1/4">Disciplinary Action</th>
-                        <th class="p-3">Description</th>
+                    <tr class="bg-chiffon text-[9px] font-bold text-smoke uppercase tracking-widest border-b border-silk">
+                        <th class="p-4 rounded-tl-xl">Disciplinary Action</th>
+                        <th class="p-4 rounded-tr-xl">Description</th>
                     </tr>
-                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
-                        <td class="p-3 text-xs font-bold text-velvet">Verbal Warning</td>
-                        <td class="p-3 text-xs text-smoke">The student is reprimanded for unacceptable behavior.</td>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/50 transition-colors">
+                        <td class="p-4 text-xs font-bold text-velvet align-top whitespace-nowrap">Verbal Warning</td>
+                        <td class="p-4 text-xs text-smoke font-medium">The student is reprimanded for unacceptable behavior.</td>
                     </tr>
-                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
-                        <td class="p-3 text-xs font-bold text-velvet">Written Reprimand</td>
-                        <td class="p-3 text-xs text-smoke">Written statement of the student that a violation of specified policies or regulations has occurred.</td>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/50 transition-colors">
+                        <td class="p-4 text-xs font-bold text-velvet align-top whitespace-nowrap">Written Reprimand</td>
+                        <td class="p-4 text-xs text-smoke font-medium">Written statement given to the student regarding a policy violation.</td>
                     </tr>
-                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
-                        <td class="p-3 text-xs font-bold text-velvet">Community Service</td>
-                        <td class="p-3 text-xs text-smoke">Community service around the school for 15-20 hours but not excluding the student to attend classes.</td>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/50 transition-colors">
+                        <td class="p-4 text-xs font-bold text-velvet align-top whitespace-nowrap">Counseling / Mediation</td>
+                        <td class="p-4 text-xs text-smoke font-medium">Intervention focused on addressing root causes, retaliation, or conflict resolution.</td>
                     </tr>
-                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
-                        <td class="p-3 text-xs font-bold text-velvet">Suspension</td>
-                        <td class="p-3 text-xs text-smoke">Exclusion from classes and privileges. Not less than 5 school days but not more than 20% of the prescribed period.</td>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/50 transition-colors">
+                        <td class="p-4 text-xs font-bold text-velvet align-top whitespace-nowrap">Community Service</td>
+                        <td class="p-4 text-xs text-smoke font-medium">Community service around the school for 15-20 hours without affecting class attendance.</td>
                     </tr>
-                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
-                        <td class="p-3 text-xs font-bold text-velvet">Dropping/Dismissal</td>
-                        <td class="p-3 text-xs text-smoke">Student may be dropped during the school year. Shall be issued transfer credentials immediately.</td>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/50 transition-colors">
+                        <td class="p-4 text-xs font-bold text-velvet align-top whitespace-nowrap">Suspension</td>
+                        <td class="p-4 text-xs text-smoke font-medium">Exclusion from classes and privileges. Not less than 5 school days but not more than 20% of the term.</td>
                     </tr>
-                    <tr class="border-b border-silk/50 hover:bg-chiffon/30">
-                        <td class="p-3 text-xs font-bold text-velvet">Expulsion</td>
-                        <td class="p-3 text-xs text-smoke">Expelled from Norzagaray College.</td>
+                    <tr class="border-b border-silk/50 hover:bg-chiffon/50 transition-colors">
+                        <td class="p-6 text-sm font-bold text-velvet align-top whitespace-nowrap">Dropping/Dismissal</td>
+                        <td class="p-6 text-sm text-smoke font-medium">The student may be dropped during the school year. Transfer credentials will be issued immediately.</td>
+                    </tr>
+                    <tr class="hover:bg-chiffon/50 transition-colors">
+                        <td class="p-4 text-xs font-bold text-rose align-top whitespace-nowrap rounded-bl-xl">Expulsion</td>
+                        <td class="p-4 text-xs text-smoke font-medium rounded-br-xl">Expelled from Norzagaray College.</td>
                     </tr>
                 </table>
-                <div class="mt-4 p-3 bg-luxuryGreen/10 border border-luxuryGreen/20 rounded-lg flex items-start gap-3">
-                    <i class="fa-solid fa-circle-info text-luxuryGreen mt-0.5"></i>
+                <div class="mt-8 p-5 bg-chiffon/50 border border-silk rounded-xl flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-luxuryGreenLight shadow-sm shrink-0 border border-silk">
+                        <i class="fa-solid fa-info text-xs"></i>
+                    </div>
                     <div>
-                        <p class="text-[10px] font-bold text-luxuryGreen uppercase tracking-widest mb-1">Note on Application:</p>
-                        <p class="text-xs text-velvet">Disciplinary actions shall be imposed commensurate to the degree of gravity of the offense committed. Mitigating or aggravating circumstances shall be considered in determining the appropriate penalty.</p>
+                        <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Application Note</p>
+                        <p class="text-xs text-velvet font-medium leading-relaxed">Disciplinary actions shall be imposed commensurate to the degree of gravity of the offense committed. Mitigating or aggravating circumstances shall be considered in determining the appropriate penalty.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Toast Notification Container -->
-    <div id="toast-container"></div>
 
     <!-- Application Logic -->
     <script>
         // --- State Management ---
         let selectedRole = '';
         let currentUser = null;
+        let currentActiveView = 'home';
 
         // Mock Database of Active Staff
         let pendingStaff = [
@@ -773,17 +908,90 @@
 
         // Cases Queue
         let pendingCases = [
-            { caseId: '20240220-001', studentId: '2023-0010', name: 'Pedro Penduko', course: 'BSIT 2A', incidentTime: '10:30 AM', reason: 'Fighting', narrative: 'Involved in a physical altercation near the cafeteria.', evidence: 'referral_slip_001.png', hasHistory: true },
-            { caseId: '20240221-002', studentId: '2023-0045', name: 'Juan Dela Cruz', course: 'BSBA 3B', incidentTime: '01:15 PM', reason: 'Dress Code', narrative: 'Entering the campus without ID and proper uniform.', evidence: 'referral_slip_002.png', hasHistory: false }
+            { caseId: '20240220-001', studentId: '2023-0010', name: 'Pedro Penduko', course: 'BSIT 2A', incidentTime: '10:30 AM', reason: 'Fighting', narrative: 'Involved in a physical altercation near the cafeteria. Binubully ako kaya ako gumanti.', evidence: 'referral_slip_001.png', hasHistory: true },
+            { caseId: '20240221-002', studentId: '2023-0045', name: 'Juan Dela Cruz', course: 'BSBA 3B', incidentTime: '01:15 PM', reason: 'Improper Uniform', narrative: 'Entering the campus without ID and proper uniform.', evidence: 'referral_slip_002.png', hasHistory: false }
         ];
 
         let caseHistory = [
-            { caseId: '20231105-012', studentId: '2023-0010', name: 'Pedro Penduko', course: 'BSIT 2A', offense: 'Minor', narrative: 'Dress code violation.', severity: 'Verbal Warning' },
-            { caseId: '20231210-044', studentId: '2022-0105', name: 'Maria Makiling', course: 'BSED 4A', offense: 'Cheating', narrative: 'Caught looking at notes during final exams.', severity: 'Suspension' }
+            { caseId: '20231105-012', studentId: '2023-0010', name: 'Pedro Penduko', course: 'BSIT 2A', offense: 'Improper Uniform', narrative: 'Dress code violation.', severity: 'Verbal Warning' },
+            { caseId: '20231210-044', studentId: '2022-0105', name: 'Maria Makiling', course: 'BSED 4A', offense: 'Academic Deficiencies', narrative: 'Caught looking at notes during final exams.', severity: 'Suspension' }
         ];
+
+        // --- ANIMATION LOGIC FOR LOGO SCROLLING (FIXED AND LAG-FREE) ---
+        let lastLogoState = 'hero';
+
+        function renderLogos() {
+            // Tinanggal na ang scroll condition. Nakadepende na lang strictly kung nasa home page.
+            const targetState = currentActiveView === 'home' ? 'hero' : 'nav';
+
+            const ncTargetId = targetState === 'nav' ? 'nav-nc-target' : 'hero-nc-target';
+            const osaTargetId = targetState === 'nav' ? 'nav-osa-target' : 'hero-osa-target';
+            
+            const ncTarget = document.getElementById(ncTargetId);
+            const osaTarget = document.getElementById(osaTargetId);
+            const floatNC = document.getElementById('floating-nc');
+            const floatOSA = document.getElementById('floating-osa');
+
+            if(!floatNC || !floatOSA || !ncTarget || !osaTarget) return;
+
+            const ncRect = ncTarget.getBoundingClientRect();
+            const osaRect = osaTarget.getBoundingClientRect();
+
+            // Kapag nagpalit ng page view (e.g., Home to Contact), dito natin i-oon yung smooth flying animation
+            if (targetState !== lastLogoState) {
+                lastLogoState = targetState;
+                
+                // Set z-index dynamically! Kapag sa Nav naka-pwesto, z-60 (ibabaw). Kapag sa Home, z-40 (ilalim ng header).
+                floatNC.style.zIndex = targetState === 'nav' ? '60' : '40';
+                floatOSA.style.zIndex = targetState === 'nav' ? '60' : '40';
+
+                floatNC.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), width 0.7s ease, height 0.7s ease';
+                floatOSA.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), width 0.7s ease, height 0.7s ease';
+                floatNC.querySelector('img').style.transition = 'border-width 0.7s ease';
+                floatOSA.querySelector('img').style.transition = 'border-width 0.7s ease';
+
+                // Pagkatapos ng animation, tatanggalin ulit ang transition para sumabay perfectly sa scroll kung nasa home
+                setTimeout(() => {
+                    if (currentActiveView === 'home') {
+                        floatNC.style.transition = 'none';
+                        floatOSA.style.transition = 'none';
+                    }
+                }, 750);
+            } else if (currentActiveView === 'home') {
+                // IMPORTANT FIX: Walang transition habang nag s-scroll sa home page para sumabay siya perfectly at nasa ilalim (z-40)
+                floatNC.style.transition = 'none';
+                floatOSA.style.transition = 'none';
+                floatNC.style.zIndex = '40';
+                floatOSA.style.zIndex = '40';
+            }
+
+            // Apply transforms dynamically
+            floatNC.style.transform = `translate(${ncRect.left}px, ${ncRect.top}px)`;
+            floatNC.style.width = `${ncRect.width}px`;
+            floatNC.style.height = `${ncRect.height}px`;
+            floatNC.querySelector('img').style.borderWidth = targetState === 'nav' ? '2px' : '6px';
+
+            floatOSA.style.transform = `translate(${osaRect.left}px, ${osaRect.top}px)`;
+            floatOSA.style.width = `${osaRect.width}px`;
+            floatOSA.style.height = `${osaRect.height}px`;
+            floatOSA.querySelector('img').style.borderWidth = targetState === 'nav' ? '2px' : '6px';
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            renderLogos();
+            setTimeout(() => {
+                document.getElementById('floating-nc').style.opacity = '1';
+                document.getElementById('floating-osa').style.opacity = '1';
+            }, 50);
+        });
+
+        window.addEventListener('resize', renderLogos);
 
         // --- Navigation Logic ---
         function navigateTo(viewId) {
+            currentActiveView = viewId;
+            
             // Itatago ang lahat ng sections
             document.querySelectorAll('.view-section').forEach(el => {
                 el.classList.remove('active');
@@ -798,6 +1006,14 @@
                 target.classList.add('active');
             }
             
+            // Blur ang building bg kung hindi nasa home
+            const bg = document.querySelector('.building-bg');
+            if (viewId === 'home') {
+                bg.classList.remove('is-blurred');
+            } else {
+                bg.classList.add('is-blurred');
+            }
+            
             // Ayusin ang navigation bar at visibility ng footer base sa view
             if(viewId === 'home' || viewId === 'login' || viewId === 'about' || viewId === 'contact') {
                 document.getElementById('navLinks').classList.remove('hidden');
@@ -810,9 +1026,13 @@
                 document.getElementById('navLinks').classList.remove('md:flex');
                 document.getElementById('userProfileNav').classList.remove('hidden');
                 document.getElementById('userProfileNav').classList.add('flex');
-                document.getElementById('mainFooter').classList.add('hidden'); // Itago ang footer sa dashboard
+                document.getElementById('mainFooter').classList.add('hidden'); 
             }
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Call renderLogos to ensure they jump to correct position on navigation change
+            setTimeout(renderLogos, 20);
         }
 
         // --- Login Logic ---
@@ -852,19 +1072,21 @@
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             
-            currentUser = { name: email.split('@')[0] || 'Authorized User', role: selectedRole };
+            // Dummy Name display for format requirement (Last Name, First Name M.I.)
+            const dummyName = "Dela Cruz, Juan P.";
+            currentUser = { name: dummyName, role: selectedRole };
             
             document.getElementById('navUserName').innerText = currentUser.name;
             document.getElementById('navUserRole').innerText = `${currentUser.role} Account`;
             
-            showToast(`Welcome back to ${currentUser.role} portal.`);
+            showToast(`Welcome back to the ${currentUser.role} workspace.`);
             buildDashboard(currentUser.role);
             navigateTo('dashboard');
         }
 
         function handleLogout() {
             currentUser = null;
-            showToast('Logged out successfully.');
+            showToast('Logged out securely.');
             navigateTo('home');
         }
 
@@ -895,8 +1117,9 @@
             const msgBox = document.getElementById('fpLockoutMsg');
             const submitBtn = e.target.querySelector('button[type="submit"]');
 
-            if (!email.includes('@norzagaraycollege.edu.ph')) {
-                msgBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> System accepts official school emails only.';
+            // Removed strict @norzagaraycollege.edu.ph requirement so user can use example@gmail.com
+            if (!email) {
+                msgBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Please provide a valid email.';
                 msgBox.classList.remove('hidden');
                 return;
             }
@@ -905,31 +1128,14 @@
             submitBtn.innerText = "Sending Code...";
             submitBtn.disabled = true;
 
-            try {
-                const response = await fetch('http://127.0.0.1:5000/send-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, purpose: 'recovery' })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    recoveryEmail = email; 
-                    document.getElementById('fpStep1').classList.add('hidden');
-                    document.getElementById('fpStep2').classList.remove('hidden');
-                    showToast("Verification code sent to your email.");
-                } else {
-                    msgBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${data.message}`;
-                    msgBox.classList.remove('hidden');
-                }
-            } catch (error) {
-                msgBox.innerHTML = '<i class="fa-solid fa-server mr-1"></i> Cannot connect to the server. Is app.py running?';
-                msgBox.classList.remove('hidden');
-            } finally {
-                submitBtn.innerText = "Send OTP Code";
+            setTimeout(() => {
+                recoveryEmail = email; 
+                document.getElementById('fpStep1').classList.add('hidden');
+                document.getElementById('fpStep2').classList.remove('hidden');
+                showToast("Verification code sent to your email.");
+                submitBtn.innerText = "Send Code";
                 submitBtn.disabled = false;
-            }
+            }, 1200);
         }
 
         async function handleFpStep2(e) {
@@ -940,28 +1146,17 @@
             submitBtn.innerText = "Verifying...";
             submitBtn.disabled = true;
 
-            try {
-                const response = await fetch('http://127.0.0.1:5000/verify-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: recoveryEmail, otp: otp })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
+            setTimeout(() => {
+                if (otp.length === 6) {
                     showToast("Code verified successfully.");
                     document.getElementById('fpStep2').classList.add('hidden');
                     document.getElementById('fpStep3').classList.remove('hidden');
                 } else {
-                    showToast(data.message, "error");
+                    showToast("Invalid code format. Enter a 6-digit code.", "error");
                 }
-            } catch (error) {
-                showToast("Server connection error.", "error");
-            } finally {
-                submitBtn.innerText = "Verify Code";
+                submitBtn.innerText = "Verify";
                 submitBtn.disabled = false;
-            }
+            }, 1000);
         }
 
         function handleFpStep3(e) {
@@ -990,7 +1185,6 @@
 
         function openSignupModal() {
             document.getElementById('signupModal').classList.remove('hidden');
-            // Magsisimula sa unang step
             document.getElementById('signupStep1').classList.remove('hidden');
             document.getElementById('signupStep2').classList.add('hidden');
             document.getElementById('signupStep3').classList.add('hidden');
@@ -1000,7 +1194,6 @@
             document.getElementById('signupVerifyErrorMsg').classList.add('hidden');
             document.getElementById('signupOTP').value = '';
             
-            // I-reset ang mga input field
             if(document.getElementById('signupFirstName')) {
                 document.getElementById('signupFirstName').value = '';
                 document.getElementById('signupLastName').value = '';
@@ -1019,7 +1212,6 @@
             document.getElementById('signupModal').classList.add('hidden');
         }
 
-        // Mag-navigate patungo sa susunod na step ng sign up
         function nextSignupStep(currentStep) {
             if (currentStep === 1) {
                 const lname = document.getElementById('signupLastName').value.trim();
@@ -1042,7 +1234,6 @@
             }
         }
 
-        // Mag-navigate pabalik sa naunang step ng sign up
         function prevSignupStep(currentStep) {
             if (currentStep === 2) {
                 document.getElementById('signupStep2').classList.add('hidden');
@@ -1053,7 +1244,6 @@
             }
         }
 
-        // Ipakita o itago ang mga password sa iisang checkbox
         function toggleSignupPasswords(checkbox) {
             const pass1 = document.getElementById('signupPassword');
             const pass2 = document.getElementById('signupConfirmPassword');
@@ -1090,40 +1280,20 @@
             const lastName = document.getElementById('signupLastName').value.trim();
             const mi = document.getElementById('signupMI').value.trim();
             
-            // Format name cleanly depending on whether Middle Initial is provided
             const fullName = `${firstName} ${mi ? mi + ' ' : ''}${lastName}`.trim();
 
-            try {
-                const response = await fetch('http://127.0.0.1:5000/send-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, purpose: 'registration' })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    pendingSignupData = {
-                        name: fullName,
-                        email: email,
-                        dept: selectedRole || 'Pending'
-                    };
-
-                    document.getElementById('signupStep3').classList.add('hidden');
-                    // Tumuloy sa OTP Verification (Step 4)
-                    document.getElementById('signupStep4').classList.remove('hidden');
-                    showToast("Verification code sent to your email.");
-                } else {
-                    errorMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${data.message}`;
-                    errorMsg.classList.remove('hidden');
-                }
-            } catch (error) {
-                errorMsg.innerHTML = '<i class="fa-solid fa-server mr-1"></i> Cannot connect to the server. Is app.py running?';
-                errorMsg.classList.remove('hidden');
-            } finally {
-                submitBtn.innerText = "Submit Application";
+            setTimeout(() => {
+                pendingSignupData = {
+                    name: fullName,
+                    email: email,
+                    dept: selectedRole || 'Pending'
+                };
+                document.getElementById('signupStep3').classList.add('hidden');
+                document.getElementById('signupStep4').classList.remove('hidden');
+                showToast("Verification code sent to your email.");
+                submitBtn.innerText = "Complete Setup";
                 submitBtn.disabled = false;
-            }
+            }, 1200);
         }
 
         async function verifySignupOTP(e) {
@@ -1136,16 +1306,8 @@
             submitBtn.innerText = "Verifying...";
             submitBtn.disabled = true;
 
-            try {
-                const response = await fetch('http://127.0.0.1:5000/verify-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: pendingSignupData.email, otp: otp })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
+            setTimeout(() => {
+                if (otp.length === 6) {
                     pendingStaff.push({
                         id: `REQ-00${pendingStaff.length + 3}`,
                         name: pendingSignupData.name,
@@ -1165,22 +1327,25 @@
                     document.getElementById('showSignupPasswords').checked = false;
                     toggleSignupPasswords(document.getElementById('showSignupPasswords'));
                 } else {
-                    verifyErrorMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${data.message}`;
+                    verifyErrorMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> Invalid code format. Enter a 6-digit code.`;
                     verifyErrorMsg.classList.remove('hidden');
                 }
-            } catch (error) {
-                verifyErrorMsg.innerHTML = '<i class="fa-solid fa-server mr-1"></i> Server connection error.';
-                verifyErrorMsg.classList.remove('hidden');
-            } finally {
                 submitBtn.innerText = "Verify & Request Access";
                 submitBtn.disabled = false;
-            }
+            }, 1000);
         }
 
         // --- Dashboard Builders ---
         function buildDashboard(role) {
             document.getElementById('sidebarDeptName').innerText = role === 'Admin' ? 'System Admin' : (role === 'Guidance' ? 'Guidance Office' : 'Student Affairs');
-            document.getElementById('sidebarRoleDesc').innerText = role === 'Admin' ? 'Master Control' : 'Workspace Interface';
+            
+            const roleDesc = document.getElementById('sidebarRoleDesc');
+            if (role === 'Admin') {
+                roleDesc.innerText = 'Master Control';
+                roleDesc.style.display = 'block';
+            } else {
+                roleDesc.style.display = 'none';
+            }
 
             const sidebarIcon = document.getElementById('sidebarIcon');
             if(role === 'Admin') sidebarIcon.className = 'fa-solid fa-shield-halved';
@@ -1222,7 +1387,7 @@
             `).join('');
 
             const contentArea = document.getElementById('dashboardContentArea');
-            contentArea.innerHTML = tabs.map(t => `<div id="content-${t.id}" class="hidden w-full h-full"></div>`).join('');
+            contentArea.innerHTML = tabs.map(t => `<div id="content-${t.id}" class="hidden w-full h-full animate-[elegantFadeIn_0.5s_forwards]"></div>`).join('');
 
             if(role === 'Admin') {
                 renderAdminApprovals();
@@ -1234,7 +1399,7 @@
             }
             if(role === 'OSA') {
                 renderOSAProcessCase();
-                renderOSASearchRecords(); // Instantly display records
+                renderOSASearchRecords(); 
             }
 
             if(tabs.length > 0) switchDashboardTab(tabs[0].id);
@@ -1246,18 +1411,22 @@
             const allMobTabs = document.querySelectorAll('[id^="mobTab-"]');
             const allIcons = document.querySelectorAll('[id^="sideIcon-"]');
 
-            allContents.forEach(c => c.classList.add('hidden'));
+            allContents.forEach(c => { c.classList.add('hidden'); c.style.animation = 'none'; });
             allSideTabs.forEach(t => t.className = "w-full text-left px-5 py-3.5 rounded-xl text-smoke hover:bg-silk/40 hover:text-velvet font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center gap-3");
             allMobTabs.forEach(t => t.className = "whitespace-nowrap flex-1 py-2.5 px-3 rounded-lg text-smoke font-bold text-[9px] uppercase tracking-[0.1em] transition-all flex justify-center items-center gap-1.5 hover:bg-silk/40");
             allIcons.forEach(i => i.classList.remove('text-luxuryGreenLight'));
 
-            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            const targetContent = document.getElementById(`content-${tabId}`);
+            targetContent.classList.remove('hidden');
+            targetContent.offsetHeight; 
+            targetContent.style.animation = null;
+
             const sideTab = document.getElementById(`sideTab-${tabId}`);
             if(sideTab) sideTab.className = "w-full text-left px-5 py-3.5 rounded-xl bg-velvet text-white font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center gap-3 shadow-md";
             const mobTab = document.getElementById(`mobTab-${tabId}`);
             if(mobTab) mobTab.className = "whitespace-nowrap flex-1 py-2.5 px-3 rounded-lg bg-velvet text-white font-bold text-[9px] uppercase tracking-[0.1em] transition-all flex justify-center items-center gap-1.5 shadow-sm";
             const icon = document.getElementById(`sideIcon-${tabId}`);
-            if(icon) icon.classList.add('text-luxuryGreenLight');
+            if(icon) { icon.classList.remove('text-velvet'); icon.classList.add('text-white'); }
         }
 
         // ================= SPECIFIC DASHBOARD RENDERS =================
@@ -1269,7 +1438,7 @@
 
             let html = `
                 <div class="mb-6 border-b border-silk pb-4">
-                    <h2 class="text-2xl font-serif font-bold text-velvet">Account Approval Panel</h2>
+                    <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Account Approval Panel</h2>
                     <p class="text-smoke text-sm mt-1">Review approved or pending master records.</p>
                 </div>
             `;
@@ -1280,7 +1449,7 @@
                 html += pendingStaff.map((staff, idx) => `
                     <div class="bg-white p-5 rounded-xl border border-silk flex flex-col md:flex-row justify-between items-center mb-4 shadow-sm">
                         <div class="flex items-center gap-4 mb-4 md:mb-0">
-                            <div class="w-12 h-12 rounded-full bg-chiffon flex items-center justify-center text-luxuryGreen text-lg"><i class="fa-solid fa-user-lock"></i></div>
+                            <div class="w-12 h-12 rounded-xl bg-chiffon flex items-center justify-center text-luxuryGreen text-lg"><i class="fa-solid fa-user-lock"></i></div>
                             <div>
                                 <h4 class="font-bold text-velvet text-sm">${staff.name}</h4>
                                 <p class="text-[10px] text-smoke font-bold uppercase tracking-widest mt-1">Dept: ${staff.dept}</p>
@@ -1315,7 +1484,7 @@
             let html = `
                 <div class="mb-6 border-b border-silk pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
-                        <h2 class="text-2xl font-serif font-bold text-velvet">Student Records</h2>
+                        <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Student Records</h2>
                         <p class="text-smoke text-sm mt-1">Manage official student masterlist for system auto-fill integration.</p>
                     </div>
                     <div class="bg-chiffon/50 p-3 rounded-xl border border-silk flex items-center gap-3">
@@ -1330,26 +1499,26 @@
                 </div>
 
                 <div class="bg-white p-5 rounded-xl border border-silk mb-6 shadow-sm">
-                    <h3 class="text-sm font-bold text-velvet mb-4 uppercase tracking-widest border-b border-silk/50 pb-2"><i class="fa-solid fa-user-plus text-luxuryGreen mr-2"></i>Add Single Record</h3>
+                    <h3 class="text-xs font-bold text-velvet mb-4 uppercase tracking-widest border-b border-silk/50 pb-2"><i class="fa-solid fa-user-plus text-luxuryGreen mr-2"></i>Add Single Record</h3>
                     <form onsubmit="handleAddStudent(event)" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
                         <div>
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Student ID</label>
-                            <input type="text" id="newStdId" required pattern="\\d{4}-\\d{4}" title="Format: YYYY-NNNN (e.g., 2024-0438)" placeholder="e.g. 2024-0438" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                            <input type="text" id="newStdId" required pattern="\\d{4}-\\d{4}" title="Format: YYYY-NNNN (e.g., 2024-0438)" placeholder="e.g. 2024-0438" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Last Name</label>
-                            <input type="text" id="newStdLastName" required placeholder="e.g. Dela Cruz" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                            <input type="text" id="newStdLastName" required placeholder="e.g. Dela Cruz" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">First Name</label>
-                            <input type="text" id="newStdFirstName" required placeholder="e.g. Juan" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                            <input type="text" id="newStdFirstName" required placeholder="e.g. Juan" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                         </div>
                         <div class="md:col-span-4">
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Course & Section</label>
-                            <input type="text" id="newStdCourse" required placeholder="e.g. BSIT 1A" class="w-full px-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
+                            <input type="text" id="newStdCourse" required placeholder="e.g. BSIT 1A" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                         </div>
                         <div class="md:col-span-1 mt-2">
-                            <button type="submit" class="bg-luxuryGreen text-white px-6 py-2.5 rounded-lg font-bold uppercase tracking-widest text-[10px] hover:bg-velvet transition-colors shadow-sm w-full h-[42px]">Save</button>
+                            <button type="submit" class="bg-luxuryGreen text-white px-6 py-3 rounded-lg font-bold uppercase tracking-widest text-[10px] hover:bg-velvet transition-colors shadow-sm w-full h-[48px]">Save</button>
                         </div>
                     </form>
                 </div>
@@ -1363,12 +1532,12 @@
                             <th class="p-4">Course/Year/Sec</th>
                             <th class="p-4 text-center">Action</th>
                         </tr>
-                        ${studentDatabase.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-xs text-smoke font-bold uppercase tracking-widest">No records available.</td></tr>` : studentDatabase.map((s, idx) => `
+                        ${studentDatabase.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-base text-smoke font-bold uppercase tracking-widest">No records available.</td></tr>` : studentDatabase.map((s, idx) => `
                             <tr class="border-b border-silk/50 hover:bg-chiffon/30">
-                                <td class="p-4 font-mono text-xs font-bold text-luxuryGreen">${s.id}</td>
-                                <td class="p-4 font-bold text-sm text-velvet">${s.lastName}</td>
-                                <td class="p-4 font-bold text-sm text-velvet">${s.firstName}</td>
-                                <td class="p-4 text-xs font-medium text-velvet">${s.course}</td>
+                                <td class="p-4 font-mono text-sm font-bold text-luxuryGreen">${s.id}</td>
+                                <td class="p-4 font-bold text-base text-velvet">${s.lastName}</td>
+                                <td class="p-4 font-bold text-base text-velvet">${s.firstName}</td>
+                                <td class="p-4 text-sm font-medium text-velvet">${s.course}</td>
                                 <td class="p-4 text-center">
                                     <button onclick="deleteStudent(${idx})" class="text-rose hover:bg-rose/10 p-2 rounded-lg transition-colors" title="Remove Record">
                                         <i class="fa-solid fa-trash-can"></i>
@@ -1401,7 +1570,6 @@
             }
 
             studentDatabase.push({id, lastName, firstName, course});
-            // Auto sort array by Last Name
             studentDatabase.sort((a, b) => a.lastName.localeCompare(b.lastName));
             
             showToast('Student record added successfully.');
@@ -1414,7 +1582,6 @@
             renderAdminStudents();
         }
 
-        // Robust CSV Bulk Upload Logic
         function handleBulkUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1423,13 +1590,11 @@
             reader.onload = function(e) {
                 const text = e.target.result;
                 parseCSVAndMap(text);
-                // Reset input so the same file can be uploaded again if needed
                 event.target.value = '';
             };
             reader.readAsText(file);
         }
 
-        // Custom parser to handle fields that contain commas inside quotes (e.g. "Dela Cruz, Juan")
         function parseCSVRow(text) {
             let result = [];
             let cur = '';
@@ -1439,7 +1604,7 @@
                 if (inQuotes) {
                     if (char === '"') {
                         if (i + 1 < text.length && text[i+1] === '"') {
-                            cur += '"'; i++; // escaped quote
+                            cur += '"'; i++;
                         } else {
                             inQuotes = false;
                         }
@@ -1462,23 +1627,19 @@
         }
 
         function parseCSVAndMap(text) {
-            // Handle both Windows (\r\n) and Unix (\n) line endings
             const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
             if (lines.length < 2) {
                 showToast('The file is empty or contains no student data.', 'error');
                 return;
             }
 
-            // Extract and clean headers
             const headers = parseCSVRow(lines[0]).map(h => h.toLowerCase());
             
-            // Smart auto-mapping: Find indexes of the required columns regardless of their order
             const idIndex = headers.findIndex(h => h.includes('id') || h.includes('number') || h.includes('no'));
             const lastNameIndex = headers.findIndex(h => h.includes('last') || h.includes('surname'));
             const firstNameIndex = headers.findIndex(h => h.includes('first') || h.includes('given'));
             const courseIndex = headers.findIndex(h => h.includes('course') || h.includes('program') || h.includes('section') || h.includes('year'));
 
-            // Stop if critical columns are not found
             if (idIndex === -1 || lastNameIndex === -1 || firstNameIndex === -1 || courseIndex === -1) {
                 showToast('Format error. Please ensure your file headers include: ID, Last Name, First Name, and Course.', 'error');
                 return;
@@ -1487,14 +1648,11 @@
             let addedCount = 0;
             let duplicateCount = 0;
             let invalidFormatCount = 0;
-
             const idRegex = /^\d{4}-\d{4}$/;
 
-            // Iterate through rows starting from index 1 (skipping header)
             for (let i = 1; i < lines.length; i++) {
                 const columns = parseCSVRow(lines[i]);
                 
-                // Ensure row has enough columns based on our found indices
                 if (columns.length > Math.max(idIndex, lastNameIndex, firstNameIndex, courseIndex)) {
                     const id = columns[idIndex];
                     const lastName = columns[lastNameIndex];
@@ -1514,7 +1672,6 @@
                 }
             }
 
-            // Always organize/sort alphabetically by Last Name after inserting
             studentDatabase.sort((a, b) => a.lastName.localeCompare(b.lastName));
 
             let summaryMessage = `Added ${addedCount} new records.`;
@@ -1540,81 +1697,83 @@
 
             container.innerHTML = `
                 <div class="mb-6 border-b border-silk pb-4">
-                    <h2 class="text-2xl font-serif font-bold text-velvet">New Case Entry</h2>
+                    <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">New Case Entry</h2>
                     <p class="text-smoke text-sm mt-1">Create and endorse referral to Student Affairs.</p>
                 </div>
                 
                 <form id="newCaseForm" onsubmit="handleNewCaseSubmit(event)" class="bg-white p-6 rounded-xl border border-silk relative min-h-[400px]">
-                    <div class="bg-chiffon/50 p-3 rounded-lg border border-silk flex items-center justify-between mb-5">
+                    <div class="bg-chiffon/50 p-4 rounded-lg border border-silk flex items-center justify-between mb-5">
                         <span class="text-[10px] font-bold text-smoke uppercase tracking-widest">Smart Case ID:</span>
-                        <span class="font-bold text-luxuryGreen text-sm font-mono">${caseId}</span>
+                        <span class="font-bold text-luxuryGreen text-base font-mono">${caseId}</span>
                         <input type="hidden" id="caseId" value="${caseId}">
                     </div>
 
                     <!-- STEP 1 -->
-                    <div id="gcStep1" class="space-y-5 transition-all">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div id="gcStep1" class="space-y-6 transition-all">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Student ID</label>
-                                <input type="text" id="ncStudentID" oninput="autoFillStudent()" required pattern="\\d{4}-\\d{4}" title="Format: YYYY-NNNN (e.g., 2024-0438)" placeholder="e.g. 2024-0438" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                                <input type="text" id="ncStudentID" oninput="autoFillStudent()" required pattern="\\d{4}-\\d{4}" title="Format: YYYY-NNNN (e.g., 2024-0438)" placeholder="e.g. 2024-0438" class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Student Name</label>
-                                <input type="text" id="ncStudentName" required class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                                <input type="text" id="ncStudentName" required class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                             </div>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Course/Yr. & Sec.</label>
-                                <input type="text" id="ncCourse" required placeholder="e.g. BSIT 1A" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                                <input type="text" id="ncCourse" required placeholder="e.g. BSIT 1A" class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Incident Time</label>
-                                <input type="time" id="ncTime" required class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
+                                <input type="time" id="ncTime" required class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                             </div>
                         </div>
                         
-                        <div class="pt-4 border-t border-silk flex justify-end">
-                            <button type="button" onclick="nextStepGuidance()" class="bg-velvet text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-sm hover:bg-luxuryGreen transition-colors">
+                        <div class="pt-5 border-t border-silk flex justify-end">
+                            <button type="button" onclick="nextStepGuidance()" class="bg-velvet text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreen transition-colors">
                                 Next Step <i class="fa-solid fa-arrow-right ml-2"></i>
                             </button>
                         </div>
                     </div>
 
                     <!-- STEP 2 -->
-                    <div id="gcStep2" class="space-y-5 hidden transition-all">
+                    <div id="gcStep2" class="space-y-6 hidden transition-all">
                         <div>
-                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Select Referral Reasons (Checklist)</label>
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 bg-chiffon/30 p-4 rounded-lg border border-silk">
-                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Dress Code" class="ncReason accent-luxuryGreen"> Dress Code</label>
-                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Fighting" class="ncReason accent-luxuryGreen"> Fighting</label>
-                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Cheating" class="ncReason accent-luxuryGreen"> Cheating</label>
-                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Disrespect" class="ncReason accent-luxuryGreen"> Disrespect</label>
-                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Vandalism" class="ncReason accent-luxuryGreen"> Vandalism</label>
-                                <label class="flex items-center gap-2 text-xs font-semibold text-velvet"><input type="checkbox" value="Other" class="ncReason accent-luxuryGreen" onchange="toggleOtherReason(this)"> Other</label>
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Reason for referral:</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 bg-chiffon/30 p-5 rounded-lg border border-silk shadow-inner">
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Improper Uniform" class="ncReason accent-luxuryGreen w-4 h-4"> Improper Uniform</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="No I.D." class="ncReason accent-luxuryGreen w-4 h-4"> No I.D.</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Improper Hair Color" class="ncReason accent-luxuryGreen w-4 h-4"> Improper Hair Color</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Improper Haircut" class="ncReason accent-luxuryGreen w-4 h-4"> Improper Haircut</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Academic Deficiencies" class="ncReason accent-luxuryGreen w-4 h-4"> Academic Deficiencies</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Misconduct" class="ncReason accent-luxuryGreen w-4 h-4"> Misconduct</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Bullying" class="ncReason accent-luxuryGreen w-4 h-4"> Bullying</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Other/s: Pls. Specify:" class="ncReason accent-luxuryGreen w-4 h-4" onchange="toggleOtherReason(this)"> Other/s: Pls. Specify:</label>
                                 
-                                <div id="otherReasonContainer" class="col-span-2 md:col-span-3 hidden mt-2">
-                                    <input type="text" id="ncOtherReasonInput" placeholder="Please specify the reason..." class="w-full px-3 py-2 rounded border border-silk focus:border-luxuryGreen text-xs text-velvet">
+                                <div id="otherReasonContainer" class="col-span-2 md:col-span-3 hidden mt-3">
+                                    <input type="text" id="ncOtherReasonInput" placeholder="Please specify the reason..." class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                                 </div>
                             </div>
                         </div>
 
                         <div>
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Type Narrative Report (Basis of Endorsement)</label>
-                            <textarea id="ncNarrative" rows="3" required class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet resize-none"></textarea>
+                            <textarea id="ncNarrative" rows="4" required class="w-full px-5 py-4 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet resize-none shadow-sm"></textarea>
                         </div>
 
                         <div>
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Upload Evidence (Physical Referral Slip Image) <span class="text-luxuryGreen normal-case tracking-normal">- (Optional)</span></label>
-                            <input type="file" id="ncEvidence" accept="image/*" class="w-full px-4 py-2.5 rounded-lg border border-silk text-sm text-smoke file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-chiffon file:text-luxuryGreen hover:file:bg-silk/50 transition-all cursor-pointer">
+                            <input type="file" id="ncEvidence" accept="image/*" class="w-full px-5 py-3.5 rounded-lg border border-silk text-base text-smoke file:mr-4 file:py-2.5 file:px-5 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-chiffon file:text-luxuryGreen hover:file:bg-silk/50 transition-all cursor-pointer shadow-sm">
                         </div>
 
-                        <div class="pt-4 border-t border-silk flex justify-between items-center">
+                        <div class="pt-5 border-t border-silk flex justify-between items-center">
                             <button type="button" onclick="prevStepGuidance()" class="text-smoke font-bold uppercase tracking-widest text-[10px] hover:text-velvet transition-colors">
                                 <i class="fa-solid fa-arrow-left mr-2"></i> Back
                             </button>
-                            <button type="submit" class="bg-luxuryGreen text-white px-6 py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md">
+                            <button type="submit" class="bg-luxuryGreen text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] btn-luxury shadow-md hover:bg-velvet transition-colors">
                                 Generate Official Endorsement Preview & Save
                             </button>
                         </div>
@@ -1627,7 +1786,6 @@
             const idInput = document.getElementById('ncStudentID').value;
             const student = studentDatabase.find(s => s.id === idInput);
             if(student) {
-                // Combines First Name and Last Name automatically
                 document.getElementById('ncStudentName').value = `${student.firstName} ${student.lastName}`;
                 document.getElementById('ncCourse').value = student.course;
                 showToast('Student record found. Auto-filled details.');
@@ -1671,10 +1829,10 @@
             const caseId = document.getElementById('caseId').value;
             let reasonsArray = Array.from(document.querySelectorAll('.ncReason:checked')).map(cb => cb.value);
             
-            if(reasonsArray.includes('Other')) {
+            if(reasonsArray.includes('Other/s: Pls. Specify:')) {
                 const otherSpec = document.getElementById('ncOtherReasonInput').value;
                 if(otherSpec) {
-                    reasonsArray = reasonsArray.filter(r => r !== 'Other');
+                    reasonsArray = reasonsArray.filter(r => r !== 'Other/s: Pls. Specify:');
                     reasonsArray.push(`Other: ${otherSpec}`);
                 }
             }
@@ -1706,12 +1864,12 @@
                 container.innerHTML = `
                     <div class="mb-6 border-b border-silk pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                         <div>
-                            <h2 class="text-2xl font-serif font-bold text-velvet">Case History (Evidence Retrieval)</h2>
+                            <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Case History (Evidence Retrieval)</h2>
                             <p class="text-smoke text-sm mt-1">Review previously endorsed and resolved cases.</p>
                         </div>
-                        <div class="relative w-full md:w-64">
-                            <input type="text" id="guidanceHistorySearch" placeholder="Search records..." onkeyup="filterGuidanceHistory()" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
-                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-smoke"></i>
+                        <div class="relative w-full md:w-72">
+                            <input type="text" id="guidanceHistorySearch" placeholder="Search records..." onkeyup="filterGuidanceHistory()" class="w-full pl-12 pr-5 py-3 rounded-xl border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                            <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 transform -translate-y-1/2 text-smoke"></i>
                         </div>
                     </div>
                     <div class="bg-white rounded-xl border border-silk overflow-hidden shadow-sm" id="ghListContainer">
@@ -1723,23 +1881,32 @@
             let html = `
                 <table class="w-full text-left">
                     <tr class="bg-chiffon text-[10px] font-bold text-smoke uppercase tracking-widest border-b border-silk">
-                        <th class="p-4">Case ID</th>
-                        <th class="p-4">Student Info</th>
-                        <th class="p-4">Offense</th>
-                        <th class="p-4">Final Sanction</th>
+                        <th class="p-5">Case ID</th>
+                        <th class="p-5">Student Info</th>
+                        <th class="p-5">Offense</th>
+                        <th class="p-5">Final Sanction</th>
                     </tr>
             `;
             if(filteredCases.length === 0) {
-                html += `<tr><td colspan="4" class="p-6 text-center text-xs text-smoke font-bold uppercase tracking-widest">No historical records found.</td></tr>`;
+                html += `<tr><td colspan="4" class="p-8 text-center text-base text-smoke font-bold uppercase tracking-widest">No historical records found.</td></tr>`;
             } else {
-                html += filteredCases.map(c => `
+                html += filteredCases.map(c => {
+                    const studentCases = caseHistory.filter(record => record.studentId === c.studentId);
+                    const offenseIndex = studentCases.findIndex(record => record.caseId === c.caseId) + 1;
+                    const displayOffense = offenseIndex >= 3 ? 3 : offenseIndex;
+                    const offenseColor = displayOffense >= 3 ? 'text-rose' : 'text-smoke';
+
+                    return `
                     <tr class="border-b border-silk/50 hover:bg-chiffon/30">
-                        <td class="p-4 font-mono text-xs font-bold text-luxuryGreen">${c.caseId}</td>
-                        <td class="p-4"><p class="font-bold text-sm text-velvet">${c.name}</p><p class="text-[10px] text-smoke">${c.course} | ID: ${c.studentId}</p></td>
-                        <td class="p-4 text-xs font-medium text-velvet">${c.offense}</td>
-                        <td class="p-4"><span class="bg-velvet text-white px-2.5 py-1 rounded text-[9px] font-bold uppercase tracking-widest shadow-sm">${c.severity}</span></td>
+                        <td class="p-5 font-mono text-sm font-bold text-luxuryGreen">${c.caseId}</td>
+                        <td class="p-5"><p class="font-bold text-base text-velvet">${c.name}</p><p class="text-xs text-smoke mt-0.5">${c.course} | ID: ${c.studentId}</p></td>
+                        <td class="p-5">
+                            <span class="text-sm font-medium text-velvet block mb-1.5">${c.offense}</span>
+                            <span class="text-[9px] font-bold ${offenseColor} uppercase tracking-widest bg-chiffon/50 px-2.5 py-1 rounded">Offense ${displayOffense} of 3</span>
+                        </td>
+                        <td class="p-5"><span class="bg-velvet text-white px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-widest shadow-sm">${c.severity}</span></td>
                     </tr>
-                `).join('');
+                `}).join('');
             }
             html += `</table>`;
             document.getElementById('ghListContainer').innerHTML = html;
@@ -1764,12 +1931,12 @@
                 container.innerHTML = `
                     <div class="mb-6 border-b border-silk pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                         <div>
-                            <h2 class="text-2xl font-serif font-bold text-velvet">Process Pending Case</h2>
+                            <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Process Pending Case</h2>
                             <p class="text-smoke text-sm mt-1">Pending Resolution Queue from Guidance.</p>
                         </div>
-                        <div class="relative w-full md:w-64">
-                            <input type="text" id="osaPendingSearch" placeholder="Search pending cases..." onkeyup="filterOSAPending()" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-sm text-velvet">
-                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-smoke"></i>
+                        <div class="relative w-full md:w-72">
+                            <input type="text" id="osaPendingSearch" placeholder="Search pending cases..." onkeyup="filterOSAPending()" class="w-full pl-12 pr-5 py-3 rounded-xl border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                            <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 transform -translate-y-1/2 text-smoke"></i>
                         </div>
                     </div>
                     <div class="space-y-4" id="osaPendingListContainer">
@@ -1782,19 +1949,19 @@
             let html = '';
 
             if(filteredCases.length === 0) {
-                html = `<div class="p-8 text-center text-smoke font-bold uppercase tracking-widest text-xs border border-silk border-dashed rounded-xl bg-chiffon/50">Queue is empty.</div>`;
+                html = `<div class="p-10 text-center text-smoke font-bold uppercase tracking-widest text-base border border-silk border-dashed rounded-xl bg-chiffon/50">Queue is empty.</div>`;
             } else {
                 html = filteredCases.map((c, idx) => `
-                    <div class="bg-white p-5 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center hover:border-luxuryGreen/40 transition-colors">
+                    <div class="bg-white p-6 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center hover:border-luxuryGreen/40 transition-colors">
                         <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] font-mono bg-chiffon px-2 py-0.5 rounded text-smoke font-bold">${c.caseId}</span>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-rose"><i class="fa-solid fa-circle-exclamation text-[8px] mr-1"></i> Pending Action</span>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="text-xs font-mono bg-chiffon px-2.5 py-1 rounded text-smoke font-bold">${c.caseId}</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-rose"><i class="fa-solid fa-circle-exclamation text-[9px] mr-1"></i> Pending Action</span>
                             </div>
-                            <h4 class="font-bold text-velvet text-lg mt-2">${c.name} <span class="text-xs text-smoke font-normal ml-2">${c.course}</span></h4>
-                            <p class="text-xs text-smoke mt-1"><b>Reason:</b> ${c.reason}</p>
+                            <h4 class="font-bold text-velvet text-xl mt-2">${c.name} <span class="text-sm text-smoke font-normal ml-2">${c.course}</span></h4>
+                            <p class="text-sm text-smoke mt-1"><b>Reason:</b> ${c.reason}</p>
                         </div>
-                        <button onclick="evaluateCase(${pendingCases.indexOf(c)})" class="mt-4 md:mt-0 bg-velvet text-white px-5 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen transition-colors flex items-center gap-2">
+                        <button onclick="evaluateCase(${pendingCases.indexOf(c)})" class="mt-4 md:mt-0 bg-velvet text-white px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen transition-colors flex items-center gap-2 shadow-sm">
                             <i class="fa-solid fa-microchip"></i> Select Case
                         </button>
                     </div>
@@ -1819,32 +1986,107 @@
             const modal = document.getElementById('aiModal');
             const content = document.getElementById('aiModalContent');
             
+            // Bilangin kung pang-ilan na itong offense base sa student history (max 3)
+            const pastOffenses = caseHistory.filter(record => record.studentId === c.studentId).length;
+            const currentOffenseCount = Math.min(pastOffenses + 1, 3); // Hanggang 3 lang ang max count
+
+            // AI Logic para sa Sanction Suggestion
+            let suggestedSanction = "Verbal Warning";
+            let aiJustification = "";
+            let severityStyle = "text-luxuryGreen bg-[#e8f3ec] border-luxuryGreen/30";
+            let severityIcon = "fa-shield";
+            let severityTitle = "Basic Intervention";
+
+            const lowerReason = c.reason.toLowerCase();
+            const lowerNarrative = c.narrative.toLowerCase();
+
+            // AI Keywords Checking
+            const isSevere = lowerReason.includes('bullying') || lowerReason.includes('misconduct') || lowerNarrative.includes('fight') || lowerNarrative.includes('hit') || lowerNarrative.includes('steal');
+            const isAcademic = lowerReason.includes('academic') || lowerReason.includes('cheating');
+            
+            // Nuance check: Retaliation or Claimed Victimhood
+            const isRetaliation = (lowerNarrative.includes('kaya') && lowerNarrative.includes('rin')) || 
+                                  lowerNarrative.includes('ganti') || 
+                                  lowerNarrative.includes('defend') || 
+                                  lowerNarrative.includes('nauna') || 
+                                  lowerNarrative.includes('ako rin') || 
+                                  lowerNarrative.includes('binubully') || 
+                                  lowerNarrative.includes('self-defense') || 
+                                  lowerNarrative.includes('retaliate');
+
+            if (currentOffenseCount >= 3) {
+                suggestedSanction = isSevere ? "Expulsion" : "Dropping/Dismissal";
+                aiJustification = `Maximum offense limit reached (Offense 3/3). Immediate escalation required based on <b>NC Student Handbook Section M.4</b>.`;
+                severityStyle = "text-rose bg-rose/10 border-rose/30";
+                severityIcon = "fa-triangle-exclamation";
+                severityTitle = "Critical Escalation";
+            } else if (currentOffenseCount === 2) {
+                suggestedSanction = isSevere ? "Suspension" : "Community Service";
+                aiJustification = `Second offense detected in student records. Escalated disciplinary action applied for repeat behavior according to handbook guidelines.`;
+                severityStyle = "text-[#d97706] bg-[#fdf6e3] border-[#d97706]/30"; // Warning Orange
+                severityIcon = "fa-circle-exclamation";
+                severityTitle = "Escalated Intervention";
+            } else {
+                // First offense
+                if (isRetaliation && isSevere) {
+                    suggestedSanction = "Counseling / Mediation"; 
+                    aiJustification = `First offense, but narrative suggests retaliation or prior victimization. Immediate punitive action suspended in favor of <b>Peer Mediation and Investigation</b> to address root causes.`;
+                    severityStyle = "text-[#0284c7] bg-[#e0f2fe] border-[#0284c7]/30"; // Blue / Info style
+                    severityIcon = "fa-people-arrows";
+                    severityTitle = "Mediation & Investigation Recommended";
+                } else if (isSevere) {
+                    suggestedSanction = "Suspension";
+                    aiJustification = `First offense, but high-severity context detected in narrative/reason. Immediate escalation applied.`;
+                    severityStyle = "text-rose bg-rose/10 border-rose/30";
+                    severityIcon = "fa-triangle-exclamation";
+                    severityTitle = "Severe Case Escalation";
+                } else if (isAcademic) {
+                    suggestedSanction = "Written Reprimand";
+                    aiJustification = `First academic-related offense. Written reprimand recommended for official documentation.`;
+                    severityStyle = "text-luxuryGreen bg-[#e8f3ec] border-luxuryGreen/30";
+                    severityIcon = "fa-file-signature";
+                    severityTitle = "Academic Intervention";
+                } else {
+                    suggestedSanction = "Verbal Warning";
+                    aiJustification = `First-time minor offense. Verbal warning and standard guidance debriefing recommended based on <b>NC Student Handbook Section M.4</b>.`;
+                }
+            }
+
+            const sanctionOptions = ["Verbal Warning", "Written Reprimand", "Counseling / Mediation", "Community Service", "Suspension", "Dropping/Dismissal", "Expulsion"];
+            const interventionSelectHTML = sanctionOptions.map(opt => `<option value="${opt}" ${opt === suggestedSanction ? 'selected' : ''}>${opt}</option>`).join('');
+
             content.innerHTML = `
-                <div class="border-r border-silk pr-0 md:pr-6 mb-6 md:mb-0">
-                    <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-4 border-b border-silk pb-2">Case Information</h4>
-                    <p class="font-mono text-[10px] bg-chiffon px-2 py-1 rounded inline-block text-velvet mb-3">${c.caseId}</p>
-                    <h5 class="text-xl font-bold text-velvet mb-1">${c.name}</h5>
-                    <p class="text-xs font-bold text-smoke mb-4">ID: ${c.studentId} • ${c.course}</p>
+                <div class="border-r border-silk pr-0 md:pr-10 mb-6 md:mb-0 md:w-1/2 flex flex-col justify-center py-4">
+                    <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-5 border-b border-silk pb-3">Case Information</h4>
+                    <p class="font-mono text-xs bg-chiffon px-3 py-1.5 rounded inline-block text-velvet mb-4 self-start shadow-sm">${c.caseId}</p>
+                    <h5 class="text-3xl font-heading font-extrabold text-velvet mb-2">${c.name}</h5>
+                    <p class="text-sm font-bold text-smoke mb-6">ID: ${c.studentId} • ${c.course}</p>
                     
-                    <div class="space-y-3 mt-4">
-                        <div>
-                            <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Referral Reason</p>
-                            <p class="text-sm font-semibold text-rose">${c.reason}</p>
+                    <div class="space-y-5 mt-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Referral Reason</p>
+                                <p class="text-base font-bold text-rose">${c.reason}</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Offense Record</p>
+                                <p class="text-base font-bold ${currentOffenseCount >= 3 ? 'text-rose' : 'text-velvet'}">Offense ${currentOffenseCount} of 3</p>
+                            </div>
                         </div>
                         <div>
-                            <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Incident Time</p>
-                            <p class="text-xs text-velvet">${c.incidentTime}</p>
+                            <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Incident Time</p>
+                            <p class="text-base text-velvet font-medium">${c.incidentTime}</p>
                         </div>
                         <div>
-                            <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Narrative Report</p>
-                            <div class="bg-chiffon/30 p-3 rounded border border-silk text-xs italic text-velvet">${c.narrative}</div>
+                            <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Narrative Report</p>
+                            <div class="bg-chiffon/30 p-5 rounded-lg border border-silk text-sm italic text-velvet shadow-inner leading-relaxed">${c.narrative}</div>
                         </div>
                     </div>
                 </div>
                 
-                <div id="aiEvaluationSide" class="flex flex-col items-center justify-center p-6 space-y-4 min-h-[300px] bg-[#f9f9f9] rounded-xl border border-silk transition-all duration-300">
-                    <i class="fa-solid fa-database text-4xl text-luxuryGreenLight animate-pulse"></i>
-                    <p class="text-sm text-smoke font-bold uppercase tracking-widest animate-pulse text-center">AI Scanning Guidance History...</p>
+                <div id="aiEvaluationSide" class="flex flex-col items-center justify-center p-8 space-y-5 min-h-[400px] bg-[#f9f9f9] rounded-xl border border-silk transition-all duration-300 md:w-1/2 md:ml-10">
+                    <i class="fa-solid fa-database text-5xl text-luxuryGreenLight animate-pulse"></i>
+                    <p class="text-sm text-smoke font-bold uppercase tracking-widest animate-pulse text-center">AI Scanning Narrative & History...</p>
                 </div>
             `;
             
@@ -1852,68 +2094,37 @@
 
             setTimeout(() => {
                 const aiSide = document.getElementById('aiEvaluationSide');
-                aiSide.className = "flex flex-col p-4 bg-white rounded-xl transition-all duration-300"; 
+                aiSide.className = "flex flex-col p-6 bg-white rounded-xl transition-all duration-300 md:w-1/2 md:ml-10 shadow-sm border border-silk"; 
                 
-                // Intervention options from the handbook
-                const interventionSelect = `
-                    <div class="mt-4 pt-3 border-t border-silk/50">
-                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5">Select Final Intervention / Sanction</label>
-                        <select id="selectedIntervention" class="w-full px-3 py-2.5 rounded-lg border border-silk focus:border-luxuryGreen text-xs text-velvet font-medium bg-[#f9f9f9] shadow-sm">
-                            <option value="Verbal Warning" ${!c.hasHistory ? 'selected' : ''}>Verbal Warning</option>
-                            <option value="Written Reprimand">Written Reprimand</option>
-                            <option value="Community Service">Community Service</option>
-                            <option value="Suspension" ${c.hasHistory ? 'selected' : ''}>Suspension</option>
-                            <option value="Dropping/Dismissal">Dropping/Dismissal</option>
-                            <option value="Expulsion">Expulsion</option>
-                        </select>
+                aiSide.innerHTML = `
+                    <div class="flex justify-between items-center mb-5 border-b border-silk pb-3">
+                        <h4 class="text-xs font-bold text-smoke uppercase tracking-widest"><i class="fa-solid fa-brain text-luxuryGreen mr-1.5"></i> AI Analysis Result</h4>
+                        <button onclick="openHandbookModal()" class="text-[10px] bg-chiffon hover:bg-silk text-luxuryGreen px-3 py-2 rounded-lg font-bold uppercase tracking-widest transition-colors flex items-center shadow-sm" title="View Handbook Rules"><i class="fa-solid fa-book-open mr-2"></i> Rules</button>
                     </div>
+                    
+                    <div class="bg-chiffon/50 p-6 rounded-2xl border border-silk mb-5 flex-grow flex flex-col shadow-inner">
+                        <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-3">
+                            ${currentOffenseCount > 1 
+                                ? `<i class="fa-solid fa-check-circle text-luxuryGreen mr-1.5"></i> Prior Records Found (${currentOffenseCount - 1})`
+                                : `<i class="fa-solid fa-xmark-circle text-smoke mr-1.5"></i> No Prior History`
+                            }
+                        </h4>
+                        
+                        <p class="text-[10px] text-smoke font-bold uppercase mt-4 mb-3 border-b border-silk pb-1.5">Contextual Scan on Narrative & Reason...</p>
+                        <div class="p-4 rounded-xl border shadow-sm ${severityStyle}">
+                            <p class="font-extrabold text-base uppercase tracking-widest mb-1"><i class="fa-solid ${severityIcon} mr-2"></i> ${severityTitle}</p>
+                            <p class="text-sm mt-2 text-velvet font-medium leading-relaxed">${aiJustification}</p>
+                        </div>
+                        
+                        <div class="mt-auto pt-6 border-t border-silk/50">
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Select Final Intervention / Sanction</label>
+                            <select id="selectedIntervention" class="w-full px-4 py-3.5 rounded-xl border border-silk focus:border-luxuryGreen text-sm text-velvet font-bold bg-[#f9f9f9] shadow-sm cursor-pointer">
+                                ${interventionSelectHTML}
+                            </select>
+                        </div>
+                    </div>
+                    <button onclick="resolveCase(${idx})" class="w-full bg-luxuryGreen hover:bg-velvet transition-colors text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[11px] mt-auto shadow-lg">Apply Sanction & Resolve</button>
                 `;
-
-                if(c.hasHistory) {
-                    aiSide.innerHTML = `
-                        <div class="flex justify-between items-center mb-4 border-b border-silk pb-2">
-                            <h4 class="text-xs font-bold text-smoke uppercase tracking-widest"><i class="fa-solid fa-brain text-luxuryGreen mr-1"></i> AI Analysis Result</h4>
-                            <button onclick="openHandbookModal()" class="text-[9px] bg-chiffon hover:bg-silk text-luxuryGreen px-2.5 py-1.5 rounded-md font-bold uppercase tracking-widest transition-colors flex items-center shadow-sm" title="View Handbook Rules"><i class="fa-solid fa-book-open mr-1.5"></i> Rules</button>
-                        </div>
-                        
-                        <div class="bg-chiffon/50 p-4 rounded-xl border border-silk mb-4 flex-grow flex flex-col">
-                            <h4 class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-2"><i class="fa-solid fa-check-circle text-luxuryGreen mr-1"></i> Match Found in Records</h4>
-                            
-                            <p class="text-[9px] text-smoke font-bold uppercase mt-3 mb-2 border-b border-silk pb-1">Contextual Scan on Narrative...</p>
-                            <div class="bg-rose/10 text-rose p-3 rounded-lg border border-rose/30">
-                                <p class="font-bold text-sm uppercase tracking-widest"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Escalated Intervention</p>
-                                <p class="text-xs mt-1 text-velvet font-medium leading-relaxed">Repeat behavior detected. Requires escalated disciplinary action based on <b>NC Student Handbook Section M.4</b>.</p>
-                            </div>
-                            
-                            <div class="mt-auto">
-                                ${interventionSelect}
-                            </div>
-                        </div>
-                        <button onclick="resolveCase(${idx})" class="w-full bg-luxuryGreen hover:bg-velvet transition-colors text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] mt-auto shadow-md">Apply Sanction & Resolve</button>
-                    `;
-                } else {
-                    aiSide.innerHTML = `
-                        <div class="flex justify-between items-center mb-4 border-b border-silk pb-2">
-                            <h4 class="text-xs font-bold text-smoke uppercase tracking-widest"><i class="fa-solid fa-brain text-luxuryGreen mr-1"></i> AI Analysis Result</h4>
-                            <button onclick="openHandbookModal()" class="text-[9px] bg-chiffon hover:bg-silk text-luxuryGreen px-2.5 py-1.5 rounded-md font-bold uppercase tracking-widest transition-colors flex items-center shadow-sm" title="View Handbook Rules"><i class="fa-solid fa-book-open mr-1.5"></i> Rules</button>
-                        </div>
-                        
-                        <div class="bg-chiffon/50 p-4 rounded-xl border border-silk mb-4 flex-grow flex flex-col">
-                            <h4 class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-2"><i class="fa-solid fa-xmark-circle text-smoke mr-1"></i> No Prior History</h4>
-                            
-                            <p class="text-[9px] text-smoke font-bold uppercase mt-3 mb-2 border-b border-silk pb-1">AI Contextual Scan on Narrative...</p>
-                            <div class="bg-badgeGreen/10 text-luxuryGreen p-3 rounded-lg border border-luxuryGreen/30">
-                                <p class="font-bold text-sm uppercase tracking-widest"><i class="fa-solid fa-shield text-luxuryGreen mr-1"></i> Basic Intervention</p>
-                                <p class="text-xs mt-1 text-velvet font-medium leading-relaxed">First-time minor offense. Verbal warning and standard guidance debriefing recommended based on <b>NC Student Handbook Section M.4</b>.</p>
-                            </div>
-                            
-                            <div class="mt-auto">
-                                ${interventionSelect}
-                            </div>
-                        </div>
-                        <button onclick="resolveCase(${idx})" class="w-full bg-luxuryGreen hover:bg-velvet transition-colors text-white py-3.5 rounded-lg font-bold uppercase tracking-widest text-[10px] mt-auto shadow-md">Apply Sanction & Resolve</button>
-                    `;
-                }
             }, 1800);
         }
 
@@ -1950,7 +2161,7 @@
                 renderGuidanceCaseHistory();
             }
             if(document.getElementById('content-search-records')) {
-                renderOSASearchRecords(); // Update search list if it is open
+                renderOSASearchRecords(); 
             }
         }
 
@@ -1967,13 +2178,13 @@
             if(!document.getElementById('osaSearchListContainer')) {
                 container.innerHTML = `
                     <div class="mb-6 border-b border-silk pb-4">
-                        <h2 class="text-2xl font-serif font-bold text-velvet">Student Records Database</h2>
+                        <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Student Records</h2>
                         <p class="text-smoke text-sm mt-1">Search and review resolved cases.</p>
                     </div>
                     
-                    <div class="flex gap-2 mb-6">
-                        <input type="text" id="masterSearchQuery" onkeyup="filterOSASearch()" placeholder="Search using Name, ID or Case ID..." class="w-full px-4 py-3 rounded-xl border border-silk focus:border-luxuryGreen text-sm text-velvet shadow-sm">
-                        <button onclick="filterOSASearch()" class="bg-velvet text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-luxuryGreen transition-colors flex items-center gap-2">
+                    <div class="flex gap-3 mb-6">
+                        <input type="text" id="masterSearchQuery" onkeyup="filterOSASearch()" placeholder="Search using Name, ID or Case ID..." class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                        <button onclick="filterOSASearch()" class="bg-velvet text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-luxuryGreen transition-colors flex items-center gap-2 shadow-sm">
                             <i class="fa-solid fa-magnifying-glass"></i> Search
                         </button>
                     </div>
@@ -1981,7 +2192,7 @@
                     <div id="osaSearchListContainer" class="space-y-4">
                         <!-- List of cases will appear here -->
                     </div>
-                    <div id="searchResults" class="hidden flex-col gap-4">
+                    <div id="searchResults" class="hidden flex-col gap-5">
                         <!-- Specific case details will appear here -->
                     </div>
                 `;
@@ -1991,23 +2202,30 @@
             let html = '';
 
             if (records.length === 0) {
-                html = `<div class="p-8 text-center text-smoke font-bold uppercase tracking-widest text-xs border border-silk border-dashed rounded-xl bg-chiffon/50">No records found.</div>`;
+                html = `<div class="p-10 text-center text-smoke font-bold uppercase tracking-widest text-base border border-silk border-dashed rounded-xl bg-chiffon/50">No records found.</div>`;
             } else {
-                html = records.map(c => `
-                    <div class="bg-white p-5 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center hover:border-luxuryGreen/40 transition-colors">
+                html = records.map(c => {
+                    const studentCases = caseHistory.filter(record => record.studentId === c.studentId);
+                    const offenseIndex = studentCases.findIndex(record => record.caseId === c.caseId) + 1;
+                    const displayOffense = offenseIndex >= 3 ? 3 : offenseIndex;
+                    const offenseColor = displayOffense >= 3 ? 'text-rose' : 'text-luxuryGreen';
+
+                    return `
+                    <div class="bg-white p-6 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center hover:border-luxuryGreen/40 transition-colors">
                         <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] font-mono bg-chiffon px-2 py-0.5 rounded text-smoke font-bold">${c.caseId}</span>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-luxuryGreen"><i class="fa-solid fa-folder-closed text-[8px] mr-1"></i> Resolved</span>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="text-xs font-mono bg-chiffon px-2.5 py-1 rounded text-smoke font-bold">${c.caseId}</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-luxuryGreen"><i class="fa-solid fa-folder-closed text-[9px] mr-1"></i> Resolved</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest ${offenseColor} ml-2"><i class="fa-solid fa-triangle-exclamation text-[9px] mr-1"></i> Offense ${displayOffense}/3</span>
                             </div>
-                            <h4 class="font-bold text-velvet text-lg mt-2">${c.name} <span class="text-xs text-smoke font-normal ml-2">(${c.course} | ID: ${c.studentId})</span></h4>
-                            <p class="text-xs text-smoke mt-1"><b>Offense:</b> ${c.offense} <span class="mx-2 text-silk">|</span> <b>Sanction:</b> <span class="bg-velvet text-white px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest shadow-sm ml-1">${c.severity}</span></p>
+                            <h4 class="font-bold text-velvet text-xl mt-2">${c.name} <span class="text-sm text-smoke font-normal ml-2">(${c.course} | ID: ${c.studentId})</span></h4>
+                            <p class="text-sm text-smoke mt-1.5"><b>Offense:</b> ${c.offense} <span class="mx-3 text-silk">|</span> <b>Sanction:</b> <span class="bg-velvet text-white px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest shadow-sm ml-1">${c.severity}</span></p>
                         </div>
-                        <button onclick="viewFullCaseFile('${c.caseId}')" class="mt-4 md:mt-0 bg-white border border-luxuryGreen text-luxuryGreen px-5 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen hover:text-white transition-colors flex items-center gap-2">
-                            <i class="fa-solid fa-file-lines"></i> Open File
+                        <button onclick="viewFullCaseFile('${c.caseId}')" class="mt-5 md:mt-0 bg-white border-2 border-luxuryGreen text-luxuryGreen px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen hover:text-white transition-colors flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-file-lines text-sm"></i> Open File
                         </button>
                     </div>
-                `).join('');
+                `}).join('');
             }
             listContainer.innerHTML = html;
         }
@@ -2036,29 +2254,36 @@
             const listContainer = document.getElementById('osaSearchListContainer');
             const resContainer = document.getElementById('searchResults');
             
+            const studentCases = caseHistory.filter(record => record.studentId === c.studentId);
+            const offenseIndex = studentCases.findIndex(record => record.caseId === c.caseId) + 1;
+            const displayOffense = offenseIndex >= 3 ? 3 : offenseIndex;
+            
             listContainer.classList.add('hidden');
             resContainer.classList.remove('hidden');
 
             resContainer.innerHTML = `
-                <div class="bg-white border border-silk rounded-xl overflow-hidden shadow-sm">
-                    <div class="bg-chiffon p-4 border-b border-silk flex justify-between items-center">
+                <div class="bg-white border border-silk rounded-2xl overflow-hidden shadow-md">
+                    <div class="bg-chiffon/70 p-6 border-b border-silk flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                         <div>
-                            <h3 class="font-bold text-velvet text-sm">${c.name} <span class="font-medium text-xs text-smoke ml-1">(${c.course} | ID: ${c.studentId})</span></h3>
-                            <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mt-0.5">Specific Case File: ${c.caseId}</p>
+                            <h3 class="font-bold text-velvet text-xl">${c.name} <span class="font-medium text-sm text-smoke ml-2">(${c.course} | ID: ${c.studentId})</span></h3>
+                            <p class="text-[11px] font-bold text-smoke uppercase tracking-widest mt-1.5">Specific Case File: ${c.caseId}</p>
                         </div>
-                        <span class="bg-luxuryGreen text-white px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest">Record Found</span>
+                        <div class="flex gap-2">
+                            <span class="bg-white text-velvet border border-silk px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest shadow-sm">Offense ${displayOffense} of 3</span>
+                            <span class="bg-luxuryGreen text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest shadow-sm">Record Found</span>
+                        </div>
                     </div>
-                    <div class="p-5">
-                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Display Narrative</label>
-                        <p class="text-sm text-velvet bg-chiffon/30 p-3 rounded border border-silk mb-4 italic">"${c.narrative}"</p>
+                    <div class="p-8">
+                        <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Display Narrative</label>
+                        <p class="text-base text-velvet bg-chiffon/30 p-5 rounded-xl border border-silk mb-6 italic shadow-inner">"${c.narrative}"</p>
                         
-                        <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Display Physical Evidence Image</label>
-                        <div class="w-full h-32 bg-silk/30 rounded border border-silk border-dashed flex items-center justify-center text-smoke text-xs font-bold uppercase tracking-widest">
-                            <i class="fa-solid fa-image text-xl mr-2"></i> Preview Image
+                        <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Display Physical Evidence Image</label>
+                        <div class="w-full h-48 bg-silk/20 rounded-xl border-2 border-silk border-dashed flex items-center justify-center text-smoke text-sm font-bold uppercase tracking-widest transition-colors hover:bg-silk/30 cursor-pointer">
+                            <i class="fa-solid fa-image text-2xl mr-3"></i> Preview Image
                         </div>
                     </div>
-                    <div class="p-4 bg-[#f9f9f9] border-t border-silk flex justify-end">
-                        <button onclick="closeCaseView()" class="text-smoke hover:text-rose font-bold text-[10px] uppercase tracking-widest transition-colors"><i class="fa-solid fa-arrow-left mr-1"></i> Close and Return</button>
+                    <div class="p-5 bg-[#f9f9f9] border-t border-silk flex justify-end">
+                        <button onclick="closeCaseView()" class="text-smoke hover:text-rose font-bold text-[11px] uppercase tracking-widest transition-colors px-4 py-2 flex items-center"><i class="fa-solid fa-arrow-left mr-2 text-sm"></i> Close and Return</button>
                     </div>
                 </div>
             `;
@@ -2072,7 +2297,13 @@
 
         // --- UI Utilities ---
         function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
+            let container = document.getElementById('toast-container');
+            if(!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                document.body.appendChild(container);
+            }
+
             const toast = document.createElement('div');
             
             let iconClass = 'fa-circle-check text-luxuryGreenLight';
@@ -2083,10 +2314,11 @@
                 borderClass = 'border-l-4 border-rose';
             }
 
-            toast.className = `bg-[#0a0a0a] text-[#f4f1eb] py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-lg flex items-center gap-3 transform translate-x-[120%] transition-transform duration-400 font-sans text-xs md:text-sm ${borderClass}`;
+            toast.className = `bg-[#0a0a0a] text-[#f4f1eb] py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-lg flex items-center gap-3 transform translate-x-[120%] transition-transform duration-400 font-sans text-xs md:text-sm ${borderClass} mb-3`;
             toast.innerHTML = `<i class="fa-solid ${iconClass}"></i> <span class="font-bold tracking-wide">${message}</span>`;
             
             container.appendChild(toast);
+            
             setTimeout(() => toast.style.transform = 'translateX(0)', 10);
             
             setTimeout(() => {
@@ -2099,14 +2331,14 @@
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 20) {
-                // Remove glass-panel (white background) and use deeper green blur
                 nav.classList.add('bg-luxuryGreen/20', 'backdrop-blur-xl', 'shadow-md');
-                nav.classList.remove('bg-luxuryGreen/10', 'backdrop-blur-md', 'glass-panel');
+                nav.classList.remove('bg-panel/30', 'backdrop-blur-md');
             } else {
-                // Revert to original transparent green
-                nav.classList.remove('bg-luxuryGreen/20', 'backdrop-blur-xl', 'shadow-md', 'glass-panel');
-                nav.classList.add('bg-luxuryGreen/10', 'backdrop-blur-md');
+                nav.classList.remove('bg-luxuryGreen/20', 'backdrop-blur-xl', 'shadow-md');
+                nav.classList.add('bg-panel/30', 'backdrop-blur-md');
             }
+            // Tawagin natin ang logo renderer kapag nag-scroll para mag-update
+            renderLogos();
         });
 
     </script>
