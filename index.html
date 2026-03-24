@@ -38,7 +38,7 @@
                     },
                     boxShadow: {
                         'luxury': '0 20px 40px -10px rgba(18, 63, 34, 0.15)',
-                        'luxury-hover': '0 30px 60px -15px rgba(18, 63, 34, 0.25)',
+                        'luxury-hover': '0 50px 100px -12px rgba(18, 63, 34, 0.5)', /* Intense shadow for extreme 3D popup effect */
                         'modal': '0 25px 50px -12px rgba(18, 63, 34, 0.3)',
                         'nav': '0 10px 30px -10px rgba(18, 63, 34, 0.1)',
                     }
@@ -332,66 +332,78 @@
                 
                 <!-- Role Selection Cards Container -->
                 <div id="roleCardsSection" class="w-full max-w-[1050px] relative z-10 mt-2">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 overflow-hidden p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 p-4">
                         
-                        <!-- Card 1: Administrator (White) -->
-                        <div onclick="openLogin('Admin')" class="card-anim-left bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 h-[280px] sm:h-[300px] flex flex-col justify-between border border-white shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 transition-all duration-500 cursor-pointer group relative overflow-hidden" style="animation-delay: 0.5s;">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-chiffon rounded-bl-[100%] z-0 transition-transform duration-500 group-hover:scale-110 opacity-40"></div>
-                            
-                            <div class="relative z-10 flex flex-col h-full">
-                                <div class="w-12 h-12 rounded-[14px] bg-velvet text-white flex items-center justify-center text-lg mb-5 shadow-md transition-transform duration-300 group-hover:scale-105">
-                                    <i class="fa-solid fa-shield"></i>
-                                </div>
+                        <!-- Card 1: Administrator -->
+                        <!-- FIX: Wrapper handles the entry animation so the card can freely move on hover -->
+                        <div class="card-anim-left h-full" style="animation-delay: 0.5s;">
+                            <div onclick="openLogin('Admin')" class="bg-white/95 hover:bg-velvet backdrop-blur-xl rounded-[2rem] p-8 h-[280px] sm:h-[300px] flex flex-col justify-between border border-white hover:border-velvet shadow-luxury transform transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:-translate-y-6 hover:scale-105 hover:shadow-[0_40px_80px_-15px_rgba(18,63,34,0.5)] cursor-pointer group relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-chiffon rounded-bl-[100%] z-0 transition-all duration-500 ease-out opacity-40 group-hover:bg-white/5 group-hover:opacity-100 group-hover:scale-110"></div>
                                 
-                                <h3 class="font-heading font-extrabold text-xl md:text-[22px] text-velvet mb-2 tracking-tight">Administrator</h3>
-                                <p class="text-[11px] md:text-xs text-smoke font-medium leading-relaxed pr-2">Centralized governance of institutional records, security, and system integrity.</p>
-                                
-                                <div class="mt-auto w-full flex items-center justify-between border-t border-silk/60 pt-4">
-                                    <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.15em] group-hover:text-velvet transition-colors">Log In</span>
-                                    <div class="text-luxuryGreen transform group-hover:translate-x-1.5 transition-transform duration-300">
-                                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                                <div class="relative z-10 flex flex-col h-full">
+                                    <!-- Solid dark green background and white icon -->
+                                    <div class="w-12 h-12 rounded-[14px] bg-velvet text-white group-hover:bg-white group-hover:text-velvet flex items-center justify-center text-lg mb-5 shadow-md transition-colors duration-500">
+                                        <i class="fa-solid fa-shield"></i>
+                                    </div>
+                                    
+                                    <h3 class="font-heading font-extrabold text-xl md:text-[22px] text-velvet group-hover:text-white mb-2 tracking-tight transition-colors duration-500">Administrator</h3>
+                                    <p class="text-[11px] md:text-xs text-smoke group-hover:text-white/80 font-medium leading-relaxed pr-2 transition-colors duration-500">Centralized governance of institutional records, security, and system integrity.</p>
+                                    
+                                    <div class="mt-auto w-full flex items-center justify-between border-t border-silk/60 group-hover:border-white/20 pt-4 transition-colors duration-500">
+                                        <span class="text-[9px] font-bold text-smoke group-hover:text-white/90 uppercase tracking-[0.15em] transition-colors duration-500">Log In</span>
+                                        <div class="text-luxuryGreen group-hover:text-white transform group-hover:translate-x-2 transition-all duration-500">
+                                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card 2: Guidance Office (White) -->
-                        <div onclick="openLogin('Guidance')" class="card-anim-center bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 h-[280px] sm:h-[300px] flex flex-col justify-between border border-white shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 transition-all duration-500 cursor-pointer group relative overflow-hidden" style="animation-delay: 0.6s;">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-chiffon rounded-bl-[100%] z-0 transition-transform duration-500 group-hover:scale-110 opacity-40"></div>
-                            
-                            <div class="relative z-10 flex flex-col h-full">
-                                <div class="w-12 h-12 rounded-[14px] bg-chiffon text-velvet flex items-center justify-center text-lg mb-5 shadow-sm border border-silk transition-transform duration-300 group-hover:scale-105 group-hover:bg-luxuryGreenLight group-hover:text-white">
-                                    <i class="fa-solid fa-user-nurse"></i>
-                                </div>
+                        <!-- Card 2: Guidance Office -->
+                        <!-- FIX: Wrapper handles the entry animation so the card can freely move on hover -->
+                        <div class="card-anim-center h-full" style="animation-delay: 0.6s;">
+                            <div onclick="openLogin('Guidance')" class="bg-white/95 hover:bg-velvet backdrop-blur-xl rounded-[2rem] p-8 h-[280px] sm:h-[300px] flex flex-col justify-between border border-white hover:border-velvet shadow-luxury transform transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:-translate-y-6 hover:scale-105 hover:shadow-[0_40px_80px_-15px_rgba(18,63,34,0.5)] cursor-pointer group relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-chiffon rounded-bl-[100%] z-0 transition-all duration-500 ease-out opacity-40 group-hover:bg-white/5 group-hover:opacity-100 group-hover:scale-110"></div>
                                 
-                                <h3 class="font-heading font-extrabold text-xl md:text-[22px] text-velvet mb-2 tracking-tight">Guidance Office</h3>
-                                <p class="text-[11px] md:text-xs text-smoke font-medium leading-relaxed pr-2">Facilitate behavioral interventions, psychological support, and holistic student development.</p>
-                                
-                                <div class="mt-auto w-full flex items-center justify-between border-t border-silk/60 pt-4">
-                                    <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.15em] group-hover:text-velvet transition-colors">Log In</span>
-                                    <div class="text-luxuryGreen transform group-hover:translate-x-1.5 transition-transform duration-300">
-                                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                                <div class="relative z-10 flex flex-col h-full">
+                                    <!-- Solid dark green background and white icon -->
+                                    <div class="w-12 h-12 rounded-[14px] bg-velvet text-white group-hover:bg-white group-hover:text-velvet flex items-center justify-center text-lg mb-5 shadow-md transition-colors duration-500">
+                                        <i class="fa-solid fa-user-nurse"></i>
+                                    </div>
+                                    
+                                    <h3 class="font-heading font-extrabold text-xl md:text-[22px] text-velvet group-hover:text-white mb-2 tracking-tight transition-colors duration-500">Guidance Office</h3>
+                                    <p class="text-[11px] md:text-xs text-smoke group-hover:text-white/80 font-medium leading-relaxed pr-2 transition-colors duration-500">Facilitate behavioral interventions, psychological support, and holistic student development.</p>
+                                    
+                                    <div class="mt-auto w-full flex items-center justify-between border-t border-silk/60 group-hover:border-white/20 pt-4 transition-colors duration-500">
+                                        <span class="text-[9px] font-bold text-smoke group-hover:text-white/90 uppercase tracking-[0.15em] transition-colors duration-500">Log In</span>
+                                        <div class="text-luxuryGreen group-hover:text-white transform group-hover:translate-x-2 transition-all duration-500">
+                                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card 3: Student Affairs (White) -->
-                        <div onclick="openLogin('OSA')" class="card-anim-right bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 h-[280px] sm:h-[300px] flex flex-col justify-between border border-white shadow-luxury hover:shadow-luxury-hover hover:-translate-y-2 transition-all duration-500 cursor-pointer group relative overflow-hidden" style="animation-delay: 0.7s;">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-chiffon rounded-bl-[100%] z-0 transition-transform duration-500 group-hover:scale-110 opacity-40"></div>
-                            
-                            <div class="relative z-10 flex flex-col h-full">
-                                <div class="w-12 h-12 rounded-[14px] bg-chiffon text-velvet flex items-center justify-center text-lg mb-5 shadow-sm border border-silk transition-transform duration-300 group-hover:scale-105 group-hover:bg-luxuryGreenLight group-hover:text-white">
-                                    <i class="fa-solid fa-users-rectangle"></i>
-                                </div>
+                        <!-- Card 3: Student Affairs -->
+                        <!-- FIX: Wrapper handles the entry animation so the card can freely move on hover -->
+                        <div class="card-anim-right h-full" style="animation-delay: 0.7s;">
+                            <div onclick="openLogin('OSA')" class="bg-white/95 hover:bg-velvet backdrop-blur-xl rounded-[2rem] p-8 h-[280px] sm:h-[300px] flex flex-col justify-between border border-white hover:border-velvet shadow-luxury transform transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:-translate-y-6 hover:scale-105 hover:shadow-[0_40px_80px_-15px_rgba(18,63,34,0.5)] cursor-pointer group relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-chiffon rounded-bl-[100%] z-0 transition-all duration-500 ease-out opacity-40 group-hover:bg-white/5 group-hover:opacity-100 group-hover:scale-110"></div>
                                 
-                                <h3 class="font-heading font-extrabold text-xl md:text-[22px] text-velvet mb-2 tracking-tight">Student Affairs</h3>
-                                <p class="text-[11px] md:text-xs text-smoke font-medium leading-relaxed pr-2">Adjudicate disciplinary cases, enforce institutional policies, and oversee student welfare.</p>
-                                
-                                <div class="mt-auto w-full flex items-center justify-between border-t border-silk/60 pt-4">
-                                    <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.15em] group-hover:text-velvet transition-colors">Log In</span>
-                                    <div class="text-luxuryGreen transform group-hover:translate-x-1.5 transition-transform duration-300">
-                                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                                <div class="relative z-10 flex flex-col h-full">
+                                    <!-- Solid dark green background and white icon -->
+                                    <div class="w-12 h-12 rounded-[14px] bg-velvet text-white group-hover:bg-white group-hover:text-velvet flex items-center justify-center text-lg mb-5 shadow-md transition-colors duration-500">
+                                        <i class="fa-solid fa-users-rectangle"></i>
+                                    </div>
+                                    
+                                    <h3 class="font-heading font-extrabold text-xl md:text-[22px] text-velvet group-hover:text-white mb-2 tracking-tight transition-colors duration-500">Student Affairs</h3>
+                                    <p class="text-[11px] md:text-xs text-smoke group-hover:text-white/80 font-medium leading-relaxed pr-2 transition-colors duration-500">Adjudicate disciplinary concerns, enforce institutional policies, and oversee student welfare.</p>
+                                    
+                                    <div class="mt-auto w-full flex items-center justify-between border-t border-silk/60 group-hover:border-white/20 pt-4 transition-colors duration-500">
+                                        <span class="text-[9px] font-bold text-smoke group-hover:text-white/90 uppercase tracking-[0.15em] transition-colors duration-500">Log In</span>
+                                        <div class="text-luxuryGreen group-hover:text-white transform group-hover:translate-x-2 transition-all duration-500">
+                                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -556,7 +568,7 @@
 
         <!-- ================= MAIN DASHBOARD VIEW ================= -->
         <section id="view-dashboard" class="view-section flex-grow">
-            <div class="flex flex-col lg:flex-row h-full lg:min-h-[calc(100vh-8rem)] max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-8 gap-6 items-start mt-6">
+            <div class="flex flex-col lg:flex-row h-full lg:min-h-[calc(100vh-8rem)] max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-8 gap-6 lg:gap-8 items-start mt-6">
                 
                 <!-- Sidebar -->
                 <div class="w-72 glass-panel rounded-[2rem] flex-col hidden lg:flex overflow-hidden sticky top-36 h-[calc(100vh-12rem)] shrink-0 border border-white">
@@ -583,7 +595,7 @@
 
                 <!-- Content Area -->
                 <div class="flex-grow w-full glass-panel rounded-[2rem] h-full lg:min-h-[calc(100vh-12rem)] relative overflow-hidden border border-white">
-                    <div class="p-6 sm:p-8 md:p-12 h-full overflow-y-auto no-scrollbar" id="dashboardContentArea">
+                    <div class="p-6 sm:p-10 md:p-14 h-full overflow-y-auto no-scrollbar" id="dashboardContentArea">
                     </div>
                 </div>
             </div>
@@ -620,18 +632,56 @@
 
     <!-- ================= MODALS ================= -->
 
-    <!-- Reopen Case Modal (Guidance) -->
+    <!-- Admin Account Detail View Modal -->
+    <div id="viewAccountModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-500">
+        <div class="bg-white p-8 md:p-10 rounded-[2rem] w-full max-w-md relative mx-2 modal-enter shadow-2xl border border-silk">
+            <button onclick="closeViewAccountModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 border border-silk">
+                <i class="fa-solid fa-times text-sm"></i>
+            </button>
+            <div class="mb-6 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-chiffon flex items-center justify-center text-luxuryGreen text-xl"><i class="fa-solid fa-user-lock"></i></div>
+                <div>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet tracking-tight leading-none">Application Details</h3>
+                    <p class="text-smoke text-[10px] font-bold uppercase tracking-widest mt-1">Pending Staff Account</p>
+                </div>
+            </div>
+            <div class="space-y-4 mb-8 bg-chiffon/30 p-6 rounded-xl border border-silk">
+                <div>
+                    <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Full Name</p>
+                    <p class="text-base text-velvet font-bold" id="viewAccountName">---</p>
+                </div>
+                <div>
+                    <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Email Address</p>
+                    <p class="text-sm text-velvet font-medium" id="viewAccountEmail">---</p>
+                </div>
+                <div>
+                    <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Requested Department</p>
+                    <p class="text-sm text-velvet font-medium" id="viewAccountDept">---</p>
+                </div>
+                <div>
+                    <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-1">Date Submitted</p>
+                    <p class="text-sm text-velvet font-medium" id="viewAccountDate">---</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="modalRejectStaff()" class="w-1/3 bg-white text-rose border border-rose/30 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-rose hover:text-white transition-colors shadow-sm">Reject</button>
+                <button onclick="modalApproveStaff()" class="w-2/3 bg-luxuryGreen text-white py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-velvet transition-colors shadow-sm">Approve Access</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reopen Concern Modal (Guidance) -->
     <div id="reopenModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4 transition-opacity duration-500">
         <div class="bg-white p-8 md:p-10 rounded-[2rem] w-full max-w-lg relative mx-2 modal-enter shadow-2xl border border-silk">
             <button onclick="closeReopenModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-chiffon flex items-center justify-center text-smoke hover:text-rose transition-colors z-10 border border-silk">
                 <i class="fa-solid fa-times text-sm"></i>
             </button>
             <div class="mb-6">
-                <h3 class="text-2xl font-heading font-extrabold text-velvet mb-2">Reopen Case</h3>
-                <p class="text-smoke text-xs font-medium">Please provide a narrative reason for reopening this case. This will be sent to OSA for approval.</p>
+                <h3 class="text-2xl font-heading font-extrabold text-velvet mb-2">Reopen Concern</h3>
+                <p class="text-smoke text-xs font-medium">Please provide a narrative reason for reopening this concern. This will be sent to OSA for approval.</p>
             </div>
-            <form onsubmit="submitReopenCase(event)">
-                <input type="hidden" id="reopenCaseId">
+            <form onsubmit="submitReopenConcern(event)">
+                <input type="hidden" id="reopenConcernId">
                 <div class="mb-5">
                     <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Reason / Narrative</label>
                     <textarea id="reopenReason" required rows="4" placeholder="Student continued altercation, etc..." class="w-full px-5 py-4 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors resize-none"></textarea>
@@ -741,11 +791,11 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Last Name</label>
-                        <input type="text" required id="signupLastName" placeholder="e.g. Dela Cruz" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
+                        <input type="text" required id="signupLastName" placeholder="e.g. Doe" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
                     <div>
                         <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">First Name</label>
-                        <input type="text" required id="signupFirstName" placeholder="e.g. Juan" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
+                        <input type="text" required id="signupFirstName" placeholder="e.g. John" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
                     <div>
                         <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Middle Initial (Optional)</label>
@@ -917,27 +967,27 @@
 
         // Mock Database of Active Staff
         let pendingStaff = [
-            { id: 'REQ-001', name: 'Maria Clara', dept: 'Guidance', date: '2023-11-01' }
+            { id: 'REQ-001', name: 'Sarah Williams', email: 'sarah.w@nc.edu.ph', dept: 'Guidance', date: '2023-11-01' }
         ];
 
         // Central Student Database (Managed by Admin, Used for Auto-fill in Guidance)
         let studentDatabase = [
-            { id: '2023-0010', lastName: 'Penduko', firstName: 'Pedro', course: 'BSIT 2A' },
-            { id: '2023-0045', lastName: 'Dela Cruz', firstName: 'Juan', course: 'BSBA 3B' },
-            { id: '2022-0105', lastName: 'Makiling', firstName: 'Maria', course: 'BSED 4A' },
-            { id: '2024-0001', lastName: 'Rivera', firstName: 'Leonor', course: 'BSC 1C' }
+            { id: '2023-0010', lastName: 'Doe', firstName: 'John', course: 'BSIT 2A' },
+            { id: '2023-0045', lastName: 'Johnson', firstName: 'Michael', course: 'BSBA 3B' },
+            { id: '2022-0105', lastName: 'Smith', firstName: 'Jane', course: 'BSED 4A' },
+            { id: '2024-0001', lastName: 'Davis', firstName: 'Emily', course: 'BSC 1C' }
         ];
 
-        // Cases Queue (statuses: 'Pending OSA', 'Pending Implementation', 'Pending Reopen')
-        let pendingCases = [
-            { caseId: '20240220-001', studentId: '2023-0010', name: 'Pedro Penduko', course: 'BSIT 2A', incidentTime: '10:30 AM', reason: 'Fighting', narrative: 'Involved in a physical altercation near the cafeteria.', evidence: 'referral_slip_001.png', status: 'Pending OSA', severity: null },
-            { caseId: '20240221-002', studentId: '2023-0045', name: 'Juan Dela Cruz', course: 'BSBA 3B', incidentTime: '01:15 PM', reason: 'Improper Uniform', narrative: 'Entering the campus without ID and proper uniform.', evidence: 'referral_slip_002.png', status: 'Pending Implementation', severity: 'Verbal Warning' }
+        // Concerns Queue (statuses: 'Pending OSA', 'Pending Implementation', 'Pending Reopen')
+        let pendingConcerns = [
+            { concernId: '20240220-001', studentId: '2023-0010', name: 'John Doe', course: 'BSIT 2A', incidentTime: '10:30 AM', reason: 'Fighting', narrative: 'Involved in a physical altercation near the cafeteria.', evidence: 'referral_slip_001.png', status: 'Pending OSA', severity: null, referredBy: 'Jane Smith (Guidance)' },
+            { concernId: '20240221-002', studentId: '2023-0045', name: 'Michael Johnson', course: 'BSBA 3B', incidentTime: '01:15 PM', reason: 'Improper Uniform', narrative: 'Entering the campus without ID and proper uniform.', evidence: 'referral_slip_002.png', status: 'Pending Implementation', severity: 'Verbal Warning', referredBy: 'Sarah Williams (Guidance)' }
         ];
 
-        // Closed Case History
-        let caseHistory = [
-            { caseId: '20231105-012', studentId: '2023-0010', name: 'Pedro Penduko', course: 'BSIT 2A', offense: 'Improper Uniform', narrative: 'Dress code violation.', severity: 'Verbal Warning' },
-            { caseId: '20231210-044', studentId: '2022-0105', name: 'Maria Makiling', course: 'BSED 4A', offense: 'Academic Deficiencies', narrative: 'Caught looking at notes during final exams.', severity: 'Suspension' }
+        // Closed Concern History
+        let concernHistory = [
+            { concernId: '20231105-012', studentId: '2023-0010', name: 'John Doe', course: 'BSIT 2A', offense: 'Improper Uniform', narrative: 'Dress code violation.', severity: 'Verbal Warning', referredBy: 'Jane Smith (Guidance)' },
+            { concernId: '20231210-044', studentId: '2022-0105', name: 'Jane Smith', course: 'BSED 4A', offense: 'Academic Deficiencies', narrative: 'Caught looking at notes during final exams.', severity: 'Suspension', referredBy: 'Jane Smith (Guidance)' }
         ];
 
         // --- Utility: Sanction Colors based on Psychology (Light Variants) ---
@@ -1098,7 +1148,8 @@
 
         function handleLogin(e) {
             e.preventDefault();
-            const dummyName = "Dela Cruz, Juan P.";
+            // Fallback user if not set through password recovery flow
+            const dummyName = "Doe, John P.";
             currentUser = { name: dummyName, role: selectedRole };
             
             document.getElementById('navUserName').innerText = currentUser.name;
@@ -1344,6 +1395,7 @@
                     pendingStaff.push({
                         id: `REQ-00${pendingStaff.length + 3}`,
                         name: pendingSignupData.name,
+                        email: pendingSignupData.email,
                         dept: pendingSignupData.dept,
                         date: new Date().toLocaleDateString()
                     });
@@ -1367,6 +1419,39 @@
                 submitBtn.innerText = "Verify & Request Access";
                 submitBtn.disabled = false;
             }, 1000);
+        }
+
+        // --- Admin Account Detail View Modal Logic ---
+        let currentViewingStaffIdx = -1;
+
+        function openViewAccountModal(idx) {
+            currentViewingStaffIdx = idx;
+            const staff = pendingStaff[idx];
+            
+            document.getElementById('viewAccountName').innerText = staff.name;
+            document.getElementById('viewAccountEmail').innerText = staff.email || 'N/A';
+            document.getElementById('viewAccountDept').innerText = staff.dept;
+            document.getElementById('viewAccountDate').innerText = staff.date;
+            
+            document.getElementById('viewAccountModal').classList.remove('hidden');
+        }
+
+        function closeViewAccountModal() {
+            document.getElementById('viewAccountModal').classList.add('hidden');
+        }
+
+        function modalApproveStaff() {
+            if (currentViewingStaffIdx > -1) {
+                approveStaff(currentViewingStaffIdx);
+                closeViewAccountModal();
+            }
+        }
+
+        function modalRejectStaff() {
+            if (currentViewingStaffIdx > -1) {
+                rejectStaff(currentViewingStaffIdx);
+                closeViewAccountModal();
+            }
         }
 
         // --- Dashboard Builders ---
@@ -1398,13 +1483,13 @@
                 ];
             } else if (role === 'Guidance') {
                 tabs = [
-                    { id: 'new-case', icon: 'fa-file-circle-plus', label: 'New Case Entry' },
+                    { id: 'new-concern', icon: 'fa-file-circle-plus', label: 'New Concern Entry' },
                     { id: 'implementation', icon: 'fa-list-check', label: 'Intervention Fulfillment' },
-                    { id: 'case-history', icon: 'fa-folder-open', label: 'Case History' }
+                    { id: 'concern-history', icon: 'fa-folder-open', label: 'Concern History' }
                 ];
             } else if (role === 'OSA') {
                 tabs = [
-                    { id: 'process-case', icon: 'fa-clipboard-list', label: 'Process Pending Case' },
+                    { id: 'process-concern', icon: 'fa-clipboard-list', label: 'Process Pending Concern' },
                     { id: 'search-records', icon: 'fa-magnifying-glass', label: 'Search Records' }
                 ];
             }
@@ -1429,12 +1514,12 @@
                 renderAdminStudents();
             }
             if(role === 'Guidance') {
-                renderGuidanceNewCase();
+                renderGuidanceNewConcern();
                 renderGuidanceImplementation();
-                renderGuidanceCaseHistory();
+                renderGuidanceConcernHistory();
             }
             if(role === 'OSA') {
-                renderOSAProcessCase();
+                renderOSAProcessConcern();
                 renderOSASearchRecords(); 
             }
 
@@ -1494,8 +1579,7 @@
                             </div>
                         </div>
                         <div class="flex gap-3">
-                            <button onclick="approveStaff(${idx})" class="bg-luxuryGreen text-white px-5 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-velvet transition-colors">Approve</button>
-                            <button onclick="rejectStaff(${idx})" class="bg-white text-rose border border-rose/30 px-5 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-rose hover:text-white transition-colors">Reject</button>
+                            <button onclick="openViewAccountModal(${idx})" class="bg-velvet text-white px-5 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen transition-colors shadow-sm"><i class="fa-solid fa-eye mr-1.5"></i> View Application</button>
                         </div>
                     </div>
                 `).join('');
@@ -1546,11 +1630,11 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Last Name <span class="text-rose text-sm font-bold">*</span></label>
-                            <input type="text" id="newStdLastName" required placeholder="e.g. Dela Cruz" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                            <input type="text" id="newStdLastName" required placeholder="e.g. Doe" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">First Name <span class="text-rose text-sm font-bold">*</span></label>
-                            <input type="text" id="newStdFirstName" required placeholder="e.g. Juan" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                            <input type="text" id="newStdFirstName" required placeholder="e.g. John" class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                         </div>
                         <div class="md:col-span-4">
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Course & Section <span class="text-rose text-sm font-bold">*</span></label>
@@ -1767,25 +1851,25 @@
             }
         }
 
-        // GUIDANCE: New Case Entry (Multi-step)
-        function renderGuidanceNewCase() {
-            const container = document.getElementById('content-new-case');
+        // GUIDANCE: New Concern Entry (Multi-step)
+        function renderGuidanceNewConcern() {
+            const container = document.getElementById('content-new-concern');
             if(!container) return;
 
             const dateStr = new Date().toISOString().slice(0,10).replace(/-/g, "");
-            const caseId = `${dateStr}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+            const concernId = `${dateStr}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
 
             container.innerHTML = `
                 <div class="mb-6 border-b border-silk pb-4">
-                    <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">New Case Entry</h2>
+                    <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">New Concern Entry</h2>
                     <p class="text-smoke text-sm mt-1">Create and endorse referral to Student Affairs.</p>
                 </div>
                 
-                <form id="newCaseForm" onsubmit="handleNewCaseSubmit(event)" class="bg-white p-6 rounded-xl border border-silk relative min-h-[400px]">
+                <form id="newConcernForm" onsubmit="handleNewConcernSubmit(event)" class="bg-white p-6 rounded-xl border border-silk relative min-h-[400px]">
                     <div class="bg-chiffon/50 p-4 rounded-lg border border-silk flex items-center justify-between mb-5">
-                        <span class="text-[10px] font-bold text-smoke uppercase tracking-widest">Smart Case ID:</span>
-                        <span class="font-bold text-luxuryGreen text-base font-mono">${caseId}</span>
-                        <input type="hidden" id="caseId" value="${caseId}">
+                        <span class="text-[10px] font-bold text-smoke uppercase tracking-widest">Smart Concern ID:</span>
+                        <span class="font-bold text-luxuryGreen text-base font-mono">${concernId}</span>
+                        <input type="hidden" id="concernId" value="${concernId}">
                     </div>
 
                     <!-- STEP 1 -->
@@ -1852,7 +1936,7 @@
                                 <i class="fa-solid fa-arrow-left mr-2"></i> Back
                             </button>
                             <button type="submit" class="bg-luxuryGreen text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-velvet transition-colors">
-                                Submit Case to OSA
+                                Submit Concern to OSA
                             </button>
                         </div>
                     </div>
@@ -1890,9 +1974,9 @@
             document.getElementById('gcStep1').classList.remove('hidden');
         }
 
-        function handleNewCaseSubmit(e) {
+        function handleNewConcernSubmit(e) {
             e.preventDefault();
-            const caseId = document.getElementById('caseId').value;
+            const concernId = document.getElementById('concernId').value;
             let reasonsArray = Array.from(document.querySelectorAll('.ncReason:checked')).map(cb => cb.value);
             
             if(reasonsArray.includes('Other/s: Pls. Specify:')) {
@@ -1909,8 +1993,8 @@
                 return;
             }
             
-            pendingCases.push({
-                caseId: caseId,
+            pendingConcerns.push({
+                concernId: concernId,
                 studentId: document.getElementById('ncStudentID').value,
                 name: document.getElementById('ncStudentName').value,
                 course: document.getElementById('ncCourse').value,
@@ -1919,14 +2003,15 @@
                 narrative: document.getElementById('ncNarrative').value,
                 evidence: 'uploaded_slip.png',
                 status: 'Pending OSA',
-                severity: null
+                severity: null,
+                referredBy: currentUser ? currentUser.name : 'Unknown Staff' // Tracker attached here
             });
 
             // Simulated Email Functionality UI
             showToast('System: Constructing official email format to OSA...', 'success');
             setTimeout(() => {
-                showToast(`Email notification successfully sent to OSA for Case ID: ${caseId}`);
-                renderGuidanceNewCase(); // reset form
+                showToast(`Email notification successfully sent to OSA for Concern ID: ${concernId}`);
+                renderGuidanceNewConcern(); // reset form
             }, 1500);
         }
 
@@ -1935,33 +2020,36 @@
             const container = document.getElementById('content-implementation');
             if(!container) return;
 
-            const implementationCases = pendingCases.filter(c => c.status === 'Pending Implementation');
+            const implementationConcerns = pendingConcerns.filter(c => c.status === 'Pending Implementation');
 
             let html = `
                 <div class="mb-6 border-b border-silk pb-4">
                     <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Intervention Fulfillment</h2>
-                    <p class="text-smoke text-sm mt-1">Execute sanctions assigned by OSA and officially close cases.</p>
+                    <p class="text-smoke text-sm mt-1">Execute sanctions assigned by OSA and officially close concerns.</p>
                 </div>
                 <div class="space-y-4">
             `;
 
-            if(implementationCases.length === 0) {
-                html += `<div class="p-10 text-center text-smoke font-bold uppercase tracking-widest text-base border border-silk border-dashed rounded-xl bg-chiffon/50">No cases pending implementation.</div>`;
+            if(implementationConcerns.length === 0) {
+                html += `<div class="p-10 text-center text-smoke font-bold uppercase tracking-widest text-base border border-silk border-dashed rounded-xl bg-chiffon/50">No concerns pending implementation.</div>`;
             } else {
-                html += implementationCases.map(c => {
+                html += implementationConcerns.map(c => {
                     const sanctionColor = getSanctionColor(c.severity);
                     return `
                     <div class="bg-white p-6 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center hover:border-luxuryGreenLight/40 transition-colors">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
-                                <span class="text-xs font-mono bg-chiffon px-2.5 py-1 rounded text-smoke font-bold">${c.caseId}</span>
+                                <span class="text-xs font-mono bg-chiffon px-2.5 py-1 rounded text-smoke font-bold">${c.concernId}</span>
                                 <span class="text-[10px] font-bold uppercase tracking-widest text-[#d97706]"><i class="fa-solid fa-clock-rotate-left text-[9px] mr-1"></i> Awaiting Action</span>
                             </div>
                             <h4 class="font-bold text-velvet text-xl mt-2">${c.name} <span class="text-sm text-smoke font-normal ml-2">(${c.course} | ID: ${c.studentId})</span></h4>
-                            <p class="text-sm text-smoke mt-2 flex items-center gap-2"><b>Sanction to Implement:</b> <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border w-[180px] text-center inline-block shrink-0 ${sanctionColor}">${c.severity}</span></p>
+                            <p class="text-sm text-smoke mt-2 flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                                <span><b>Sanction:</b> <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border text-center inline-block shrink-0 ${sanctionColor}">${c.severity}</span></span>
+                                <span class="text-xs border-l-0 md:border-l border-silk md:pl-4"><b>Referred By:</b> ${c.referredBy || 'System'}</span>
+                            </p>
                         </div>
-                        <button onclick="implementAndCloseCase('${c.caseId}')" class="mt-4 md:mt-0 bg-luxuryGreen text-white px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-velvet transition-colors flex items-center gap-2 shadow-sm border border-luxuryGreen">
-                            <i class="fa-solid fa-check-double"></i> Mark Implemented & Close Case
+                        <button onclick="implementAndCloseConcern('${c.concernId}')" class="mt-4 md:mt-0 bg-luxuryGreen text-white px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-velvet transition-colors flex items-center gap-2 shadow-sm border border-luxuryGreen">
+                            <i class="fa-solid fa-check-double"></i> Mark Implemented & Close Concern
                         </button>
                     </div>
                 `}).join('');
@@ -1970,42 +2058,44 @@
             container.innerHTML = html;
         }
 
-        function implementAndCloseCase(caseId) {
-            const idx = pendingCases.findIndex(c => c.caseId === caseId);
+        function implementAndCloseConcern(concernId) {
+            const idx = pendingConcerns.findIndex(c => c.concernId === concernId);
             if (idx > -1) {
-                const completedCase = pendingCases.splice(idx, 1)[0];
+                const completedConcern = pendingConcerns.splice(idx, 1)[0];
                 
                 // Move to history
-                caseHistory.push({
-                    caseId: completedCase.caseId,
-                    studentId: completedCase.studentId,
-                    name: completedCase.name,
-                    course: completedCase.course,
-                    offense: completedCase.reason,
-                    narrative: completedCase.narrative,
-                    severity: completedCase.severity
+                concernHistory.push({
+                    concernId: completedConcern.concernId,
+                    studentId: completedConcern.studentId,
+                    name: completedConcern.name,
+                    course: completedConcern.course,
+                    offense: completedConcern.reason,
+                    narrative: completedConcern.narrative,
+                    severity: completedConcern.severity,
+                    reopenCount: completedConcern.reopenCount, // Retain count if it was a reopened concern
+                    referredBy: completedConcern.referredBy // Carry over referrer tracker
                 });
 
-                showToast(`Case ${caseId} implemented and officially closed.`);
+                showToast(`Concern ${concernId} implemented and officially closed.`);
                 renderGuidanceImplementation();
-                if(document.getElementById('content-case-history')) renderGuidanceCaseHistory();
+                if(document.getElementById('content-concern-history')) renderGuidanceConcernHistory();
             }
         }
 
-        // GUIDANCE: Case History
-        function renderGuidanceCaseHistory(filteredCases = caseHistory) {
-            const container = document.getElementById('content-case-history');
+        // GUIDANCE: Concern History
+        function renderGuidanceConcernHistory(filteredConcerns = concernHistory) {
+            const container = document.getElementById('content-concern-history');
             if(!container) return;
 
             if(!document.getElementById('ghListContainer')) {
                 container.innerHTML = `
                     <div class="mb-6 border-b border-silk pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                         <div>
-                            <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Case History</h2>
-                            <p class="text-smoke text-sm mt-1">Review closed cases. Option to reopen available if necessary.</p>
+                            <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Concern History</h2>
+                            <p class="text-smoke text-sm mt-1">Review closed concerns. Option to reopen available if necessary.</p>
                         </div>
                         <div class="relative w-full md:w-72">
-                            <input type="text" id="guidanceHistorySearch" placeholder="Search by Name, ID, Course, Case ID..." onkeyup="filterGuidanceHistory()" class="w-full pl-12 pr-5 py-3 rounded-xl border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                            <input type="text" id="guidanceHistorySearch" placeholder="Search by Name, ID, Course, Concern ID..." onkeyup="filterGuidanceConcernHistory()" class="w-full pl-12 pr-5 py-3 rounded-xl border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                             <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 transform -translate-y-1/2 text-smoke"></i>
                         </div>
                     </div>
@@ -2018,32 +2108,33 @@
             let html = `
                 <table class="w-full text-left">
                     <tr class="bg-chiffon text-[10px] font-bold text-smoke uppercase tracking-widest border-b border-silk">
-                        <th class="p-5">Case ID</th>
+                        <th class="p-5">Concern ID</th>
                         <th class="p-5">Student Info</th>
-                        <th class="p-5">Offense</th>
+                        <th class="p-5">Offense & Endorser</th>
                         <th class="p-5 text-center">Final Sanction</th>
                         <th class="p-5 text-center">Manage</th>
                     </tr>
             `;
-            if(filteredCases.length === 0) {
+            if(filteredConcerns.length === 0) {
                 html += `<tr><td colspan="5" class="p-8 text-center text-base text-smoke font-bold uppercase tracking-widest">No historical records found.</td></tr>`;
             } else {
-                html += filteredCases.map(c => {
-                    const studentCases = caseHistory.filter(record => record.studentId === c.studentId);
-                    const offenseIndex = studentCases.findIndex(record => record.caseId === c.caseId) + 1;
+                html += filteredConcerns.map(c => {
+                    const studentConcerns = concernHistory.filter(record => record.studentId === c.studentId);
+                    const offenseIndex = studentConcerns.findIndex(record => record.concernId === c.concernId) + 1;
                     const sanctionColor = getSanctionColor(c.severity);
 
                     return `
                     <tr class="border-b border-silk/50 hover:bg-chiffon/30 transition-colors">
-                        <td class="p-5 font-mono text-sm font-bold text-luxuryGreen">${c.caseId}</td>
+                        <td class="p-5 font-mono text-sm font-bold text-luxuryGreen">${c.concernId}</td>
                         <td class="p-5"><p class="font-bold text-base text-velvet">${c.name}</p><p class="text-xs text-smoke mt-0.5">${c.course} | ID: ${c.studentId}</p></td>
                         <td class="p-5">
                             <span class="text-sm font-medium text-velvet block mb-1.5">${c.offense}</span>
-                            <span class="text-[9px] font-bold text-smoke uppercase tracking-widest bg-chiffon px-2.5 py-1 rounded">Offense ${offenseIndex}</span>
+                            <span class="text-[9px] font-bold text-smoke uppercase tracking-widest bg-chiffon px-2.5 py-1 rounded inline-block mb-1">Offense ${offenseIndex}</span>
+                            <p class="text-[10px] text-smoke"><b>Ref:</b> ${c.referredBy || 'System'}</p>
                         </td>
                         <td class="p-5 text-center"><span class="px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-widest shadow-sm border whitespace-nowrap w-[180px] text-center inline-block shrink-0 ${sanctionColor}">${c.severity}</span></td>
                         <td class="p-5 text-center">
-                            <button onclick="openReopenModal('${c.caseId}')" class="text-[10px] font-bold uppercase tracking-widest text-luxuryGreen hover:text-rose transition-colors px-3 py-1.5 border border-luxuryGreen hover:border-rose rounded-lg bg-white shadow-sm">
+                            <button onclick="openReopenModal('${c.concernId}')" class="text-[10px] font-bold uppercase tracking-widest text-luxuryGreen hover:text-rose transition-colors px-3 py-1.5 border border-luxuryGreen hover:border-rose rounded-lg bg-white shadow-sm">
                                 Reopen
                             </button>
                         </td>
@@ -2054,20 +2145,20 @@
             document.getElementById('ghListContainer').innerHTML = html;
         }
 
-        function filterGuidanceHistory() {
+        function filterGuidanceConcernHistory() {
             const query = document.getElementById('guidanceHistorySearch').value.toLowerCase();
-            const filtered = caseHistory.filter(c => 
+            const filtered = concernHistory.filter(c => 
                 c.name.toLowerCase().includes(query) || 
                 c.studentId.toLowerCase().includes(query) || 
                 c.course.toLowerCase().includes(query) || 
-                c.caseId.toLowerCase().includes(query)
+                c.concernId.toLowerCase().includes(query)
             );
-            renderGuidanceCaseHistory(filtered);
+            renderGuidanceConcernHistory(filtered);
         }
 
-        // --- Reopen Case Modal Logic ---
-        function openReopenModal(caseId) {
-            document.getElementById('reopenCaseId').value = caseId;
+        // --- Reopen Concern Modal Logic ---
+        function openReopenModal(concernId) {
+            document.getElementById('reopenConcernId').value = concernId;
             document.getElementById('reopenReason').value = '';
             document.getElementById('reopenModal').classList.remove('hidden');
         }
@@ -2076,66 +2167,68 @@
             document.getElementById('reopenModal').classList.add('hidden');
         }
 
-        function submitReopenCase(e) {
+        function submitReopenConcern(e) {
             e.preventDefault();
-            const caseId = document.getElementById('reopenCaseId').value;
+            const concernId = document.getElementById('reopenConcernId').value;
             const reason = document.getElementById('reopenReason').value;
 
-            // Remove from history
-            const idx = caseHistory.findIndex(c => c.caseId === caseId);
+            // Find in history
+            const idx = concernHistory.findIndex(c => c.concernId === concernId);
             if (idx > -1) {
-                const reopenedCase = caseHistory.splice(idx, 1)[0];
+                const reopenedConcern = concernHistory.splice(idx, 1)[0];
                 
-                // Add back to pending with new status
-                pendingCases.push({
-                    caseId: reopenedCase.caseId,
-                    studentId: reopenedCase.studentId,
-                    name: reopenedCase.name,
-                    course: reopenedCase.course,
+                // Add back to pending with new status and inherently incremented offense total
+                pendingConcerns.push({
+                    concernId: reopenedConcern.concernId,
+                    studentId: reopenedConcern.studentId,
+                    name: reopenedConcern.name,
+                    course: reopenedConcern.course,
                     incidentTime: new Date().toLocaleTimeString(), // Resetting time for context
-                    reason: reopenedCase.offense,
-                    narrative: `[REOPEN REASON: ${reason}] \n\nOriginal Narrative: ` + reopenedCase.narrative,
+                    reason: reopenedConcern.offense,
+                    narrative: `[REOPEN REASON: ${reason}] \n\nOriginal Narrative: ` + reopenedConcern.narrative,
                     evidence: '',
                     status: 'Pending Reopen',
-                    severity: reopenedCase.severity
+                    severity: reopenedConcern.severity,
+                    reopenCount: (reopenedConcern.reopenCount || 0) + 1,
+                    referredBy: currentUser ? currentUser.name : reopenedConcern.referredBy // Set the reopened reference to current active person
                 });
 
                 closeReopenModal();
                 showToast('System: Drafting Reopen Request email to OSA...', 'success');
                 setTimeout(() => {
-                    showToast(`Reopen request sent to OSA for Case ID: ${caseId}`);
-                    renderGuidanceCaseHistory();
+                    showToast(`Reopen request sent to OSA for Concern ID: ${concernId}`);
+                    renderGuidanceConcernHistory();
                 }, 1500);
             }
         }
 
 
-        // OSA: Process Pending Case
-        function renderOSAProcessCase() {
-            const container = document.getElementById('content-process-case');
+        // OSA: Process Pending Concern
+        function renderOSAProcessConcern() {
+            const container = document.getElementById('content-process-concern');
             if(!container) return;
 
-            // Gather cases pending OSA approval OR reopen requests
-            const osaQueue = pendingCases.filter(c => c.status === 'Pending OSA' || c.status === 'Pending Reopen');
+            // Gather concerns pending OSA approval OR reopen requests
+            const osaQueue = pendingConcerns.filter(c => c.status === 'Pending OSA' || c.status === 'Pending Reopen');
             
             // Re-apply search filter logic inline if search is active
             const query = document.getElementById('osaPendingSearch') ? document.getElementById('osaPendingSearch').value.toLowerCase() : '';
-            const filteredCases = osaQueue.filter(c => 
+            const filteredConcerns = osaQueue.filter(c => 
                 c.name.toLowerCase().includes(query) || 
                 c.studentId.toLowerCase().includes(query) ||
                 c.course.toLowerCase().includes(query) ||
-                c.caseId.toLowerCase().includes(query)
+                c.concernId.toLowerCase().includes(query)
             );
 
             if(!document.getElementById('osaPendingListContainer')) {
                 container.innerHTML = `
                     <div class="mb-6 border-b border-silk pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                         <div>
-                            <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Process Cases</h2>
+                            <h2 class="text-2xl font-heading font-extrabold text-velvet tracking-tight">Process Concerns</h2>
                             <p class="text-smoke text-sm mt-1">Determine sanctions and approve/deny reopen requests.</p>
                         </div>
                         <div class="relative w-full md:w-72">
-                            <input type="text" id="osaPendingSearch" placeholder="Search by Name, ID, Course..." onkeyup="renderOSAProcessCase()" class="w-full pl-12 pr-5 py-3 rounded-xl border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                            <input type="text" id="osaPendingSearch" placeholder="Search by Name, ID, Course..." onkeyup="renderOSAProcessConcern()" class="w-full pl-12 pr-5 py-3 rounded-xl border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                             <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 transform -translate-y-1/2 text-smoke"></i>
                         </div>
                     </div>
@@ -2148,31 +2241,35 @@
             const listContainer = document.getElementById('osaPendingListContainer');
             let html = '';
 
-            if(filteredCases.length === 0) {
+            if(filteredConcerns.length === 0) {
                 html = `<div class="p-10 text-center text-smoke font-bold uppercase tracking-widest text-base border border-silk border-dashed rounded-xl bg-chiffon/50">Queue is empty.</div>`;
             } else {
-                html = filteredCases.map(c => {
+                html = filteredConcerns.map(c => {
                     const isReopen = c.status === 'Pending Reopen';
                     const badge = isReopen 
-                        ? `<span class="text-[10px] font-bold uppercase tracking-widest text-[#d97706] bg-[#fdf6e3] px-2 py-1 rounded border border-[#d97706]/30"><i class="fa-solid fa-folder-open text-[9px] mr-1"></i> Reopen Request</span>`
+                        ? `<span class="text-[10px] font-bold uppercase tracking-widest text-[#d97706] bg-[#fdf6e3] px-2 py-1 rounded border border-[#d97706]/30"><i class="fa-solid fa-folder-open text-[9px] mr-1"></i> Re-open Request</span>`
                         : `<span class="text-[10px] font-bold uppercase tracking-widest text-rose bg-rose/10 px-2 py-1 rounded border border-rose/20"><i class="fa-solid fa-circle-exclamation text-[9px] mr-1"></i> Pending Sanction</span>`;
                     
                     const actionBtn = isReopen 
                         ? `<div class="flex flex-col sm:flex-row gap-2 mt-4 md:mt-0">
-                               <button onclick="approveReopen('${c.caseId}')" class="bg-[#d97706] text-white px-5 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-velvet transition-colors flex items-center justify-center gap-2 shadow-sm"><i class="fa-solid fa-check"></i> Approve</button>
-                               <button onclick="rejectReopen('${c.caseId}')" class="bg-white border border-rose text-rose px-5 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-rose hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"><i class="fa-solid fa-times"></i> Deny</button>
+                               <button onclick="approveReopen('${c.concernId}')" class="bg-[#d97706] text-white px-5 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-velvet transition-colors flex items-center justify-center gap-2 shadow-sm"><i class="fa-solid fa-check"></i> Approve</button>
+                               <button onclick="rejectReopen('${c.concernId}')" class="bg-white border border-rose text-rose px-5 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-rose hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"><i class="fa-solid fa-times"></i> Deny</button>
                            </div>`
-                        : `<button onclick="evaluateCase('${c.caseId}')" class="mt-4 md:mt-0 bg-velvet text-white px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen transition-colors flex items-center gap-2 shadow-sm"><i class="fa-solid fa-microchip"></i> Evaluate Case</button>`;
+                        : `<button onclick="evaluateConcern('${c.concernId}')" class="mt-4 md:mt-0 bg-velvet text-white px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen transition-colors flex items-center gap-2 shadow-sm"><i class="fa-solid fa-microchip"></i> Evaluate Concern</button>`;
 
                     return `
                     <div class="bg-white p-6 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start hover:border-luxuryGreen/40 transition-colors">
                         <div class="flex-grow pr-4">
                             <div class="flex items-center gap-2 mb-2">
-                                <span class="text-xs font-mono bg-chiffon px-2.5 py-1 rounded text-smoke font-bold">${c.caseId}</span>
+                                <span class="text-xs font-mono bg-chiffon px-2.5 py-1 rounded text-smoke font-bold">${c.concernId}</span>
                                 ${badge}
                             </div>
                             <h4 class="font-bold text-velvet text-xl mt-2">${c.name} <span class="text-sm text-smoke font-normal ml-2">(${c.course})</span></h4>
-                            <p class="text-sm text-smoke mt-1"><b>Reason:</b> ${c.reason}</p>
+                            <p class="text-sm text-smoke mt-1 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                                <span><b>Reason:</b> ${c.reason}</span>
+                                <span class="hidden sm:inline border-l border-silk h-4"></span>
+                                <span class="text-xs"><b>Referred By:</b> ${c.referredBy || 'System'}</span>
+                            </p>
                             ${isReopen ? `<p class="text-xs text-smoke mt-3 bg-chiffon/40 p-4 rounded-lg border border-silk italic line-clamp-3"><b>Reopen Justification:</b><br>${c.narrative.split('\n\nOriginal Narrative:')[0]}</p>` : ''}
                         </div>
                         <div class="md:self-center shrink-0 mt-4 md:mt-0">
@@ -2184,44 +2281,50 @@
             listContainer.innerHTML = html;
         }
 
-        function approveReopen(caseId) {
-            const idx = pendingCases.findIndex(c => c.caseId === caseId);
+        function approveReopen(concernId) {
+            const idx = pendingConcerns.findIndex(c => c.concernId === concernId);
             if (idx > -1) {
-                pendingCases[idx].status = 'Pending OSA'; // Move to normal pending queue for re-evaluation
-                showToast(`Reopen Request Approved. Case ${caseId} is now ready for re-evaluation.`);
-                renderOSAProcessCase();
+                pendingConcerns[idx].status = 'Pending OSA'; // Move to normal pending queue for re-evaluation
+                showToast(`Reopen Request Approved. Concern ${concernId} is now ready for re-evaluation.`);
+                renderOSAProcessConcern();
             }
         }
         
-        function rejectReopen(caseId) {
-            const idx = pendingCases.findIndex(c => c.caseId === caseId);
+        function rejectReopen(concernId) {
+            const idx = pendingConcerns.findIndex(c => c.concernId === concernId);
             if (idx > -1) {
-                const rejectedCase = pendingCases.splice(idx, 1)[0];
-                // Put back to caseHistory with original severity
-                caseHistory.push({
-                    caseId: rejectedCase.caseId,
-                    studentId: rejectedCase.studentId,
-                    name: rejectedCase.name,
-                    course: rejectedCase.course,
-                    offense: rejectedCase.reason,
-                    narrative: rejectedCase.narrative + "\n\n[SYSTEM NOTE: Reopen Request was DENIED by OSA]",
-                    severity: rejectedCase.severity
+                const rejectedConcern = pendingConcerns.splice(idx, 1)[0];
+                // Put back to concernHistory with original severity
+                concernHistory.push({
+                    concernId: rejectedConcern.concernId,
+                    studentId: rejectedConcern.studentId,
+                    name: rejectedConcern.name,
+                    course: rejectedConcern.course,
+                    offense: rejectedConcern.reason,
+                    narrative: rejectedConcern.narrative + "\n\n[SYSTEM NOTE: Reopen Request was DENIED by OSA]",
+                    severity: rejectedConcern.severity,
+                    reopenCount: rejectedConcern.reopenCount - 1, // Decrement as request was denied
+                    referredBy: rejectedConcern.referredBy // Preserve referrer
                 });
-                showToast(`Reopen Request Denied. Case ${caseId} remains resolved and closed.`, 'error');
-                renderOSAProcessCase();
+                showToast(`Reopen Request Denied. Concern ${concernId} remains resolved and closed.`, 'error');
+                renderOSAProcessConcern();
             }
         }
 
         // Split Layout for AI Evaluation in OSA
-        function evaluateCase(caseIdStr) {
-            const c = pendingCases.find(c => c.caseId === caseIdStr);
+        function evaluateConcern(concernIdStr) {
+            const c = pendingConcerns.find(c => c.concernId === concernIdStr);
             if(!c) return;
 
             const modal = document.getElementById('aiModal');
             const content = document.getElementById('aiModalContent');
             
-            const pastOffenses = caseHistory.filter(record => record.studentId === c.studentId).length;
-            const currentOffenseCount = Math.min(pastOffenses + 1, 3); 
+            let pastOffenses = concernHistory.filter(record => record.studentId === c.studentId).length;
+            if (c.reopenCount) {
+                pastOffenses += c.reopenCount; // Automatically increments student's total offense count for this reopened concern
+            }
+            const currentOffenseCount = pastOffenses + 1; 
+            const aiRuleOffenseCount = Math.min(currentOffenseCount, 3); 
 
             // Basic AI Logic
             let suggestedSanction = "Verbal Warning";
@@ -2243,14 +2346,14 @@
             const isAcademic = academicKeywords.some(keyword => lowerReason.includes(keyword) || lowerNarrative.includes(keyword));
             const isProvoked = provocationKeywords.some(keyword => lowerNarrative.includes(keyword) || lowerReason.includes(keyword));
 
-            if (currentOffenseCount >= 3) {
+            if (aiRuleOffenseCount >= 3) {
                 suggestedSanction = "Suspension"; 
                 if (isSeverePhysical) suggestedSanction = "Expulsion"; 
-                aiJustification = `Maximum offense threshold reached (Offense 3/3). This pattern of behavior requires a firm disciplinary stance to maintain campus order, resulting in escalation based on <b>NC Student Handbook Section M.4</b>.`;
+                aiJustification = `Maximum offense threshold reached. This pattern of behavior requires a firm disciplinary stance to maintain campus order, resulting in escalation based on <b>NC Student Handbook Section M.4</b>.`;
                 severityStyle = "text-rose bg-rose/10 border-rose/30";
                 severityIcon = "fa-triangle-exclamation";
                 severityTitle = "Critical Escalation";
-            } else if (currentOffenseCount === 2) {
+            } else if (aiRuleOffenseCount === 2) {
                 if (isSeverePhysical) {
                      suggestedSanction = "Suspension";
                      aiJustification = `Second offense involving severe physical or illegal elements. Escalation to suspension is required.`;
@@ -2295,14 +2398,18 @@
                 }
             }
 
+            const isReopenTag = c.status === 'Pending Reopen' || c.reopenCount > 0
+                ? `<span class="bg-[#fdf6e3] text-[#d97706] border border-[#d97706]/30 px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest ml-3 align-middle shadow-sm"><i class="fa-solid fa-folder-open mr-1"></i> Re-opened</span>`
+                : '';
+
             const sanctionOptions = ["Verbal Warning", "Written Reprimand", "Written Apology", "Counseling / Mediation", "Community Service", "Suspension", "Dropping/Dismissal", "Expulsion"];
             const interventionSelectHTML = sanctionOptions.map(opt => `<option value="${opt}" ${opt === suggestedSanction ? 'selected' : ''}>${opt}</option>`).join('');
 
             content.innerHTML = `
                 <div class="border-r border-silk pr-0 md:pr-10 mb-6 md:mb-0 md:w-1/2 flex flex-col justify-center py-4">
-                    <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-5 border-b border-silk pb-3">Case Information</h4>
-                    <p class="font-mono text-xs bg-chiffon px-3 py-1.5 rounded inline-block text-velvet mb-4 self-start shadow-sm">${c.caseId}</p>
-                    <h5 class="text-3xl font-heading font-extrabold text-velvet mb-2">${c.name}</h5>
+                    <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-5 border-b border-silk pb-3">Concern Information</h4>
+                    <p class="font-mono text-xs bg-chiffon px-3 py-1.5 rounded inline-block text-velvet mb-4 self-start shadow-sm">${c.concernId}</p>
+                    <h5 class="text-3xl font-heading font-extrabold text-velvet mb-2 flex items-center">${c.name} ${isReopenTag}</h5>
                     <p class="text-sm font-bold text-smoke mb-6">ID: ${c.studentId} • ${c.course}</p>
                     
                     <div class="space-y-5 mt-4">
@@ -2313,12 +2420,18 @@
                             </div>
                             <div>
                                 <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Offense Record</p>
-                                <p class="text-base font-bold ${currentOffenseCount >= 3 ? 'text-rose' : 'text-velvet'}">Offense ${currentOffenseCount} of 3</p>
+                                <p class="text-base font-bold ${currentOffenseCount >= 3 ? 'text-rose' : 'text-velvet'}">Offense ${currentOffenseCount}</p>
                             </div>
                         </div>
-                        <div>
-                            <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Incident Time</p>
-                            <p class="text-base text-velvet font-medium">${c.incidentTime}</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Incident Time</p>
+                                <p class="text-base text-velvet font-medium">${c.incidentTime}</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Referred By</p>
+                                <p class="text-sm text-velvet font-medium">${c.referredBy || 'System'}</p>
+                            </div>
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Narrative Report</p>
@@ -2347,9 +2460,9 @@
                     
                     <div class="bg-chiffon/50 p-6 rounded-2xl border border-silk mb-5 flex-grow flex flex-col shadow-inner">
                         <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-3">
-                            ${currentOffenseCount > 1 
-                                ? `<i class="fa-solid fa-check-circle text-luxuryGreen mr-1.5"></i> Prior Records Found (${currentOffenseCount - 1})`
-                                : `<i class="fa-solid fa-xmark-circle text-smoke mr-1.5"></i> No Prior History`
+                            ${pastOffenses === 0 
+                                ? `<i class="fa-solid fa-shield-check text-luxuryGreen mr-1.5"></i> Clean Record (0 Prior Offenses)`
+                                : `<i class="fa-solid fa-clock-rotate-left text-rose mr-1.5"></i> Prior History Found: ${pastOffenses} exact prior offense(s)`
                             }
                         </h4>
                         
@@ -2366,7 +2479,7 @@
                             </select>
                         </div>
                     </div>
-                    <button onclick="applySanction('${c.caseId}')" class="w-full bg-luxuryGreen hover:bg-velvet transition-colors text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[11px] mt-auto shadow-lg">Apply Sanction & Send to Guidance</button>
+                    <button onclick="applySanction('${c.concernId}')" class="w-full bg-luxuryGreen hover:bg-velvet transition-colors text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[11px] mt-auto shadow-lg">Apply Sanction & Send to Guidance</button>
                 `;
             }, 1800);
         }
@@ -2379,19 +2492,19 @@
             document.getElementById('handbookModal').classList.add('hidden');
         }
 
-        function applySanction(caseId) {
+        function applySanction(concernId) {
             const interventionSelect = document.getElementById('selectedIntervention');
             const selectedSanction = interventionSelect ? interventionSelect.value : 'Verbal Warning';
 
-            const idx = pendingCases.findIndex(c => c.caseId === caseId);
+            const idx = pendingConcerns.findIndex(c => c.concernId === concernId);
             if(idx > -1) {
                 // Change status to Pending Implementation for Guidance
-                pendingCases[idx].status = 'Pending Implementation';
-                pendingCases[idx].severity = selectedSanction;
+                pendingConcerns[idx].status = 'Pending Implementation';
+                pendingConcerns[idx].severity = selectedSanction;
 
                 closeAIModal();
-                showToast(`Sanction Applied: ${selectedSanction}. Case forwarded to Guidance Intervention Fulfillment Queue.`);
-                renderOSAProcessCase();
+                showToast(`Sanction Applied: ${selectedSanction}. Concern forwarded to Guidance Intervention Fulfillment Queue.`);
+                renderOSAProcessConcern();
             }
         }
 
@@ -2400,7 +2513,7 @@
         }
 
         // OSA: Search Records (Grouped historical display)
-        function renderOSASearchRecords(records = caseHistory) {
+        function renderOSASearchRecords(records = concernHistory) {
             const container = document.getElementById('content-search-records');
             if(!container) return;
 
@@ -2437,7 +2550,7 @@
                         studentId: record.studentId,
                         name: record.name,
                         course: record.course,
-                        offenses: caseHistory.filter(c => c.studentId === record.studentId)
+                        offenses: concernHistory.filter(c => c.studentId === record.studentId)
                     });
                 }
             });
@@ -2448,7 +2561,7 @@
                 html = `<div class="p-10 text-center text-smoke font-bold uppercase tracking-widest text-base border border-silk border-dashed rounded-xl bg-chiffon/50">No records found.</div>`;
             } else {
                 html = groupedStudents.map(student => {
-                    const totalOffenses = student.offenses.length;
+                    const totalOffenses = student.offenses.reduce((sum, curr) => sum + 1 + (curr.reopenCount || 0), 0);
                     const statusColor = totalOffenses >= 3 ? 'text-rose bg-rose/10 border-rose/20' : 'text-luxuryGreen bg-luxuryGreen/10 border-luxuryGreen/20';
 
                     return `
@@ -2459,7 +2572,7 @@
                                 <span class="text-[10px] font-bold uppercase tracking-widest ${statusColor} px-2 py-1 rounded border ml-2">Total Offenses: ${totalOffenses}</span>
                             </div>
                             <h4 class="font-bold text-velvet text-xl mt-2">${student.name} <span class="text-sm text-smoke font-normal ml-2">(${student.course})</span></h4>
-                            <p class="text-sm text-smoke mt-1.5">Latest Offense: ${student.offenses[totalOffenses-1].offense}</p>
+                            <p class="text-sm text-smoke mt-1.5">Latest Offense: ${student.offenses[student.offenses.length-1].offense}</p>
                         </div>
                         <button onclick="viewFullStudentProfile('${student.studentId}')" class="mt-5 md:mt-0 bg-white border-2 border-luxuryGreen text-luxuryGreen px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen hover:text-white transition-colors flex items-center gap-2 shadow-sm">
                             <i class="fa-solid fa-folder-open text-sm"></i> View Full Record
@@ -2472,11 +2585,11 @@
 
         function filterOSASearch() {
             const query = document.getElementById('masterSearchQuery').value.toLowerCase();
-            const filtered = caseHistory.filter(c => 
+            const filtered = concernHistory.filter(c => 
                 c.name.toLowerCase().includes(query) || 
                 c.studentId.toLowerCase().includes(query) ||
                 c.course.toLowerCase().includes(query) ||
-                c.caseId.toLowerCase().includes(query)
+                c.concernId.toLowerCase().includes(query)
             );
             
             document.getElementById('searchResults').classList.add('hidden');
@@ -2487,7 +2600,7 @@
 
         // View full aggregated history
         function viewFullStudentProfile(studentId) {
-            const offenses = caseHistory.filter(record => record.studentId === studentId);
+            const offenses = concernHistory.filter(record => record.studentId === studentId);
             if(offenses.length === 0) return;
             const student = offenses[0]; // Get baseline info
 
@@ -2497,21 +2610,51 @@
             listContainer.classList.add('hidden');
             resContainer.classList.remove('hidden');
 
-            const historyTimelineHTML = offenses.map((c, index) => {
+            let runningOffenseIndex = 0;
+            const historyTimelineHTML = offenses.map((c) => {
                 const sanctionColor = getSanctionColor(c.severity);
-                return `
+                const isReopened = c.reopenCount > 0;
+                
+                // Represent records structurally
+                let displayHTML = '';
+                
+                // Initial offense representation
+                runningOffenseIndex++;
+                displayHTML += `
                 <div class="relative pl-6 md:pl-8 py-6 border-b border-silk last:border-0 hover:bg-chiffon/20 transition-colors">
                     <div class="absolute left-0 top-8 w-3 h-3 rounded-full bg-luxuryGreen shadow-[0_0_0_4px_#e1ede5]"></div>
                     <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-2">
                         <div>
-                            <span class="text-[9px] font-bold text-smoke uppercase tracking-widest">Case ID: <span class="font-mono">${c.caseId}</span></span>
-                            <h4 class="text-lg font-bold text-velvet mt-1">Offense ${index + 1}: ${c.offense}</h4>
+                            <span class="text-[9px] font-bold text-smoke uppercase tracking-widest block mb-1">Concern ID: <span class="font-mono">${c.concernId}</span> | Ref: ${c.referredBy || 'System'}</span>
+                            <h4 class="text-lg font-bold text-velvet mt-1">Offense ${runningOffenseIndex}: ${c.offense}</h4>
                         </div>
                         <span class="px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-widest shadow-sm border whitespace-nowrap w-[180px] text-center inline-block shrink-0 ${sanctionColor}">${c.severity}</span>
                     </div>
-                    <p class="text-sm text-velvet bg-chiffon/40 p-4 rounded-lg border border-silk italic mt-3">"${c.narrative}"</p>
+                    <p class="text-sm text-velvet bg-chiffon/40 p-4 rounded-lg border border-silk italic mt-3">"${c.narrative.split('\n\nOriginal Narrative:').pop()}"</p>
                 </div>
-            `}).join('');
+                `;
+
+                // If reopened, add subsequent iterations as additional "offenses" per instructions to increment exact count
+                if (isReopened) {
+                    for(let i=1; i<=c.reopenCount; i++) {
+                        runningOffenseIndex++;
+                        displayHTML += `
+                        <div class="relative pl-6 md:pl-8 py-6 border-b border-silk last:border-0 hover:bg-chiffon/20 transition-colors">
+                            <div class="absolute left-0 top-8 w-3 h-3 rounded-full bg-[#d97706] shadow-[0_0_0_4px_#e1ede5]"></div>
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-2">
+                                <div>
+                                    <span class="text-[9px] font-bold text-smoke uppercase tracking-widest block mb-1">Concern ID: <span class="font-mono">${c.concernId}</span> | Ref: ${c.referredBy || 'System'}</span>
+                                    <h4 class="text-lg font-bold text-velvet mt-1">Offense ${runningOffenseIndex}: Re-opened Iteration</h4>
+                                </div>
+                                <span class="px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-widest shadow-sm border whitespace-nowrap w-[180px] text-center inline-block shrink-0 ${sanctionColor}">${c.severity} (Re-Assessed)</span>
+                            </div>
+                        </div>
+                        `;
+                    }
+                }
+                
+                return displayHTML;
+            }).join('');
 
             resContainer.innerHTML = `
                 <div class="bg-white border border-silk rounded-2xl overflow-hidden shadow-md">
@@ -2522,7 +2665,7 @@
                             <p class="font-medium text-sm text-white/80 mt-1">${student.course} | ID: ${student.studentId}</p>
                         </div>
                         <div class="relative z-10 flex gap-2">
-                            <span class="bg-white/10 border border-white/20 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest backdrop-blur-sm shadow-sm text-white">Total Records: ${offenses.length}</span>
+                            <span class="bg-white/10 border border-white/20 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest backdrop-blur-sm shadow-sm text-white">Total Records: ${runningOffenseIndex}</span>
                         </div>
                     </div>
                     <div class="p-6 md:p-8">
@@ -2532,13 +2675,13 @@
                         </div>
                     </div>
                     <div class="p-5 bg-chiffon border-t border-silk flex justify-end">
-                        <button onclick="closeCaseView()" class="bg-white text-smoke border border-silk hover:border-velvet hover:text-velvet font-bold text-[10px] uppercase tracking-widest transition-all px-6 py-3 rounded-xl flex items-center shadow-sm"><i class="fa-solid fa-arrow-left mr-2 text-sm"></i> Back to Directory</button>
+                        <button onclick="closeConcernView()" class="bg-white text-smoke border border-silk hover:border-velvet hover:text-velvet font-bold text-[10px] uppercase tracking-widest transition-all px-6 py-3 rounded-xl flex items-center shadow-sm"><i class="fa-solid fa-arrow-left mr-2 text-sm"></i> Back to Directory</button>
                     </div>
                 </div>
             `;
         }
 
-        function closeCaseView() {
+        function closeConcernView() {
             document.getElementById('searchResults').classList.add('hidden');
             document.getElementById('osaSearchListContainer').classList.remove('hidden');
         }
