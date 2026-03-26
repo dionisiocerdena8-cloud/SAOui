@@ -238,6 +238,8 @@ def verify_otp():
     else:
         return jsonify({"success": False, "message": "Invalid or expired verification code."}), 401
 
+# dito ko ilalagay yung API ng either gemini or chatgpt, bale ipapasa ko thru javascript yung content, python sa request then output sa database, fetch nalang thru javascript pag need sya ng site
+
 if __name__ == '__main__':
     # Run the Flask server on port 5000
     app.run(debug=True, port=5000)
