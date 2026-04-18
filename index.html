@@ -752,7 +752,7 @@
             <div class="mb-6 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-[#e0f2fe] flex items-center justify-center text-[#0284c7] text-xl"><i class="fa-solid fa-users-gear"></i></div>
                 <div>
-                    <h3 class="text-2xl font-heading font-extrabold text-velvet tracking-tight leading-none">Section Migration Tool</h3>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet tracking-tight leading-none">Batch Update</h3>
                     <p class="text-smoke text-[10px] font-bold uppercase tracking-widest mt-1">Bulk Promote / Reassign Students</p>
                 </div>
             </div>
@@ -771,7 +771,7 @@
                 
                 <div class="pt-4 flex gap-3">
                     <button type="button" onclick="closeBatchUpdateModal()" class="w-1/3 bg-white border border-silk text-smoke hover:text-velvet hover:bg-chiffon py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-colors">Cancel</button>
-                    <button type="submit" class="w-2/3 bg-[#0284c7] text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-velvet transition-colors flex justify-center items-center gap-2"><i class="fa-solid fa-bolt"></i> Migrate Selection</button>
+                    <button type="submit" class="w-2/3 bg-[#0284c7] text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-velvet transition-colors flex justify-center items-center gap-2"><i class="fa-solid fa-bolt"></i> Update</button>
                 </div>
             </form>
         </div>
@@ -964,13 +964,14 @@
                             <option value="OSA">Office of Student Affairs</option>
                         </select>
                     </div>
+                    
                     <div>
                         <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Last Name</label>
-                        <input type="text" required id="signupLastName" placeholder="e.g. Doe" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
+                        <input type="text" required id="signupLastName" placeholder="e.g. Dela Cruz" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
                     <div>
                         <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">First Name</label>
-                        <input type="text" required id="signupFirstName" placeholder="e.g. John" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
+                        <input type="text" required id="signupFirstName" placeholder="e.g. Juan" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                     </div>
                     <div>
                         <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Middle Initial (Optional)</label>
@@ -1003,16 +1004,16 @@
 
             <!-- STEP 3 -->
             <div id="signupStep3" class="hidden transition-all">
-                <div class="text-center mb-8">
+                <div class="text-center mb-6">
                     <span class="text-[9px] font-bold text-smoke uppercase tracking-[0.2em] bg-chiffon px-3 py-1 rounded-md border border-silk mb-3 inline-block">Step 3 of 3</span>
                     <h3 class="text-2xl font-heading font-extrabold text-velvet mb-1">Secure Account</h3>
                     <p class="text-smoke text-xs font-medium">Create a strong password.</p>
                 </div>
                 <form onsubmit="handleSignupSubmit(event)">
-                    <div class="space-y-5 pb-2">
+                    <div class="space-y-4 pb-2">
                         <div>
                             <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 ml-1">Password</label>
-                            <input type="password" required id="signupPassword" placeholder="••••••••" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
+                            <input type="password" required id="signupPassword" onkeyup="checkPasswordStrength()" placeholder="••••••••" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                         </div>
 
                         <div>
@@ -1020,20 +1021,54 @@
                             <input type="password" required id="signupConfirmPassword" placeholder="••••••••" class="w-full px-5 py-3.5 rounded-xl border border-silk focus:border-luxuryGreenLight text-base text-velvet font-medium transition-colors">
                         </div>
 
-                        <div class="flex items-center gap-2 mt-1 ml-1">
+                        <div class="flex items-center gap-2 mt-2 ml-1 mb-4">
                             <input type="checkbox" id="showSignupPasswords" onchange="toggleSignupPasswords(this)" class="w-4 h-4 text-luxuryGreenLight bg-white border-silk rounded cursor-pointer">
                             <label for="showSignupPasswords" class="text-[10px] font-bold text-smoke uppercase tracking-widest cursor-pointer select-none">Show Passwords</label>
+                        </div>
+
+                        <!-- PASSWORD REQUIREMENTS UI (MOVED HERE) -->
+                        <div class="bg-panel/50 border border-silk rounded-xl p-4 mt-2">
+                            <p class="text-[9px] font-bold text-smoke uppercase tracking-widest mb-3">Password Requirements</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="passwordRequirements">
+                                <div id="reqLength" class="text-smoke font-medium text-[10px] flex items-center gap-2 transition-colors"><i class="fa-solid fa-circle text-[5px]"></i> At least 8 characters</div>
+                                <div id="reqUpper" class="text-smoke font-medium text-[10px] flex items-center gap-2 transition-colors"><i class="fa-solid fa-circle text-[5px]"></i> 1 Uppercase letter</div>
+                                <div id="reqLower" class="text-smoke font-medium text-[10px] flex items-center gap-2 transition-colors"><i class="fa-solid fa-circle text-[5px]"></i> 1 Lowercase letter</div>
+                                <div id="reqSpecial" class="text-smoke font-medium text-[10px] flex items-center gap-2 transition-colors"><i class="fa-solid fa-circle text-[5px]"></i> 1 Special char (!@#$...)</div>
+                            </div>
                         </div>
 
                         <div id="signupErrorMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-3 rounded-lg text-center tracking-widest"></div>
                         
                         <div class="flex gap-3 pt-4">
                             <button type="button" onclick="prevSignupStep(3)" class="w-1/4 bg-white border border-silk text-smoke hover:text-velvet hover:bg-chiffon py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
-                            <button type="submit" class="w-3/4 bg-velvet text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreenLight transition-colors">Complete Setup</button>
+                            <button type="submit" class="w-3/4 bg-velvet text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreenLight transition-colors">Sign Up</button>
                         </div>
                     </div>
                 </form>
             </div>
+
+            <!-- STEP 4 -->
+            <div id="signupStep4" class="hidden transition-all">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-chiffon rounded-2xl flex items-center justify-center mx-auto mb-4 text-velvet text-2xl border border-silk">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+                    <h3 class="text-2xl font-heading font-extrabold text-velvet mb-1">Verify Email</h3>
+                    <p class="text-smoke text-xs font-medium">We sent a 6-digit code to your email.</p>
+                </div>
+                <form onsubmit="verifySignupOTP(event)">
+                    <div class="space-y-5 pb-2">
+                        <div>
+                            <label class="block text-[9px] font-bold text-smoke uppercase tracking-widest mb-1.5 text-center">Verification Code</label>
+                            <input type="text" id="signupOTP" required placeholder="XXXXXX" maxlength="6" class="w-full px-5 py-4 rounded-xl border border-silk focus:border-luxuryGreenLight text-3xl text-center font-mono font-bold text-velvet shadow-sm tracking-[0.5em] transition-colors">
+                        </div>
+                        <div id="signupVerifyErrorMsg" class="hidden bg-rose/10 border border-rose/20 text-rose text-[10px] font-bold uppercase p-3 rounded-lg text-center tracking-widest"></div>
+                        <button type="submit" class="w-full bg-velvet text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-md hover:bg-luxuryGreenLight transition-colors mt-4">Verify & Request Access</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
             <!-- STEP 4 -->
             <div id="signupStep4" class="hidden transition-all">
@@ -1293,6 +1328,36 @@
             }
         }
 
+        function handleCheckboxLogic(changedCheckbox) {
+            const allCheckboxes = document.querySelectorAll('.ncReason');
+            const exclusiveVals = ['Academic Deficiencies', 'Personal Problem'];
+
+            if (exclusiveVals.includes(changedCheckbox.value)) {
+                if (changedCheckbox.checked) {
+                    allCheckboxes.forEach(cb => {
+                        if (!exclusiveVals.includes(cb.value)) cb.disabled = true;
+                    });
+                } else {
+                    const otherChecked = Array.from(allCheckboxes).some(cb => exclusiveVals.includes(cb.value) && cb.checked);
+                    if (!otherChecked) {
+                        allCheckboxes.forEach(cb => cb.disabled = false);
+                    }
+                }
+            } else {
+                if (changedCheckbox.checked) {
+                    allCheckboxes.forEach(cb => {
+                        if (exclusiveVals.includes(cb.value)) cb.disabled = true;
+                    });
+                } else {
+                    const otherChecked = Array.from(allCheckboxes).some(cb => !exclusiveVals.includes(cb.value) && cb.checked);
+                    if (!otherChecked) {
+                        allCheckboxes.forEach(cb => {
+                            if (exclusiveVals.includes(cb.value)) cb.disabled = false;
+                        });
+                    }
+                }
+            }
+        }
         // Fetch DB Data from Python Flask
         // Fetch DB Data from Python Flask
         async function syncDatabase(silent = false) {
@@ -1400,61 +1465,61 @@
             document.addEventListener('keydown', handleGlobalKeydown);
 
            // PERFECTED ALARM LOGIC FOR GUIDANCE & OSA
+            // PERFECTED ALARM LOGIC - EXCLUSIVE FOR GUIDANCE
+            // PERFECTED ALARM LOGIC - EXCLUSIVE FOR GUIDANCE
             pollingInterval = setInterval(() => {
                 if (currentUser && (currentUser.role === 'OSA' || currentUser.role === 'Guidance')) {
                     syncDatabase(true);
                 }
                 
-                if (currentUser && (currentUser.role === 'Guidance' || currentUser.role === 'OSA')) {
+                if (currentUser && currentUser.role === 'Guidance') {
                     const implementationQueue = pendingConcerns.filter(c => c.status === 'Pending Implementation');
                     const now = new Date();
                     
                     implementationQueue.forEach(async c => {
                         const scheduleMatch = (c.narrative || '').match(/\[SCHEDULED_DATE:\s*([^\]]+)\]/);
                         if (scheduleMatch) {
-                            const schedDate = new Date(scheduleMatch[1]);
+                            // FIX: Tinanggal yung word na " at " para hindi maging Invalid Date
+                            const cleanDateStr = scheduleMatch[1].replace(' at ', ' ').replace('at ', '');
+                            const schedDate = new Date(cleanDateStr);
                             const diffMins = (schedDate.getTime() - now.getTime()) / 60000;
                             
                             let needsUpdate = false;
                             let timeStr = "";
 
-                            // If exactly 5 mins before AND hasn't been notified yet
-                            if (diffMins > 0 && diffMins <= 5 && !c.notified_5min) {
-                                timeStr = "in 5 minutes!";
-                                c.notified_5min = true;
-                                needsUpdate = true;
-                            } 
-                            // If exactly NOW (or within last 24hrs) AND hasn't been notified yet
-                            else if (diffMins <= 0 && diffMins > -1440 && !c.notified_now) {
-                                timeStr = "NOW!";
-                                c.notified_now = true;
-                                needsUpdate = true;
-                            }
+                            // Siguraduhing valid ang oras bago mag-check
+                            if (!isNaN(diffMins)) {
+                                if (diffMins > 0 && diffMins <= 5 && !c.notified_5min) {
+                                    timeStr = "in 5 minutes!";
+                                    c.notified_5min = true;
+                                    needsUpdate = true;
+                                } 
+                                else if (diffMins <= 0 && diffMins > -1440 && !c.notified_now) {
+                                    timeStr = "NOW!";
+                                    c.notified_now = true;
+                                    needsUpdate = true;
+                                }
 
-                            if (needsUpdate) {
-                                const safeId = c.concernId || c.concern_id;
-                                
-                                // Send Notification to BOTH Guidance and OSA
-                                addNotification(`REMINDER: Scheduled Intervention for ${c.name} is ${timeStr}`, 'Guidance');
-                                addNotification(`REMINDER: Scheduled Intervention for ${c.name} is ${timeStr}`, 'OSA');
-                                
-                                showToast(`ALARM: Intervention for ${c.name} is starting ${timeStr}`, "success");
-                                
-                                // FORCE THE BACKEND TO SAVE THE ALARM STATUS SO IT DOESN'T SPAM
-                                try {
-                                    await fetch(`${API_BASE_URL}/concerns/${safeId}`, {
-                                        method: 'PUT',
-                                        headers: {'Content-Type': 'application/json'},
-                                        body: JSON.stringify({
-                                            notified_5min: c.notified_5min,
-                                            notified_now: c.notified_now
-                                        })
-                                    });
-                                } catch(e) {}
+                                if (needsUpdate) {
+                                    const safeId = c.concernId || c.concern_id;
+                                    
+                                    // PARA SA GUIDANCE LANG ITO LALABAS
+                                    addNotification(`REMINDER: Scheduled Intervention for ${c.name} is ${timeStr}`, 'Guidance');
+                                    showToast(`ALARM: Intervention for ${c.name} is starting ${timeStr}`, "success");
+                                    
+                                    try {
+                                        await fetch(`${API_BASE_URL}/concerns/${safeId}`, {
+                                            method: 'PUT',
+                                            headers: {'Content-Type': 'application/json'},
+                                            body: JSON.stringify({
+                                                notified_5min: c.notified_5min,
+                                                notified_now: c.notified_now
+                                            })
+                                        });
+                                    } catch(e) {}
 
-                                // Refresh the UI depending on user role
-                                if(currentActiveView === 'dashboard') {
-                                    if (currentUser.role === 'Guidance') renderGuidanceImplementation();
+                                    // Instant UI refresh para lumabas agad yung "Mark Implemented" button
+                                    renderGuidanceImplementation();
                                 }
                             }
                         }
@@ -1660,6 +1725,18 @@
             }
         }
 
+        // --- Time Formatter (12-Hour AM/PM) ---
+        function formatAMPM(timeStr) {
+            if (!timeStr) return 'N/A';
+            let parts = timeStr.split(':');
+            if(parts.length < 2) return timeStr;
+            let hours = parseInt(parts[0], 10);
+            let minutes = parts[1];
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // ang 0 ay nagiging 12
+            return hours + ':' + minutes + ' ' + ampm;
+        }
         // --- Sorting Utility ---
         // --- Sorting Utility ---
         function sortConcerns(arr, sortValue) {
@@ -1768,6 +1845,7 @@
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
 
             submitBtn.disabled = true;
             submitBtn.innerText = "Authenticating...";
@@ -1782,8 +1860,6 @@
 
                 if (data.success) {
                     currentUser = { name: data.name, role: data.role, email: email }; 
-                    
-                    // SAVE SESSION TO LOCAL STORAGE
                     localStorage.setItem('ncstars_user', JSON.stringify(currentUser));
 
                     document.getElementById('navUserName').innerText = currentUser.name;
@@ -1842,7 +1918,7 @@
                 }
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerText = "Sign In";
+                submitBtn.innerHTML = originalText;
             }
         }
 
@@ -2010,6 +2086,39 @@
         // --- Sign Up Form Logic ---
         let pendingSignupData = null;
 
+        function checkPasswordStrength() {
+            const pass = document.getElementById('signupPassword').value;
+            
+            const reqLength = document.getElementById('reqLength');
+            const reqUpper = document.getElementById('reqUpper');
+            const reqLower = document.getElementById('reqLower');
+            const reqSpecial = document.getElementById('reqSpecial');
+
+            const hasLength = pass.length >= 8;
+            const hasUpper = /[A-Z]/.test(pass);
+            const hasLower = /[a-z]/.test(pass);
+            const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(pass);
+
+            const updateReq = (el, isValid) => {
+                if (isValid) {
+                    el.className = "text-luxuryGreen font-bold text-[10px] flex items-center gap-2 transition-colors";
+                    el.innerHTML = '<i class="fa-solid fa-circle-check text-[11px]"></i> ' + el.innerText.trim();
+                } else {
+                    el.className = "text-smoke font-medium text-[10px] flex items-center gap-2 transition-colors";
+                    el.innerHTML = '<i class="fa-solid fa-circle text-[5px]"></i> ' + el.innerText.trim();
+                }
+            };
+
+            if (reqLength) {
+                updateReq(reqLength, hasLength);
+                updateReq(reqUpper, hasUpper);
+                updateReq(reqLower, hasLower);
+                updateReq(reqSpecial, hasSpecial);
+            }
+            
+            return hasLength && hasUpper && hasLower && hasSpecial;
+        }
+
         function openSignupModal() {
             document.getElementById('signupModal').classList.remove('hidden');
             document.getElementById('signupStep1').classList.remove('hidden');
@@ -2030,6 +2139,7 @@
                 document.getElementById('signupConfirmPassword').value = '';
                 document.getElementById('showSignupPasswords').checked = false;
                 toggleSignupPasswords(document.getElementById('showSignupPasswords'));
+                checkPasswordStrength(); // I-RESET ANG CHECKLIST
             }
 
             pendingSignupData = null;
@@ -2048,7 +2158,7 @@
                     return;
                 }
                 document.getElementById('signupStep1').classList.add('hidden');
-                document.getElementById('signupStep2').remove('hidden');
+                document.getElementById('signupStep2').classList.remove('hidden');
             } else if (currentStep === 2) {
                 const email = document.getElementById('signupEmail').value.trim();
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -2091,6 +2201,14 @@
             const pass2 = document.getElementById('signupConfirmPassword').value;
             const errorMsg = document.getElementById('signupErrorMsg');
             const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+
+            // PREVENT SUBMISSION KAPAG DI NA-MEET YUNG PASSWORD REQUIREMENTS
+            if (!checkPasswordStrength()) {
+                errorMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Please meet all password requirements.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
 
             if(pass1 !== pass2) {
                 errorMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Passwords do not match.';
@@ -2099,7 +2217,7 @@
             }
 
             errorMsg.classList.add('hidden');
-            submitBtn.innerText = "Sending Verification Code...";
+            submitBtn.innerText = "Processing...";
             submitBtn.disabled = true;
 
             const email = document.getElementById('signupEmail').value;
@@ -2128,8 +2246,6 @@
                 document.getElementById('signupStep3').classList.add('hidden');
                 document.getElementById('signupStep4').classList.remove('hidden');
                 showToast("Verification code sent to your email.");
-                submitBtn.innerText = "Complete Setup";
-                submitBtn.disabled = false;
             } catch(error) {
                 // Simulation
                 pendingSignupData = {
@@ -2141,7 +2257,8 @@
                 document.getElementById('signupStep3').classList.add('hidden');
                 document.getElementById('signupStep4').classList.remove('hidden');
                 showToast("(Simulation) Code sent to your email.");
-                submitBtn.innerText = "Complete Setup";
+            } finally {
+                submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }
         }
@@ -2450,13 +2567,13 @@
                         <div class="flex gap-3">
                             <div class="bg-chiffon/50 p-2 rounded-xl border border-silk flex items-center gap-3">
                                 <button onclick="openBatchUpdateModal()" class="bg-[#0284c7] text-white px-4 py-2.5 rounded-lg font-bold uppercase tracking-widest text-[9px] hover:bg-velvet transition-colors flex items-center gap-2 shadow-sm">
-                                    <i class="fa-solid fa-bolt"></i> Section Migration Tool
+                                    <i class="fa-solid fa-bolt"></i> Batch Update
                                 </button>
                             </div>
                             <div class="bg-chiffon/50 p-2 rounded-xl border border-silk flex items-center gap-3">
                                 <input type="file" id="csvFileInput" accept=".csv, .txt" class="hidden" onchange="handleBulkUpload(event)">
                                 <button onclick="document.getElementById('csvFileInput').click()" class="bg-velvet text-white px-4 py-2.5 rounded-lg font-bold uppercase tracking-widest text-[9px] hover:bg-luxuryGreen transition-colors flex items-center gap-2 shadow-sm">
-                                    <i class="fa-solid fa-file-import"></i> Upload CSV
+                                    <i class="fa-solid fa-file-import"></i> Batch Upload
                                 </button>
                             </div>
                         </div>
@@ -2785,6 +2902,26 @@
             if(val.length === 9) autoFillStudent();
         }
 
+        // --- Input Formatting for Contact Number (09xx-xxx-xxxx) ---
+        function formatContactNumber(input) {
+            // Tanggalin lahat ng letters/symbols, numbers lang ang itira
+            let val = input.value.replace(/\D/g, '');
+            
+            // Limitahan hanggang 11 numbers lang
+            if (val.length > 11) {
+                val = val.substring(0, 11);
+            }
+
+            // I-format na may hyphens (xxxx-xxx-xxxx)
+            if (val.length > 7) {
+                val = val.substring(0, 4) + '-' + val.substring(4, 7) + '-' + val.substring(7);
+            } else if (val.length > 4) {
+                val = val.substring(0, 4) + '-' + val.substring(4);
+            }
+
+            // Ibalik ang na-format na value sa input box
+            input.value = val;
+        }
         function autoFillStudent() {
             const idInput = document.getElementById('ncStudentID').value;
             if(idInput.length < 9) return;
@@ -2796,6 +2933,7 @@
             }
         }
 
+        // GUIDANCE: New Concern Entry
         // GUIDANCE: New Concern Entry
         function renderGuidanceNewConcern() {
             const container = document.getElementById('content-new-concern');
@@ -2816,7 +2954,6 @@
                         <input type="hidden" id="concernId" value="${concernId}">
                     </div>
 
-                    <!-- STEP 1 -->
                     <div id="gcStep1" class="space-y-6 transition-all">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
@@ -2825,15 +2962,33 @@
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Student Name <span class="text-rose text-sm font-bold">*</span></label>
-                                <input type="text" id="ncStudentName" required placeholder="Last Name, First Name M.I. (e.g. Dela Cruz, Juan A.)" oninput="capitalizeWords(this)" class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                                <input type="text" id="ncStudentName" required placeholder="Last Name, First Name M.I." oninput="capitalizeWords(this)" class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
                             </div>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pb-[35vh]">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                             <div>
                                 <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Course & Section <span class="text-rose text-sm font-bold">*</span></label>
                                 <input list="courseOptions" id="ncCourse" autocomplete="off" required placeholder="COURSE-SECTION (e.g. BSCS 2C)" oninput="this.value = this.value.toUpperCase()" class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm uppercase">
                             </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Student Contact Number</label>
+                                <input type="text" id="ncContactNumber" oninput="formatContactNumber(this)" maxlength="13" placeholder="09xx-xxx-xxxx" class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm font-mono">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+                            <div>
+                                <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Referred By (Name) <span class="text-rose text-sm font-bold">*</span></label>
+                                <input type="text" id="ncReferredBy" required placeholder="e.g. Juan Dela Cruz" class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Referrer Designation <span class="text-rose text-sm font-bold">*</span></label>
+                                <input type="text" id="ncReferrerDesignation" required placeholder="e.g. Instructor, Security" class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 pb-[15vh]">
                             <div>
                                 <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Incident Time <span class="text-rose text-sm font-bold">*</span></label>
                                 <input type="time" id="ncTime" required class="w-full px-5 py-3.5 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
@@ -2847,20 +3002,19 @@
                         </div>
                     </div>
 
-                    <!-- STEP 2 -->
                     <div id="gcStep2" class="space-y-6 hidden transition-all">
                         <div>
                             <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Primary Offense / Reason: <span class="text-rose text-sm font-bold">*</span></label>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 bg-chiffon/30 p-5 rounded-lg border border-silk shadow-inner">
-                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Improper Uniform" class="ncReason accent-luxuryGreen w-4 h-4"> Improper Uniform</label>
-                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="No I.D." class="ncReason accent-luxuryGreen w-4 h-4"> No I.D.</label>
-                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Improper Haircut/Color" class="ncReason accent-luxuryGreen w-4 h-4"> Improper Haircut</label>
-                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Academic Deficiencies" class="ncReason accent-luxuryGreen w-4 h-4"> Academic Deficiencies</label>
-                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Misconduct" class="ncReason accent-luxuryGreen w-4 h-4"> Misconduct</label>
-                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Bullying" class="ncReason accent-luxuryGreen w-4 h-4"> Bullying</label>
-                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Personal Problem" class="ncReason accent-luxuryGreen w-4 h-4"> Personal Problem</label>
-                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Habitual Absences" class="ncReason accent-luxuryGreen w-4 h-4"> Habitual Absences</label>
-                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet col-span-2 md:col-span-1"><input type="checkbox" value="Other/s: Pls. Specify:" class="ncReason accent-luxuryGreen w-4 h-4" onchange="toggleOtherReason(this)"> Other/s: Pls. Specify:</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Improper Uniform" onchange="handleCheckboxLogic(this)" class="ncReason accent-luxuryGreen w-4 h-4"> Improper Uniform</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="No I.D." onchange="handleCheckboxLogic(this)" class="ncReason accent-luxuryGreen w-4 h-4"> No I.D.</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Improper Haircut/Color" onchange="handleCheckboxLogic(this)" class="ncReason accent-luxuryGreen w-4 h-4"> Improper Haircut</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Academic Deficiencies" onchange="handleCheckboxLogic(this)" class="ncReason accent-luxuryGreen w-4 h-4"> Academic Deficiencies</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Misconduct" onchange="handleCheckboxLogic(this)" class="ncReason accent-luxuryGreen w-4 h-4"> Misconduct</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Bullying" onchange="handleCheckboxLogic(this)" class="ncReason accent-luxuryGreen w-4 h-4"> Bullying</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Personal Problem" onchange="handleCheckboxLogic(this)" class="ncReason accent-luxuryGreen w-4 h-4"> Personal Problem</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet"><input type="checkbox" value="Habitual Absences" onchange="handleCheckboxLogic(this)" class="ncReason accent-luxuryGreen w-4 h-4"> Habitual Absences</label>
+                                <label class="flex items-center gap-3 text-sm font-semibold text-velvet col-span-2 md:col-span-1"><input type="checkbox" value="Other/s: Pls. Specify:" onchange="handleCheckboxLogic(this)" class="ncReason accent-luxuryGreen w-4 h-4" onchange="toggleOtherReason(this)"> Other/s: Pls. Specify:</label>
                                 
                                 <div id="otherReasonContainer" class="col-span-2 md:col-span-3 hidden mt-3">
                                     <input type="text" id="ncOtherReasonInput" placeholder="Please specify the reason..." class="w-full px-4 py-3 rounded-lg border border-silk focus:border-luxuryGreen text-base text-velvet shadow-sm">
@@ -2888,7 +3042,6 @@
                 </form>
             `;
 
-            // Auto set the time to the current time when rendering
             setTimeout(() => {
                 const timeInput = document.getElementById('ncTime');
                 if (timeInput) {
@@ -2992,6 +3145,13 @@
 
         async function handleNewConcernSubmit(e) {
             e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Apply Debounce
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-xs"></i> Processing...`;
+
             const concern_id = document.getElementById('concernId').value;
             let reasonsArray = Array.from(document.querySelectorAll('.ncReason:checked')).map(cb => cb.value);
             
@@ -3006,6 +3166,8 @@
             const reason = reasonsArray.join(', ');
             if (!reason) {
                 showToast("Please select at least one reason for referral.", "error");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
                 return;
             }
             
@@ -3016,9 +3178,11 @@
                 course: document.getElementById('ncCourse').value.toUpperCase(),
                 incident_time: document.getElementById('ncTime').value,
                 reason: reason,
-                narrative: document.getElementById('ncNarrative').innerHTML, // Use raw HTML from the editor
+                narrative: document.getElementById('ncNarrative').innerHTML,
                 status: 'Pending_Review', 
-                referred_by: currentUser ? currentUser.name : 'Unknown Staff',
+                referred_by: document.getElementById('ncReferredBy').value, 
+                contact_number: document.getElementById('ncContactNumber').value,
+                referrer_designation: document.getElementById('ncReferrerDesignation').value,
                 timestamp: Date.now()
             };
 
@@ -3028,17 +3192,13 @@
                 ...payload
             });
 
-            // ===============================================================
             // DATA PRIVACY LOGIC: Anonymous Notification for OSA
-            // ===============================================================
             const reasonLower = reason.toLowerCase();
             const isConfidential = reasonLower.includes('academic deficiencies') || reasonLower.includes('personal problem');
 
             if (isConfidential) {
-                // Magno-notify sa OSA pero NAKATAGO ang pangalan at detalye ng student
                 addNotification(`Guidance has opened a new Confidential Case (Academic/Personal). Details are secured for student privacy.`, 'OSA');
             }
-            // ===============================================================
 
             showToast(`Successfully saved to Internal Investigation.`);
             
@@ -3050,8 +3210,14 @@
             document.getElementById('ncStudentID').value = '';
             document.getElementById('ncStudentName').value = '';
             document.getElementById('ncCourse').value = '';
+            document.getElementById('ncContactNumber').value = '';
+            document.getElementById('ncReferredBy').value = '';
+            document.getElementById('ncReferrerDesignation').value = '';
             document.getElementById('ncNarrative').innerHTML = '';
-            document.querySelectorAll('.ncReason:checked').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.ncReason:checked').forEach(cb => {
+                cb.checked = false;
+                cb.disabled = false; // Reset the exclusivity locks
+            });
 
             try {
                 const res = await fetch(`${API_BASE_URL}/concerns`, {
@@ -3064,6 +3230,9 @@
                 } 
             } catch(e) {
                // Silently fail if simulation since we already pushed locally
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
             }
         }
 
@@ -3174,23 +3343,43 @@
 
         async function submitEscalateOSA(e) {
             e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // I-lock yung button para iwas spam at pakita na nag-lo-load
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Escalating...`;
+
             const concernId = document.getElementById('escalateConcernId').value;
             const investigationNotes = document.getElementById('escalateReason').value;
 
             const c = pendingConcerns.find(c => (c.concernId || c.concern_id) === concernId);
             if (c) {
                 // Ensure Guidance Notes are at the TOP of the narrative stream
-                const updatedNarrative = `<strong class="text-luxuryGreenLight">[ESCALATED TO OSA - GUIDANCE NOTES]:</strong><br><em>${investigationNotes}</em><br><br><b>--- Original Narrative Below ---</b><br>` + c.narrative;
+                const logDate = new Date().toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const updatedNarrative = `
+                    <div style="margin-bottom: 15px; border-bottom: 1px solid #e1ede5; padding-bottom: 10px; background-color: #f8faf9; padding: 12px; border-radius: 8px;">
+                        <span style="font-weight: 800; font-size: 11px; color: #1b4d2c; text-transform: uppercase; letter-spacing: 1px;"><i class="fa-solid fa-share mr-1"></i> Escalated to OSA</span>
+                        <span style="float: right; font-size: 10px; color: #4b5563; font-weight: 600;">${logDate}</span>
+                        <div style="margin-top: 12px; font-size: 9px; font-weight: 800; color: #1b4d2c; text-transform: uppercase; letter-spacing: 1px;">Guidance Investigation Notes:</div>
+                        <div style="margin-top: 4px; font-style: normal; color: #0f2918; line-height: 1.5; font-weight: 500;">${investigationNotes}</div>
+                    </div>
+                    <div style="margin-top: 15px; margin-bottom: 8px; font-size: 9px; font-weight: 800; color: #4b5563; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px dashed #b8d0c3; padding-bottom: 4px;">Original Incident Narrative:</div>
+                ` + c.narrative;
                 
                 // Immediately apply locally
                 c.status = 'Escalated';
                 c.narrative = updatedNarrative;
                 addNotification(`Guidance has escalated Concern for ${c.name}.`, 'OSA');
-                showToast(`Concern forwarded to OSA. They have been notified.`);
+                showToast(`Concern forwarded to OSA. AI Analysis is running in the background.`);
+                
+                // Isara agad yung modal para hindi frozen ang UI ng user
                 closeEscalateOSAModal();
                 renderGuidanceInternalReview();
 
                 try {
+                    // Ito yung tatawag sa backend PUT route na magti-trigger sa Thread natin!
                     const res = await fetch(`${API_BASE_URL}/concerns/${concernId}`, {
                         method: 'PUT',
                         headers: {'Content-Type': 'application/json'},
@@ -3201,7 +3390,13 @@
                     if(res.ok) {
                         await syncDatabase(true); 
                     }
-                } catch(e) {}
+                } catch(e) {
+                    console.error("Failed to escalate to backend", e);
+                } finally {
+                    // Ibalik sa dati ang button in case mag-reopen ang modal
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
             }
         }
         function openResolveLocallyModal(concernId) {
@@ -3222,9 +3417,16 @@
             const cIdx = pendingConcerns.findIndex(c => (c.concernId || c.concern_id) === concernId);
             if (cIdx > -1) {
                 const c = pendingConcerns[cIdx];
-                const updatedNarrative = `<strong class="text-luxuryGreenLight">[LOCAL RESOLUTION BY GUIDANCE]:</strong><br><em>${resolution}</em><br><br><b>--- Original Narrative Below ---</b><br>` + c.narrative;
+                const logDate = new Date().toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
                 
-                // Immediately apply locally
+                const updatedNarrative = `
+                    <div style="margin-bottom: 15px; border-bottom: 1px solid #e1ede5; padding-bottom: 10px;">
+                        <span style="font-weight: 800; font-size: 11px; color: #1b4d2c; text-transform: uppercase; letter-spacing: 1px;">Guidance Local Resolution</span>
+                        <span style="float: right; font-size: 10px; color: #4b5563; font-weight: 600;">${logDate}</span>
+                        <div style="margin-top: 8px; font-style: normal; color: #0f2918;">${resolution}</div>
+                    </div>
+                ` + c.narrative;
+                
                 c.status = 'Closed';
                 c.severity = 'Counseling / Mediation';
                 c.narrative = updatedNarrative;
@@ -3236,7 +3438,6 @@
                 renderGuidanceInternalReview();
                 if(document.getElementById('content-concern-history')) renderGuidanceConcernHistory();
 
-                // I-SEND SA BACKEND PARA MA-SAVE KAHIT MAG REFRESH
                 try {
                     const res = await fetch(`${API_BASE_URL}/concerns/${concernId}`, {
                         method: 'PUT',
@@ -3249,11 +3450,7 @@
                             notified_now: false 
                         })
                     });
-                    
-                    // Siguraduhing mag-sync ulit para fresh ang data
-                    if(res.ok) {
-                        await syncDatabase(true); 
-                    }
+                    if(res.ok) await syncDatabase(true); 
                 } catch(e) {
                     console.error("Failed to save local resolution to DB:", e);
                 }
@@ -3309,16 +3506,23 @@
                     const safeId = c.concernId || c.concern_id;
 
                     // Scheduling Logic Check
+                    // Scheduling Logic Check
+                    // Scheduling Logic Check
                     let actionHTML = '';
                     const scheduleMatch = c.narrative.match(/\[SCHEDULED_DATE:\s*([^\]]+)\]/);
-                    
+                    const rescheduleBadge = (c.rescheduleCount || c.reschedule_count) > 0 
+                        ? `<div class="mt-2 text-[9px] font-bold text-[#d97706] uppercase tracking-widest"><i class="fa-solid fa-clock-rotate-left mr-1"></i> Rescheduled: ${c.rescheduleCount || c.reschedule_count}x</div>` 
+                        : '';
+
                     if (scheduleMatch) {
                         const scheduledDateString = scheduleMatch[1];
-                        const scheduledDateObj = new Date(scheduledDateString);
+                        // FIX: Linisin ang string para walang "at" at hindi mag-Invalid Date
+                        const cleanDateStr = scheduledDateString.replace(' at ', ' ').replace('at ', '');
+                        const scheduledDateObj = new Date(cleanDateStr);
                         const now = new Date();
                         
-                        // Kung ang oras ngayon ay lampas na (o saktong) naka-schedule na date
-                        if (now >= scheduledDateObj) {
+                        // Kung ang oras ngayon ay lampas na (o saktong) naka-schedule na date, at Valid Date siya
+                        if (!isNaN(scheduledDateObj.getTime()) && now >= scheduledDateObj) {
                             // Arrived (Time is up)
                             actionHTML = `
                                 <div class="flex flex-col gap-2 w-full md:w-auto mt-4 md:mt-0 border border-luxuryGreen/30 bg-luxuryGreen/5 p-3 rounded-xl shadow-inner">
@@ -3326,9 +3530,11 @@
                                     <button onclick="implementAndCloseConcern('${safeId}')" class="bg-luxuryGreen text-white px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-velvet transition-colors flex items-center justify-center gap-2 shadow-sm border border-luxuryGreen w-full">
                                         <i class="fa-solid fa-check-double"></i> Mark Implemented & Close
                                     </button>
-                                    <div class="flex flex-col md:flex-row items-center gap-2 mt-1">
-                                         <input type="datetime-local" id="scheduleDate_${safeId}" class="px-3 py-2 rounded-lg border border-silk text-xs font-bold text-velvet w-full md:w-[220px] shadow-sm focus:border-luxuryGreenLight outline-none cursor-pointer" title="Reschedule Date and Time (If missed)" required onclick="this.showPicker()">
-                                         <button onclick="scheduleIntervention('${safeId}')" class="bg-[#d97706] text-white px-4 py-2 rounded-lg font-bold text-[9px] uppercase tracking-widest hover:bg-[#b45309] transition-colors shadow-sm w-full md:w-auto shrink-0">Reschedule</button>
+                                    <div class="relative w-full mt-1">
+                                        <input type="datetime-local" id="scheduleDate_${safeId}" class="absolute opacity-0 w-0 h-0" onchange="scheduleIntervention('${safeId}')">
+                                        <button onclick="document.getElementById('scheduleDate_${safeId}').showPicker()" class="w-full bg-white border border-[#d97706] text-[#d97706] px-4 py-2.5 rounded-lg font-bold text-[9px] uppercase tracking-widest hover:bg-[#d97706] hover:text-white transition-colors shadow-sm">
+                                            Reschedule
+                                        </button>
                                     </div>
                                 </div>
                             `;
@@ -3337,23 +3543,26 @@
                             actionHTML = `
                                 <div class="flex flex-col gap-2 w-full md:w-auto mt-4 md:mt-0">
                                     <button disabled class="bg-panel text-smoke px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-silk flex items-center justify-center gap-2 cursor-not-allowed w-full">
-                                        <i class="fa-solid fa-calendar-clock"></i> Scheduled: ${scheduledDateString}
+                                        <i class="fa-solid fa-calendar-clock"></i> ${scheduledDateString}
                                     </button>
-                                    <div class="flex flex-col md:flex-row items-center gap-2 mt-1">
-                                         <input type="datetime-local" id="scheduleDate_${safeId}" class="px-3 py-2 rounded-lg border border-silk text-xs font-bold text-velvet w-full md:w-[220px] shadow-sm focus:border-luxuryGreenLight outline-none cursor-pointer" title="Reschedule Date and Time" required onclick="this.showPicker()">
-                                         <button onclick="scheduleIntervention('${safeId}')" class="bg-[#d97706] text-white px-4 py-2 rounded-lg font-bold text-[9px] uppercase tracking-widest hover:bg-[#b45309] transition-colors shadow-sm w-full md:w-auto shrink-0">Update</button>
+                                    <div class="relative w-full mt-1">
+                                        <input type="datetime-local" id="scheduleDate_${safeId}" class="absolute opacity-0 w-0 h-0" onchange="scheduleIntervention('${safeId}')">
+                                        <button onclick="document.getElementById('scheduleDate_${safeId}').showPicker()" class="w-full bg-white border border-smoke text-smoke px-4 py-2 rounded-lg font-bold text-[9px] uppercase tracking-widest hover:bg-smoke hover:text-white transition-colors shadow-sm">
+                                            Reschedule
+                                        </button>
                                     </div>
+                                    ${rescheduleBadge}
                                 </div>
                             `;
                         }
                     } else {
-                        // Needs Scheduling
+                        // Needs Scheduling (Button instead of exposed input)
                         actionHTML = `
                             <div class="flex flex-col items-center gap-2 w-full md:w-auto mt-4 md:mt-0">
-                                <div class="flex flex-col md:flex-row w-full items-center gap-2">
-                                    <input type="datetime-local" id="scheduleDate_${safeId}" class="px-4 py-3 md:py-2.5 rounded-xl border border-silk text-xs font-bold text-velvet w-full md:w-[240px] shadow-sm focus:border-luxuryGreenLight outline-none cursor-pointer hover:border-luxuryGreen transition-colors" title="Set Schedule Date and Time" required onclick="this.showPicker()">
-                                    <button onclick="scheduleIntervention('${safeId}')" class="bg-[#d97706] text-white px-5 py-3 md:py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-[#b45309] transition-colors shadow-sm w-full md:w-auto shrink-0">
-                                        Update
+                                <div class="relative w-full">
+                                    <input type="datetime-local" id="scheduleDate_${safeId}" class="absolute opacity-0 w-0 h-0" onchange="scheduleIntervention('${safeId}')">
+                                    <button onclick="document.getElementById('scheduleDate_${safeId}').showPicker()" class="bg-velvet text-white px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-luxuryGreen transition-colors flex items-center justify-center gap-2 shadow-sm w-full md:w-auto">
+                                        <i class="fa-solid fa-calendar-plus"></i> Set Schedule
                                     </button>
                                 </div>
                             </div>
@@ -3383,39 +3592,55 @@
 
         async function scheduleIntervention(concernId) {
             const dateInput = document.getElementById(`scheduleDate_${concernId}`).value;
-            if(!dateInput) {
-                showToast("Please pick a target schedule date and time first.", "error");
-                return;
-            }
+            if(!dateInput) return; // Kung kinansela ang picker
             
-            // Format input date nicely: MM/DD/YYYY, HH:MM AM/PM
             const d = new Date(dateInput);
             const formattedDate = d.toLocaleString('en-US', { 
-                month: '2-digit', 
-                day: '2-digit', 
-                year: 'numeric', 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                hour12: true 
+                month: 'long', day: '2-digit', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit', hour12: true 
+            });
+            const logDate = new Date().toLocaleString('en-US', { 
+                month: 'long', day: 'numeric', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit' 
             });
 
             const c = pendingConcerns.find(x => (x.concernId || x.concern_id) === concernId);
             if(c) {
-                // Remove old schedule tag if exists
+                // Increment reschedule counter
+                c.rescheduleCount = (c.rescheduleCount || c.reschedule_count || 0) + 1;
+
+                // Clean removal of old schedule tag
                 c.narrative = c.narrative.replace(/<br>\[SCHEDULED_DATE:\s*[^\]]+\]/g, '');
                 c.narrative = c.narrative.replace(/\[SCHEDULED_DATE:\s*[^\]]+\]/g, '');
                 
-                c.narrative += `<br>[SCHEDULED_DATE: ${formattedDate}]`;
+                // Log entry mapping
+                const actionType = c.rescheduleCount > 1 ? "Intervention Rescheduled" : "Intervention Scheduled";
+                
+                const scheduleLog = `
+                    <div style="margin-bottom: 15px; border-bottom: 1px solid #e1ede5; padding-bottom: 10px; background-color: #fdf6e3; padding: 12px; border-radius: 8px;">
+                        <span style="font-weight: 800; font-size: 11px; color: #d97706; text-transform: uppercase; letter-spacing: 1px;"><i class="fa-solid fa-calendar-check mr-1"></i> ${actionType}</span>
+                        <span style="float: right; font-size: 10px; color: #4b5563; font-weight: 600;">${logDate}</span>
+                        <div style="margin-top: 8px; font-style: normal; color: #0f2918; font-weight: 600;">Target Date: ${formattedDate}</div>
+                    </div>
+                `;
+                
+                c.narrative = scheduleLog + c.narrative + `<br>[SCHEDULED_DATE: ${formattedDate} | RAW: ${dateInput}]`;
+                
                 showToast(`Intervention officially scheduled for ${formattedDate}.`);
-                renderGuidanceImplementation();
+                renderGuidanceImplementation(); // Re-render the UI instantly
                 
                 try {
                     await fetch(`${API_BASE_URL}/concerns/${concernId}`, {
                         method: 'PUT',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({narrative: c.narrative})
+                        body: JSON.stringify({
+                            narrative: c.narrative, 
+                            reschedule_count: c.rescheduleCount 
+                        })
                     });
-                } catch(e) {}
+                } catch(e) {
+                    console.error("Failed to save schedule to DB", e);
+                }
             }
         }
 
@@ -3828,14 +4053,20 @@
 
             const reasonLower = (c.reason || '').toLowerCase();
             const isGuidanceOnly = reasonLower.includes('academic deficiencies') || reasonLower.includes('personal problem');
+            const logDate = new Date().toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
             if (isGuidanceOnly) {
-                // LOGIC KUNG GUIDANCE ONLY: Diretso sa Implementation!
                 const scheduleInput = document.getElementById('reopenScheduleInput').value;
                 const d = new Date(scheduleInput);
-                const formattedDate = d.toLocaleString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
+                const formattedDate = d.toLocaleString('en-US', { month: 'long', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
 
-                const updatedNarrative = `<strong class="text-[#d97706]">[REOPENED COUNSELING SCHEDULE]:</strong><br><em>Scheduled for ${formattedDate}</em><br><br><b>--- Past Records Below ---</b><br>` + c.narrative + `<br>[SCHEDULED_DATE: ${formattedDate}]`;
+                const updatedNarrative = `
+                    <div style="margin-bottom: 15px; border-bottom: 1px solid #e1ede5; padding-bottom: 10px; background-color: #fdf6e3; padding: 10px; border-radius: 8px;">
+                        <span style="font-weight: 800; font-size: 11px; color: #d97706; text-transform: uppercase; letter-spacing: 1px;">Re-scheduled Intervention</span>
+                        <span style="float: right; font-size: 10px; color: #4b5563; font-weight: 600;">${logDate}</span>
+                        <div style="margin-top: 8px; font-style: normal; color: #0f2918; font-weight: 600;">Intervention Target: ${formattedDate}</div>
+                    </div>
+                ` + c.narrative;
 
                 c.status = 'Pending Implementation';
                 c.severity = 'Counseling / Mediation';
@@ -3865,7 +4096,6 @@
                 } catch(e) {}
 
             } else {
-                // LOGIC KUNG STANDARD REOPEN: Papuntang Internal Review
                 const newNotes = document.getElementById('reopenFormNarrative').innerHTML; 
 
                 let reasonsArray = Array.from(document.querySelectorAll('.ncReopenReason:checked')).map(cb => cb.value);
@@ -3883,7 +4113,13 @@
                     return;
                 }
 
-                const updatedNarrative = `<strong class="text-[#d97706]">[REOPEN NOTES / UPDATE]:</strong><br><em>${newNotes}</em><br><br><b>--- Past Records Below ---</b><br>` + c.narrative;
+                const updatedNarrative = `
+                    <div style="margin-bottom: 15px; border-bottom: 1px solid #e1ede5; padding-bottom: 10px;">
+                        <span style="font-weight: 800; font-size: 11px; color: #d97706; text-transform: uppercase; letter-spacing: 1px;">Case Reopened & Updated</span>
+                        <span style="float: right; font-size: 10px; color: #4b5563; font-weight: 600;">${logDate}</span>
+                        <div style="margin-top: 8px; font-style: normal; color: #0f2918;">${newNotes}</div>
+                    </div>
+                ` + c.narrative;
                 
                 c.status = 'Pending_Review';
                 c.reopenCount = (c.reopenCount || 0) + 1;
@@ -3914,6 +4150,7 @@
             }
         }
 
+        // OSA: Process Pending Concern
         // OSA: Process Pending Concern
         function renderOSAProcessConcern() {
             const container = document.getElementById('content-process-concern');
@@ -3968,6 +4205,7 @@
             } else {
                 html = filteredConcerns.map(c => {
                     const safeId = c.concernId || c.concern_id;
+                    const formattedTimeOSA = formatAMPM(c.incidentTime || c.incident_time); // AM/PM FORMAT
                     
                     const isReopen = c.status === 'Pending_Reopen';
                     const badge = isReopen 
@@ -3989,7 +4227,7 @@
                     }
 
                     return `
-                    <div class="bg-white p-6 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start hover:border-luxuryGreen/40 transition-colors">
+                    <div class="bg-white p-6 rounded-xl border border-silk shadow-sm flex flex-col md:flex-row justify-between items-start hover:border-luxuryGreenLight/40 transition-colors">
                         <div class="flex-grow pr-4 w-full">
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="text-[10px] font-bold text-smoke uppercase tracking-widest">Concern ID: <span class="text-sm text-velvet tracking-wide font-mono ml-1">${safeId}</span></span>
@@ -3998,6 +4236,8 @@
                             <h4 class="font-bold text-velvet text-xl mt-2">${c.name} <span class="text-sm text-smoke font-normal ml-2">(${c.course})</span></h4>
                             <p class="text-sm text-smoke mt-1 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
                                 <span><b>Offense:</b> ${c.reason}</span>
+                                <span class="hidden sm:inline border-l border-silk h-4"></span>
+                                <span><b>Time:</b> ${formattedTimeOSA}</span>
                                 <span class="hidden sm:inline border-l border-silk h-4"></span>
                                 <span class="text-xs"><b>Referred By:</b> ${c.referredBy || c.referred_by || 'System'}</span>
                             </p>
@@ -4009,13 +4249,20 @@
                     </div>
                 `}).join('');
             }
+            
             listContainer.innerHTML = html;
         }
 
         // =========================================================================
         // GEMINI API INTEGRATION
         // =========================================================================
-        async function evaluateConcern(concernIdStr) {
+        // =========================================================================
+        // GEMINI API INTEGRATION (AI ANALYSIS)
+        // =========================================================================
+        // =========================================================================
+        // GEMINI API INTEGRATION (AI ANALYSIS) - PULLS FROM DATABASE
+        // =========================================================================
+        function evaluateConcern(concernIdStr) {
             const c = pendingConcerns.find(item => (item.concernId || item.concern_id) === concernIdStr);
             if(!c) return;
 
@@ -4029,258 +4276,177 @@
             }
             const currentOffenseCount = pastOffenses + 1;
 
+            // Reopened Badge Logic
             const isReopenTag = c.status === 'Pending_Reopen' || (c.reopenCount || 0) > 0
-                ? `<span class="bg-[#fdf6e3] text-[#d97706] border border-[#d97706]/30 px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest ml-3 align-middle shadow-sm"><i class="fa-solid fa-folder-open mr-1"></i> Re-opened</span>`
+                ? `<span class="bg-[#fdf6e3] text-[#d97706] border border-[#d97706]/30 px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest ml-3 align-middle shadow-sm whitespace-nowrap"><i class="fa-solid fa-folder-open mr-1"></i> Re-opened</span>`
                 : '';
 
-            // INITIAL RENDER: Buong UI ay makikita na agad, pati Dropdown at Button.
-            // Yung "aiJustificationContainer" lang ang magloloading.
+            // 12-Hour AM/PM Format Logic
+            const formattedTime = formatAMPM(c.incidentTime || c.incident_time);
+
+            // INITIAL RENDER: Malaking Narrative (min-h-[200px]), AM/PM Time, at Reopened Badge
+            // INITIAL RENDER: Pantay na heights (Left at Right panels) gamit ang CSS flex
+            // INITIAL RENDER: Pantay na heights (Left at Right panels) gamit ang CSS flex
             content.innerHTML = `
-                <div class="border-r border-silk pr-0 md:pr-10 mb-6 md:mb-0 md:w-1/2 flex flex-col justify-center py-4">
-                    <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-5 border-b border-silk pb-3">Concern Information</h4>
-                    <p class="font-mono text-xs bg-chiffon px-3 py-1.5 rounded inline-block text-velvet mb-4 self-start shadow-sm">${concernIdStr}</p>
-                    <h5 class="text-3xl font-heading font-extrabold text-velvet mb-2 flex items-center">${c.name} ${isReopenTag}</h5>
-                    <p class="text-sm font-bold text-smoke mb-6">ID: ${safeStudId} • ${c.course}</p>
+                <!-- LEFT PANEL -->
+                <div class="w-full md:w-1/2 flex flex-col border-b md:border-b-0 md:border-r border-silk pb-6 md:pb-0 md:pr-6 min-h-0">
+                    <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-4 border-b border-silk pb-3 shrink-0">Concern Information</h4>
+                    <div class="flex items-center gap-3 mb-3 shrink-0">
+                        <p class="font-mono text-xs bg-chiffon px-3 py-1.5 rounded text-velvet shadow-sm m-0">${concernIdStr}</p>
+                        ${isReopenTag}
+                    </div>
+                    <h5 class="text-2xl font-heading font-extrabold text-velvet mb-1 leading-tight shrink-0">${c.name}</h5>
+                    <p class="text-sm font-bold text-smoke mb-4 shrink-0">ID: ${safeStudId} • ${c.course}</p>
                     
-                    <div class="space-y-5 mt-4">
+                    <div class="space-y-4 mt-1 shrink-0">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Referral Reason</p>
-                                <p class="text-base font-bold text-velvet">${c.reason}</p>
+                                <p class="text-sm font-bold text-velvet">${c.reason}</p>
                             </div>
                             <div>
                                 <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Offense Record</p>
-                                <p class="text-base font-bold ${currentOffenseCount >= 3 ? 'text-rose' : 'text-velvet'}">Offense ${currentOffenseCount}</p>
+                                <p class="text-sm font-bold ${currentOffenseCount >= 3 ? 'text-rose' : 'text-velvet'}">Offense ${currentOffenseCount}</p>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Incident Time</p>
-                                <p class="text-base text-velvet font-medium">${c.incidentTime || c.incident_time}</p>
+                                <p class="text-sm text-velvet font-medium">${formattedTime}</p>
                             </div>
                             <div>
                                 <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-1.5">Referred By</p>
                                 <p class="text-sm text-velvet font-medium">${c.referredBy || c.referred_by || 'System'}</p>
                             </div>
                         </div>
-                        <div>
-                            <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Narrative Report</p>
-                            <div class="bg-chiffon/30 p-5 rounded-lg border border-silk text-sm italic text-velvet shadow-inner leading-relaxed overflow-y-auto max-h-32 no-scrollbar whitespace-pre-line">${c.narrative}</div>
-                        </div>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col mt-5 min-h-0">
+                        <p class="text-[10px] font-bold text-smoke uppercase tracking-widest mb-2 shrink-0">Narrative Report</p>
+                        <div class="bg-chiffon/30 p-4 rounded-lg border border-silk text-sm italic text-velvet shadow-inner leading-relaxed overflow-y-auto flex-grow no-scrollbar whitespace-pre-line">${c.narrative}</div>
                     </div>
                 </div>
                 
-                <div class="flex flex-col p-6 bg-white rounded-xl transition-all duration-300 md:w-1/2 md:ml-10 shadow-sm border border-silk h-full min-h-[450px]">
-                    <div class="flex justify-between items-center mb-5 border-b border-silk pb-3">
-                        <h4 class="text-xs font-bold text-smoke uppercase tracking-widest"><i class="fa-solid fa-brain text-luxuryGreen mr-1.5"></i> AI Analysis Result</h4>
-                        <button onclick="openHandbookModal()" class="text-[10px] bg-chiffon hover:bg-silk text-luxuryGreen px-3 py-2 rounded-lg font-bold uppercase tracking-widest transition-colors flex items-center shadow-sm" title="View Handbook Rules"><i class="fa-solid fa-book-open mr-2"></i> Rules</button>
-                    </div>
-                    
-                    <div class="bg-chiffon/50 p-6 rounded-2xl border border-silk mb-5 flex-grow flex flex-col shadow-inner">
-                        <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-3">
-                            ${pastOffenses === 0 
-                                ? `<i class="fa-solid fa-shield-check text-luxuryGreen mr-1.5"></i> Clean Record (0 Prior Offenses)`
-                                : `<i class="fa-solid fa-clock-rotate-left text-rose mr-1.5"></i> Prior History Found: ${pastOffenses} exact prior offense(s)`
-                            }
-                        </h4>
-                        <p class="text-[10px] text-smoke font-bold uppercase mt-2 mb-3 border-b border-silk pb-1.5">Contextual Scan on Narrative & Reason...</p>
-                        
-                        <div id="aiJustificationContainer" class="flex-grow flex flex-col justify-center items-center py-6 w-full">
-                            <i class="fa-solid fa-database text-4xl text-luxuryGreenLight animate-pulse mb-3"></i>
-                            <p class="text-xs text-smoke font-bold uppercase tracking-widest animate-pulse text-center">AI is scanning...</p>
+                <!-- RIGHT PANEL (PANTAY NA SA KALIWA) -->
+                <div class="w-full md:w-1/2 flex flex-col pt-6 md:pt-0 md:pl-6 min-h-0">
+                    <div class="flex flex-col p-6 bg-white rounded-xl shadow-sm border border-silk flex-grow min-h-0">
+                        <div class="flex justify-between items-center mb-5 border-b border-silk pb-3 shrink-0">
+                            <h4 class="text-xs font-bold text-smoke uppercase tracking-widest"><i class="fa-solid fa-brain text-luxuryGreen mr-1.5"></i> AI Analysis Result</h4>
+                            <button onclick="openHandbookModal()" class="text-[10px] bg-chiffon hover:bg-silk text-luxuryGreen px-3 py-2 rounded-lg font-bold uppercase tracking-widest transition-colors flex items-center shadow-sm" title="View Handbook Rules"><i class="fa-solid fa-book-open mr-2"></i> Rules</button>
                         </div>
-                    </div>
-                    
-                    <div class="mt-auto pt-2 border-t border-silk/50">
-                        <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Select Final Intervention / Sanction</label>
-                        <select id="selectedIntervention" class="w-full px-4 py-3.5 rounded-xl border border-silk focus:border-luxuryGreen text-sm text-velvet font-bold bg-[#f9f9f9] shadow-sm cursor-pointer mb-4 transition-colors duration-500">
-                            <option value="Verbal Warning">Verbal Warning</option>
-                            <option value="Written Reprimand">Written Reprimand</option>
-                            <option value="Written Apology">Written Apology</option>
-                            <option value="Counseling / Mediation">Counseling / Mediation</option>
-                            <option value="Community Service">Community Service</option>
-                            <option value="Suspension">Suspension</option>
-                            <option value="Dropping/Dismissal">Dropping/Dismissal</option>
-                            <option value="Expulsion">Expulsion</option>
-                        </select>
-                        <button onclick="applySanction('${concernIdStr}')" class="w-full bg-velvet hover:bg-luxuryGreen transition-colors text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[11px] shadow-lg">Apply Sanction & Send to Guidance</button>
+                        
+                        <div class="bg-chiffon/50 p-5 rounded-2xl border border-silk mb-5 flex-grow flex flex-col shadow-inner min-h-0">
+                            <h4 class="text-xs font-bold text-smoke uppercase tracking-widest mb-2 shrink-0">
+                                ${pastOffenses === 0 
+                                    ? `<i class="fa-solid fa-shield-check text-luxuryGreen mr-1.5"></i> Clean Record (0 Prior Offenses)`
+                                    : `<i class="fa-solid fa-clock-rotate-left text-rose mr-1.5"></i> Prior History Found: ${pastOffenses} exact prior offense(s)`
+                                }
+                            </h4>
+                            <p class="text-[10px] text-smoke font-bold uppercase mt-1 mb-3 border-b border-silk pb-2 shrink-0">Contextual Scan on Narrative & Reason...</p>
+                            
+                            <div id="aiJustificationContainer" class="flex-grow flex flex-col justify-center items-center py-4 w-full h-full overflow-hidden">
+                                <i class="fa-solid fa-database text-4xl text-luxuryGreenLight animate-pulse mb-3"></i>
+                                <p class="text-xs text-smoke font-bold uppercase tracking-widest animate-pulse text-center">Ai is analyzing...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto pt-2 border-t border-silk/50 shrink-0">
+                            <label class="block text-[10px] font-bold text-smoke uppercase tracking-widest mb-2">Select Final Intervention / Sanction</label>
+                            <select id="selectedIntervention" class="w-full px-4 py-3.5 rounded-xl border border-silk focus:border-luxuryGreen text-sm text-velvet font-bold bg-[#f9f9f9] shadow-sm cursor-pointer mb-4 transition-colors duration-500">
+                                <option value="Verbal Warning">Verbal Warning</option>
+                                <option value="Written Reprimand">Written Reprimand</option>
+                                <option value="Written Apology">Written Apology</option>
+                                <option value="Counseling / Mediation">Counseling / Mediation</option>
+                                <option value="Community Service">Community Service</option>
+                                <option value="Suspension">Suspension</option>
+                                <option value="Dropping/Dismissal">Dropping/Dismissal</option>
+                                <option value="Expulsion">Expulsion</option>
+                            </select>
+                            <button onclick="applySanction('${concernIdStr}')" class="w-full bg-velvet hover:bg-luxuryGreen transition-colors text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[11px] shadow-lg">Apply Sanction & Send to Guidance</button>
+                        </div>
                     </div>
                 </div>
             `;
             
             modal.classList.remove('hidden');
 
-            const plainNarrative = c.narrative.replace(/<[^>]*>?/gm, '');
+            // FAKE LOADING: Maghihintay ng 3 seconds bago ipakita ang Result mula sa Database
+            setTimeout(async () => {
+                const justificationContainer = document.getElementById('aiJustificationContainer');
+                const interventionSelect = document.getElementById('selectedIntervention');
+                
+                if (!justificationContainer) return;
 
-            const promptText = `
-            Act as an AI disciplinary adjudicator for Norzagaray College Student Affairs.
-            Analyze the following student disciplinary concern and recommend EXACTLY ONE sanction based strictly on the official institutional rubrics provided below.
+                try {
+                    await syncDatabase(true); 
+                } catch(e) {}
 
-            --- STUDENT INCIDENT DETAILS ---
-            Student Offense History: ${pastOffenses} exact prior offense(s). (This is offense #${currentOffenseCount}).
-            Current Offense Reason: ${c.reason}
-            Narrative Report: ${plainNarrative}
+                const updatedC = pendingConcerns.find(item => (item.concernId || item.concern_id) === concernIdStr);
+                if(!updatedC) return;
 
-            --- OFFICIAL DISCIPLINARY INTERVENTIONS ---
-            L1. Verbal Warning: Reprimand for unacceptable behavior.
-            L2. Written Reprimand: A formal written statement documenting that a violation of specific regulations has occurred.
-            L3. Community Service: 15–20 hours of service around the school (students may still attend classes).
-            L4. Suspension: Exclusion from classes and campus activities for 5 to 20 school days (not exceeding 20% of the prescribed period). This carries the forfeiture of the right to make up missed quizzes or homework.
-            L5. Dropping/Dismissal: The student is dropped during the school year and immediately issued transfer credentials.
-            L6. Expulsion: Permanent removal from Norzagaray College.
-            *Note: "Written Apology" and "Counseling / Mediation" can also be applied as supplementary interventions where deemed appropriate.*
+                let result = null;
+                let aiText = updatedC.aiAnalysisResult || updatedC.ai_analysis_result;
 
-            --- VIOLATION CLASSIFICATIONS & PENALTY MATRIX ---
-            Confirmed Major Violations (Serious Offenses):
-            1. Fraternities/Sororities (Recruitment, Hazing, Symbols, Threats): L4 / L5 / L6
-            2. Bullying/Harassment (Verbal, Physical, Social, Cyber, Catcalling): 1st Offense (L2/L3), 2nd (L3/L4), 3rd (L4/L5)
-            3. Sexual Harassment (Catcalling, Slurs, Contact, Stalking, Requests): 1st Offense (L3/L4/L5/L6), 2nd (L4/L5/L6)
-            4. Dangerous Drugs (Possession, Use, Intoxication, Selling): L5 / L6
-            5. Vandalism (Defacing, Destruction, Tampering): 1st Offense (L3), 2nd (L4), 3rd (L5)
-            6. Public Display of Affection (PDA) & Immorality: L5
-            7. Cheating (Possession of Notes, Copying, Proxy, Plagiarism): 1st Offense (L4), 2nd (L5)
-
-            Confirmed Minor/Behavioral Violations:
-            1. Uniform & Grooming (No ID, Incomplete uniform, Piercings, Hair color): 1st Offense (L1), 2nd (L2), 3rd (L3)
-            2. Classroom Disruptions (Sleeping, Gadgets, Noise, Running): 1st Offense (L1), 2nd (L2), 3rd (L3)
-            3. Facility Misuse (Improper disposal, Loitering, Tampering): 1st Offense (L1), 2nd (L2), 3rd (L3)
-            4. Attendance & Punctuality (Tardiness, Unauthorized absences, Cutting class): 1st Offense (L1), 2nd (L2), 3rd (L3)
-
-            --- INSTRUCTIONS ---
-            1. Categorize the offense using the Penalty Matrix above based on the "Current Offense Reason" and "Narrative Report".
-            2. Look at the "Student Offense History" (Offense #${currentOffenseCount}) to determine the correct severity level (L1 to L6).
-            3. HANDLING RANGES: If the matrix provides a range of levels (e.g., L2/L3), default to the lowest severity level UNLESS the 'Narrative Report' indicates severe malicious intent, physical harm, lack of remorse, or disruption of school operations, in which case elevate to the higher level.
-            4. Map the chosen Level (L1-L6) to the exact sanction name from this list ONLY:
-               "Verbal Warning", "Written Reprimand", "Written Apology", "Counseling / Mediation", "Community Service", "Suspension", "Dropping/Dismissal", "Expulsion".
-            5. Provide a brief, objective justification (maximum 2-3 sentences) explaining how you applied the matrix and the narrative to reach this specific sanction.
-            6. Determine the overall severity level as one of: "low", "medium", "high", "critical".
-            7. Format your entire response strictly as a JSON object matching the exact schema below. Do not include markdown tags (like \`\`\`json) or any outside text.
-
-            {
-              "severity_level": "low|medium|high|critical",
-              "recommended_sanction": "[Exact Sanction Name]",
-              "justification": "[Your 2-3 sentence explanation]"
-            }
-            `;
-
-            try {
-                if (!geminiApiKey || geminiApiKey.trim() === "") {
-                    const keyRes = await fetch(`${API_BASE_URL}/get-gemini-key`);
-                    if (keyRes.ok) {
-                        const keyData = await keyRes.json();
-                        geminiApiKey = keyData.key;
-                    } else {
-                        throw new Error("Failed to retrieve API key from the backend.");
+                if (aiText) {
+                    try {
+                        const jsonMatch = aiText.match(/\{[\s\S]*\}/);
+                        if (jsonMatch) aiText = jsonMatch[0];
+                        result = JSON.parse(aiText);
+                    } catch (e) {
+                        console.error("Error parsing AI result from DB:", e);
                     }
                 }
 
-                if (!geminiApiKey || geminiApiKey.trim() === "") {
-                    throw new Error("Missing Gemini API Key.");
-                }
+                if (result) {
+                    let suggestedSanction = result.recommended_sanction || result.sanction || 'Counseling / Mediation';
+                    let aiJustification = result.justification || 'Analysis complete.';
 
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptText }] }],
-                        generationConfig: {
-                            responseMimeType: "application/json",
-                            responseSchema: {
-                                type: "OBJECT",
-                                properties: {
-                                    recommended_sanction: {
-                                        type: "STRING",
-                                        enum: ["Verbal Warning", "Written Reprimand", "Written Apology", "Counseling / Mediation", "Community Service", "Suspension", "Dropping/Dismissal", "Expulsion"]
-                                    },
-                                    justification: { type: "STRING" },
-                                    severity_level: {
-                                        type: "STRING",
-                                        enum: ["low", "medium", "high", "critical"]
-                                    }
-                                },
-                                required: ["recommended_sanction", "justification", "severity_level"]
-                            }
-                        }
-                    })
-                });
+                    let severityStyle = "";
+                    let severityIcon = "";
+                    let severityTitle = "";
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error?.message || "Failed to connect to Gemini API.");
-                }
+                    const redSanctions = ["Suspension", "Dropping/Dismissal", "Expulsion"];
+                    const yellowSanctions = ["Verbal Warning", "Written Reprimand", "Written Apology"];
 
-                const data = await response.json();
-                let jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (!jsonText) throw new Error("Invalid response format from AI.");
-                const result = JSON.parse(jsonText);
+                    if (redSanctions.includes(suggestedSanction)) {
+                        severityStyle = "text-[#9f1239] bg-[#ffe4e6] border-[#f43f5e]"; 
+                        severityIcon = "fa-triangle-exclamation";
+                        severityTitle = "Critical Escalation";
+                    } else if (yellowSanctions.includes(suggestedSanction)) {
+                        severityStyle = "text-[#b45309] bg-[#fef3c7] border-[#f59e0b]"; 
+                        severityIcon = "fa-circle-exclamation";
+                        severityTitle = "Warning / Reprimand";
+                    } else {
+                        severityStyle = "text-[#0284c7] bg-[#e0f2fe] border-[#0ea5e9]"; 
+                        severityIcon = "fa-people-arrows";
+                        severityTitle = "Counseling & Rehabilitation";
+                    }
 
-                let suggestedSanction = result.recommended_sanction || result.sanction; // Fallback handle
-                let aiJustification = result.justification;
-                let severityLevel = result.severity_level || result.severityLevel;
-
-                let severityStyle = "text-luxuryGreen bg-[#e8f3ec] border-luxuryGreen/30";
-                let severityIcon = "fa-shield";
-                let severityTitle = "Basic Intervention";
-
-                if (severityLevel === "critical") {
-                    severityStyle = "text-[#9f1239] bg-[#ffe4e6] border-[#f43f5e]";
-                    severityIcon = "fa-triangle-exclamation";
-                    severityTitle = "Critical Escalation";
-                } else if (severityLevel === "high") {
-                    severityStyle = "text-[#b45309] bg-[#fef3c7] border-[#f59e0b]";
-                    severityIcon = "fa-triangle-exclamation";
-                    severityTitle = "Severe Case Escalation";
-                } else if (severityLevel === "medium") {
-                    severityStyle = "text-[#0369a1] bg-[#e0f2fe] border-[#0ea5e9]";
-                    severityIcon = "fa-circle-exclamation";
-                    severityTitle = "Escalated Intervention";
-                } else if (suggestedSanction === "Counseling / Mediation") {
-                    severityStyle = "text-[#0284c7] bg-[#e0f2fe] border-[#0284c7]/30";
-                    severityIcon = "fa-people-arrows";
-                    severityTitle = "Mediation & Investigation Recommended";
-                } else if (suggestedSanction === "Written Reprimand") {
-                    severityStyle = "text-luxuryGreen bg-[#e8f3ec] border-luxuryGreen/30";
-                    severityIcon = "fa-file-signature";
-                    severityTitle = "Academic/Attendance Intervention";
-                }
-
-                // Dito papalitan yung loading box ng actual na AI result
-                const justificationContainer = document.getElementById('aiJustificationContainer');
-                if (justificationContainer) {
-                    justificationContainer.className = `p-4 rounded-xl border shadow-sm ${severityStyle} w-full`;
+                    // INJECT ANG COLOR CODED NA RESULTA (pantay at scrollable kung sobrang haba)
+                    justificationContainer.className = `p-4 rounded-xl border shadow-sm ${severityStyle} w-full h-full flex flex-col overflow-hidden animate-[modalPop_0.4s_forwards]`;
                     justificationContainer.innerHTML = `
-                        <p class="font-extrabold text-base uppercase tracking-widest mb-1"><i class="fa-solid ${severityIcon} mr-2"></i> ${severityTitle}</p>
-                        <p class="text-sm mt-2 text-velvet font-medium leading-relaxed">${aiJustification}</p>
+                        <p class="font-extrabold text-sm uppercase tracking-widest mb-2 shrink-0"><i class="fa-solid ${severityIcon} mr-2"></i> ${severityTitle}</p>
+                        <p class="text-sm mt-1 font-medium leading-relaxed overflow-y-auto no-scrollbar flex-grow pr-2">${aiJustification}</p>
+                    `;
+
+                    if(interventionSelect) {
+                        interventionSelect.value = suggestedSanction;
+                        interventionSelect.classList.add('border-luxuryGreenLight', 'bg-[#e8f3ec]');
+                        setTimeout(() => interventionSelect.classList.remove('border-luxuryGreenLight', 'bg-[#e8f3ec]'), 1500);
+                    }
+
+                } else {
+                    justificationContainer.className = "flex flex-col items-center justify-center text-center py-6 w-full h-full animate-[modalPop_0.4s_forwards]";
+                    justificationContainer.innerHTML = `
+                        <i class="fa-solid fa-clock text-3xl text-[#d97706] mb-3"></i>
+                        <h4 class="text-sm font-bold text-velvet tracking-tight uppercase">Analysis Still Pending or Failed</h4>
+                        <p class="text-xs text-smoke mt-2 font-medium px-4">The AI engine is either still generating the analysis or encountered an error.</p>
+                        <p class="text-[9px] text-[#d97706] mt-4 uppercase tracking-widest font-bold border border-[#d97706]/20 bg-[#fdf6e3] px-3 py-1.5 rounded-lg">Please review rules and select manually.</p>
                     `;
                 }
-
-                // I-auto select yung suggestion sa existing dropdown
-                const interventionSelect = document.getElementById('selectedIntervention');
-                if(interventionSelect) {
-                    interventionSelect.value = suggestedSanction;
-                    // Lagyan ng slight visual highlight para alam ng user na nagbago yung select box
-                    interventionSelect.classList.add('border-luxuryGreenLight', 'bg-[#e8f3ec]');
-                    setTimeout(() => interventionSelect.classList.remove('border-luxuryGreenLight', 'bg-[#e8f3ec]'), 1500);
-                }
-
-            } catch (error) {
-                console.error("AI Evaluation Error:", error);
-                
-                // Kapag nag-error, yung loading box mapapalitan ng error message
-                // Pero intact pa rin yung dropdown at button sa ilalim!
-                const justificationContainer = document.getElementById('aiJustificationContainer');
-                if (justificationContainer) {
-                    justificationContainer.className = "flex flex-col items-center justify-center text-center py-6 w-full";
-                    justificationContainer.innerHTML = `
-                        <i class="fa-solid fa-triangle-exclamation text-3xl text-rose mb-3"></i>
-                        <h4 class="text-sm font-bold text-velvet tracking-tight uppercase">AI Engine Unavailable</h4>
-                        <p class="text-xs text-smoke mt-2 font-medium px-4">${error.message}</p>
-                        <p class="text-[9px] text-rose mt-4 uppercase tracking-widest font-bold border border-rose/20 bg-rose/10 px-3 py-1.5 rounded-lg">Please review rules and select manually below.</p>
-                    `;
-                }
-            }
+            }, 3000);
         }
-
+        
         function openHandbookModal() {
             document.getElementById('handbookModal').classList.remove('hidden');
         }
